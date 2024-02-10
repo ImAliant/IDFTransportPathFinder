@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 /** Unit test for simple App. */
-public class AppTest {
+class AppTest {
     /** Rigorous Test :-) */
     @Test
-    public void shouldAnswerWithTrue() {
-        assertTrue(true);
+    void testPlaceholder() {
+        assertTrue(true, "It should be true that true is true...");
     }
 }
