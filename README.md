@@ -4,7 +4,8 @@ Version 2024
 ## Description
 Ceci est l'archetype de projet de Génie Logiciel Avancé (GLA).
 
-Il s'agit d'un projet Java. Ce dépôt définit un système de build et une application simple. Il est nécéssaire de consulter le fichier [CONTRIBUTING.md](CONTRIBUTING.md) pour utiliser ce dépôt.
+Il s'agit d'un logiciel de planification d’itinéraire urbain. Implémenté
+en Java, ce logiciel permettra de lire une carte des transports, puis, en donnant les coordonnées GPS de départ et d’arrivée, calculera le trajet le plus court (en temps, en distance, etc...) pour réaliser ce déplacement.
 
 ## Lancement du programme
 Ce projet utilise [maven](https://maven.apache.org/) de Apache pour la gestion de construction.
