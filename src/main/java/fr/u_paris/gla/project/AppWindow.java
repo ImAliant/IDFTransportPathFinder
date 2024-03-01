@@ -29,6 +29,14 @@ public class AppWindow extends JFrame {
      * This show a map from OpenStreetMap.
      */
     private Maps map = new Maps(WIDTH, HEIGHT);
+    /**
+     * Button to zoom in the map.
+     */
+    private JButton zoomIn;
+    /**
+     * Button to zoom out the map.
+     */
+    private JButton zoomOut;
 
     public AppWindow(String title) {
         super();
@@ -58,12 +66,12 @@ public class AppWindow extends JFrame {
         /**
         * Button to zoom in the map.
         */
-        JButton zoomIn = new JButton("Zoom In");
+        zoomIn = new JButton("Zoom In");
         zoomIn.addActionListener(e -> map.zoomIn());
         /**
         * Button to zoom out the map.
         */
-        JButton zoomOut = new JButton("Zoom Out");
+        zoomOut = new JButton("Zoom Out");
         zoomOut.addActionListener(e -> map.zoomOut());
 
         buttonsPanel.add(zoomOut);
@@ -94,5 +102,25 @@ public class AppWindow extends JFrame {
         map.addMouseListener(listener);
         map.addMouseMotionListener(listener);
         map.addMouseWheelListener(new ZoomMouseWheelListenerCursor(map));
+    }
+
+    // TESTABILITY
+    /**
+     * @return the map
+     */
+    public Maps getMap() {
+        return map;
+    }
+    /**
+     * @return the zoomInButton
+     */
+    public JButton getZoomInButton() {
+        return zoomIn;
+    }
+    /**
+     * @return the zoomOutButton
+     */
+    public JButton getZoomOutButton() {
+        return zoomOut;
     }
 }

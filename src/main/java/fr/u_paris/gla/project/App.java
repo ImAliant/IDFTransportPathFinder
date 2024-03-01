@@ -1,9 +1,12 @@
 package fr.u_paris.gla.project;
 
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
 
 /** Simple application model.
  *
@@ -13,6 +16,8 @@ public class App {
      * 
      */
     private static final String UNSPECIFIED = "Unspecified";         //$NON-NLS-1$
+    /** Latch to wait for the window to be created. */
+    private static CountDownLatch latch = new CountDownLatch(1);
     /**
      * Window of the application.
      */
@@ -62,6 +67,17 @@ public class App {
         java.awt.EventQueue.invokeLater(() -> {
             window = new AppWindow(title);
             window.setVisible(true);
+            latch.countDown();
         });
+    }
+
+    /** @return the window */
+    public static AppWindow getWindow() {
+        return window;
+    }
+
+    /** @return the latch */
+    public static CountDownLatch getLatch() {
+        return latch;
     }
 }
