@@ -1,5 +1,6 @@
 # Maven
 target/
+dependency-reduced-pom.xml
 
 # Eclipse
 .settings/
@@ -8,3 +9,6 @@ target/
 
 # Visual Studio Code
 .vscode/
+
+# Temporary files
+temp_code/

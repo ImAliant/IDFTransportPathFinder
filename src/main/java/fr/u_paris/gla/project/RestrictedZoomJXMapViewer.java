@@ -2,18 +2,16 @@ package fr.u_paris.gla.project;
 
 import org.jxmapviewer.JXMapViewer;
 
-public class MapViewer extends JXMapViewer{
-    private int maxzoom;
+public class RestrictedZoomJXMapViewer extends JXMapViewer {
+    private static final int MAX_ZOOM = 5;
 
-    public MapViewer(int maxzoom) {
+    public RestrictedZoomJXMapViewer() {
         super();
-
-        this.maxzoom = maxzoom;
     }
 
     @Override
     public void setZoom(int zoom) {
-        if (zoom > maxzoom) {
+        if (zoom > MAX_ZOOM) {
             return;
         }
 
