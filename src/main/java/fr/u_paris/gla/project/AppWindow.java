@@ -25,52 +25,45 @@ public class AppWindow extends JFrame {
      */
     private static final int HEIGHT = 900;
 
-    private final String title;
     /**
      * This show a map from OpenStreetMap.
      */
     private Maps map = new Maps(WIDTH, HEIGHT);
-    /**
-     * Button to zoom in the map.
-     */
-    private JButton zoomIn;
-    /**
-     * Button to zoom out the map.
-     */
-    private JButton zoomOut;
-    /**
-     * Container of the map and the buttons.
-     */
-    private JPanel container;
-    /**
-     * Panel to put the buttons.
-     */
-    private JPanel buttonsPanel;
 
     public AppWindow(String title) {
         super();
 
-        this.title = title;
-        init();
+        init(title);
     }
 
     /**
      * Initialize all the components of the window.
      */
-    private void init() {
-        initFrame();
+    private void init(String title) {
+        initFrame(title);
 
         configureMapMouseListeners();
 
-        container = new JPanel();
+        /**
+        * Container of the map and the buttons.
+        */
+        JPanel container = new JPanel();
         container.setLayout(new BorderLayout());
-
-        buttonsPanel = new JPanel();
+        /**
+        * Panel to put the buttons.
+        */
+        JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(1, 2));
 
-        zoomIn = new JButton("Zoom In");
+        /**
+        * Button to zoom in the map.
+        */
+        JButton zoomIn = new JButton("Zoom In");
         zoomIn.addActionListener(e -> map.zoomIn());
-        zoomOut = new JButton("Zoom Out");
+        /**
+        * Button to zoom out the map.
+        */
+        JButton zoomOut = new JButton("Zoom Out");
         zoomOut.addActionListener(e -> map.zoomOut());
 
         buttonsPanel.add(zoomOut);
@@ -85,7 +78,7 @@ public class AppWindow extends JFrame {
     /**
     * Initialize the frame
     */
-    private void initFrame() {
+    private void initFrame(String title) {
         setTitle(title);
         setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
