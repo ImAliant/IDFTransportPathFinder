@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
@@ -64,7 +63,7 @@ public class App {
         Properties props = readApplicationProperties();
         String title = props.getProperty("app.name");
 
-        java.awt.EventQueue.invokeLater(() -> {
+        EventQueue.invokeLater(() -> {
             window = new AppWindow(title);
             window.setVisible(true);
             latch.countDown();
