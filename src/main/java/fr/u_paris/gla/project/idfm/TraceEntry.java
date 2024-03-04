@@ -31,4 +31,8 @@ public final class TraceEntry {
     public void addPath(List<StopEntry> path) {
         paths.add(new ArrayList<>(path));
     }
+    public void addAll(List<List<StopEntry>> newPaths){
+
+        this.paths.addAll(newPaths);
+    }
 }

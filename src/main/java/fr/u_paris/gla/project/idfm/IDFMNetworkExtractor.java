@@ -142,7 +142,7 @@ public class IDFMNetworkExtractor {
     private static void addLine(String[] line, Map<String, TraceEntry> traces) {
         TraceEntry entry = new TraceEntry(line[IDFM_TRACE_SNAME_INDEX]);
         List<List<StopEntry>> buildPaths = buildPaths(line[IDFM_TRACE_SHAPE_INDEX]);
-        entry.getPaths().addAll(buildPaths);
+        entry.addAll(buildPaths);
         if (buildPaths.isEmpty()) {
             LOGGER.severe(() -> MessageFormat.format(
                     "Line {0} has no provided itinerary and was ignored", entry.lname));
