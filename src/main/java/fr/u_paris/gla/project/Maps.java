@@ -1,11 +1,12 @@
 package fr.u_paris.gla.project;
 
+import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
-public class Maps extends RestrictedZoomJXMapViewer {
+public class Maps extends JXMapViewer {
     /**
      * 
      */
@@ -21,7 +22,15 @@ public class Maps extends RestrictedZoomJXMapViewer {
     /**
      * Default zoom of the map.
      */
-    private static final int DEFAULT_ZOOM = 2;
+    public static final int DEFAULT_ZOOM = 2;
+    /**
+     * Minimum zoom of the map.
+     */
+    public static final int MIN_ZOOM = 0;
+    /**
+     * Maximum zoom of the map.
+     */
+    public static final int MAX_ZOOM = 5;
 
     /**
      * Constructor of the maps.
@@ -73,5 +82,14 @@ public class Maps extends RestrictedZoomJXMapViewer {
 
     private void adjustZoom(int factor) {
         setZoom(getZoom() + factor);
+    }
+
+    @Override
+    public void setZoom(int zoom) {
+        if (zoom > MAX_ZOOM) {
+            return;
+        }
+
+        super.setZoom(zoom);
     }
 }

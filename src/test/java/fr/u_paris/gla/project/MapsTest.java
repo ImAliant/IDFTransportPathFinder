@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.function.BiFunction;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class MapsTest {
     private int WIDTH = 100;
@@ -52,5 +54,27 @@ class MapsTest {
             "testZoomOut", 
             "The zoom value should be less than the previous one"
         );
+    }
+
+    @ParameterizedTest
+    @ValueSource (ints = {-1, 0, 1, 2, 6})
+    void testSetZoom(int numbers) {
+        int zoomValue = map.getZoom();
+        map.setZoom(numbers);
+        int zoomValueAfter = map.getZoom();
+
+        if (numbers < Maps.MIN_ZOOM) {
+            assertEquals(zoomValue, zoomValueAfter, "The zoom value should not be less than 0");
+        }
+        else if (numbers == Maps.MIN_ZOOM) {
+            assertEquals(Maps.MIN_ZOOM, zoomValueAfter, "The zoom value should be equal to 0");
+        }
+        else if (numbers > Maps.MAX_ZOOM) {
+            assertEquals(zoomValueAfter, zoomValue, "The zoom value should not be greater than 5");
+        } else {
+            assertEquals(zoomValueAfter, numbers, "The zoom value should be equal to the input value");
+        }
+
+        System.out.println("testSetZoom OK");
     }
 }
