@@ -1,5 +1,6 @@
 # Maven
 target/
+
 dependency-reduced-pom.xml
 
 # Eclipse
@@ -9,6 +10,9 @@ dependency-reduced-pom.xml
 
 # Visual Studio Code
 .vscode/
+
+# Destination file of IDF data
+output.csv
 
 # Temporary files
 temp_code/

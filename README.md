@@ -25,3 +25,5 @@ L'option de lancement `--info` causera l'affichage dans la console d'information
 
 L'option de lancement `--gui` causera l'ouverture d'une fenêtre affichant le logo de l'Université de Paris.
 
+L'option de lancement `--extractor` permettra de lancer un extracteur de données.
+

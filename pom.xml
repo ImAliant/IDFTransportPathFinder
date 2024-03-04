@@ -65,7 +65,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>fr.u_paris.gla.project.idfm.IDFMNetworkExtractor</mainClass>
+							<mainClass>fr.u_paris.gla.project.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
