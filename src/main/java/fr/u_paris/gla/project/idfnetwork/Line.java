@@ -1,39 +1,39 @@
 package fr.u_paris.gla.project.idfnetwork;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import java.util.ArrayList;
 import java.util.Collections;
-
-import java.util.Objects;
 
 /**
  * Represents a transport line in the idf network
  */
-public class Line {
+public abstract class Line {
     /** Name of the line */
-    private String lname;
-    /** Type of transport (bus, tram, metro, etc.)*/
-    private String routetype;
+    protected String lname;
     /** Color of the line */
-    private String color;
+    protected String color;
+    /** Speed of the line */
+    protected double speed;
     /** All the stops of the line */
-    private Map<String, Stop> stops = new HashMap<>();
+    protected Map<String, Stop> stops = new HashMap<>();
     /** Paths between stops*/
-    private List<TravelPath> paths = new ArrayList<>();
+    protected List<TravelPath> paths = new ArrayList<>();
+
+    /** Magic number: default speed of a line in km/h */
+    private static final double DEFAULT_SPEED = 1.0;
 
     /**
-     * Create a new line with the given name, type and color
+     * Create a new line with the given name and color
      * @param name
-     * @param routetype
      * @param color
      */
-    protected Line(String name, String routetype, String color) {
+    protected Line(String name, String color) {
         this.lname = name;
-        this.routetype = routetype;
         this.color = color;
+        this.speed = DEFAULT_SPEED;
     }
     
     /**
@@ -80,40 +80,17 @@ public class Line {
     @Override
     public String toString() {
         // Affiche l'ensemble des trajets de la ligne
-        StringBuilder result = new StringBuilder(lname + ":\n");
+        StringBuilder result = new StringBuilder(this.getClass().getName() + lname + ":\n");
         for (TravelPath path: paths) {
             result.append(path.getStart().getStopName()).append(" -> ").append(path.getEnd().getStopName()).append("\n");
         }
         return result.toString();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(lname, routetype, color);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Line other = (Line) obj;
-
-        return lname.equals(other.lname) && routetype.equals(other.routetype) && color.equals(other.color);
-    }
+    public abstract LineType getType();
 
     public String getLineName() {
         return lname;
-    }
-
-    public String getRouteType() {
-        return routetype;
     }
 
     public String getColor() {

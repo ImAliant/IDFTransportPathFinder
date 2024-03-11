@@ -43,8 +43,8 @@ public class Network {
      * @param routetype
      * @return
      */
-    protected Line findLine(String lname, String routetype) {
-        String key = generateLineKey(lname, routetype);
+    protected Line findLine(String lname, LineType type) {
+        String key = generateLineKey(lname, type);
         return lines.get(key);
     }
     /**
@@ -52,7 +52,7 @@ public class Network {
      * @param line
      */
     protected void addLine(Line line) {
-        String key = generateLineKey(line.getLineName(), line.getRouteType());
+        String key = generateLineKey(line.getLineName(), line.getType());
         lines.putIfAbsent(key, line);
     }
     /**
@@ -80,8 +80,8 @@ public class Network {
      * @param routetype
      * @return
      */
-    private String generateLineKey(String lname, String routetype) {
-        return lname + "-" + routetype;
+    private String generateLineKey(String lname, LineType line) {
+        return lname + "-" + line;
     }
     /**
      * Generates a key for a stop

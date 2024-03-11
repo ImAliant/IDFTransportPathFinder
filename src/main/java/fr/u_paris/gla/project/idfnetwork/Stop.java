@@ -52,7 +52,7 @@ public class Stop {
      * @return
      */
     protected boolean addLine(Line line) {
-        String key = generateLineKey(line.getLineName(), line.getRouteType());
+        String key = generateLineKey(line.getLineName(), line.getType());
         return lines.putIfAbsent(key, line) == null;
     }
     /**
@@ -72,8 +72,8 @@ public class Stop {
      * @param routetype
      * @return the key
      */
-    private String generateLineKey(String lname, String routetype) {
-        return lname + "-" + routetype;
+    private String generateLineKey(String lname, LineType type) {
+        return lname + "-" + type;
     }
 
     @Override

@@ -33,16 +33,14 @@ public class App {
     private static AppWindow window;
 
     // debug variable
-    public static boolean extractionCalled = false;
-    public static boolean loadCalled = false;
+    protected static boolean extractionCalled;
+    protected static boolean loadCalled;
 
     /** Application entry point.
      *
      * @param args launching arguments 
      * @throws IOException */
     public static void main(String[] args) {
-        initNetwork();
-
         if (args.length > 0) {
             for (String string : args) {
                 if (INFOCMD.equals(string)) { //$NON-NLS-1$
@@ -77,6 +75,8 @@ public class App {
 
     /** Launch the gui version of the application */
     public static void launch() {
+        initNetwork();
+
         Properties props = readApplicationProperties();
         String title = props.getProperty("app.name");
 

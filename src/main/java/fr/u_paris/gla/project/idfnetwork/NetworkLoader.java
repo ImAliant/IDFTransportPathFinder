@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import fr.u_paris.gla.project.idfnetwork.factory.LineFactory;
 import fr.u_paris.gla.project.io.TimeFormat;
 
 /**
@@ -52,6 +53,8 @@ public class NetworkLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        network.getLines().forEach(line -> System.out.println(line.getLineName() + " " + line.getType()));
     }
 
     /**
@@ -63,7 +66,7 @@ public class NetworkLoader {
         String routetype = fields[ROUTETYPE_INDEX].trim();
         String color = fields[COLOR_INDEX].trim();
         
-        Line currentLine = findOrCreateLine(lname, routetype, color);
+        Line currentLine = findOrCreateLine(lname, LineType.fromString(routetype), color);
 
         Stop startStop = processStop(LONGLAT_INDEX, STOP_NAME_INDEX);
         Stop endStop = processStop(NEXT_LONGLAT_INDEX, NEXT_STOP_NAME_INDEX);
@@ -82,10 +85,10 @@ public class NetworkLoader {
      * @param color
      * @return the line found or created
      */
-    private static Line findOrCreateLine(String lname, String routetype, String color) {
+    private static Line findOrCreateLine(String lname, LineType routetype, String color) {
         Line temp = network.findLine(lname, routetype);
         if (temp == null) {
-            temp = new Line(lname, routetype, color);
+            temp = LineFactory.createLine(routetype, lname, color);
             network.addLine(temp);
         }
         return temp;
