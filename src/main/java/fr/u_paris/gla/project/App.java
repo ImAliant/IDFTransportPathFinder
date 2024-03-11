@@ -1,12 +1,18 @@
 package fr.u_paris.gla.project;
 
 import java.awt.EventQueue;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
 import fr.u_paris.gla.project.idfnetwork.NetworkLoader;
@@ -39,8 +45,10 @@ public class App {
     /** Application entry point.
      *
      * @param args launching arguments 
+     * @throws InterruptedException 
+     * @throws ExecutionException 
      * @throws IOException */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         if (args.length > 0) {
             for (String string : args) {
                 if (INFOCMD.equals(string)) { //$NON-NLS-1$
@@ -73,18 +81,55 @@ public class App {
         return props;
     }
 
-    /** Launch the gui version of the application */
-    public static void launch() {
-        initNetwork();
+    /** Launch the gui version of the application 
+     * @throws InterruptedException 
+     * @throws ExecutionException */
+    public static void launch() throws InterruptedException, ExecutionException {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        
+        Future<?> f1 = executor.submit(App::initNetwork);
 
-        Properties props = readApplicationProperties();
-        String title = props.getProperty("app.name");
+        Future<?> f2 = executor.submit(() -> {
+            Properties props = readApplicationProperties();
+            String title = props.getProperty("app.name");
 
-        EventQueue.invokeLater(() -> {
-            window = new AppWindow(title);
-            window.setVisible(true);
-            latch.countDown();
+            EventQueue.invokeLater(() -> {
+                window = new AppWindow(title);
+                window.setVisible(true);
+                latch.countDown();
+            });
         });
+
+        f1.get();
+        f2.get();
+
+        executor.shutdown();
+        /* Thread t1 = new Thread() {
+            @Override
+            public void run() {
+                initNetwork();
+            }
+        };
+
+        Thread t2 = new Thread() {
+            @Override
+            public void run() {
+                Properties props = readApplicationProperties();
+                String title = props.getProperty("app.name");
+
+                EventQueue.invokeLater(() -> {
+                    window = new AppWindow(title);
+                    window.setVisible(true);
+                    latch.countDown();
+                });
+            }
+        };
+
+        t1.start();
+        t2.start();
+
+        t1.join();
+        t2.join(); */
     }
 
     public static void initNetwork() {

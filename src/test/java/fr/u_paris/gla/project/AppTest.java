@@ -2,6 +2,7 @@ package fr.u_paris.gla.project;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -28,7 +29,7 @@ class AppTest {
     }
 
     @Test
-    void testLaunch() throws InterruptedException {
+    void testLaunch() throws InterruptedException, ExecutionException {
         App.launch();
         App.getLatch().await();
         assertNotNull(App.getWindow(), "The window should not be null");
