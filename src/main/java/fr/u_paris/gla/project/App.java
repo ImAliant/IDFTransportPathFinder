@@ -104,32 +104,6 @@ public class App {
         f2.get();
 
         executor.shutdown();
-        /* Thread t1 = new Thread() {
-            @Override
-            public void run() {
-                initNetwork();
-            }
-        };
-
-        Thread t2 = new Thread() {
-            @Override
-            public void run() {
-                Properties props = readApplicationProperties();
-                String title = props.getProperty("app.name");
-
-                EventQueue.invokeLater(() -> {
-                    window = new AppWindow(title);
-                    window.setVisible(true);
-                    latch.countDown();
-                });
-            }
-        };
-
-        t1.start();
-        t2.start();
-
-        t1.join();
-        t2.join(); */
     }
 
     public static void initNetwork() {
