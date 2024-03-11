@@ -104,6 +104,9 @@ public final class CSVStreamProvider {
                 TraceEntry trace = this.currentTrace.next();
                 this.currentPath = trace.getPaths().iterator();
                 this.line[NetworkFormat.LINE_INDEX] = trace.lname;
+                this.line[NetworkFormat.TRANSPORT_TYPE_INDEX] = trace.routetype;
+                this.line[NetworkFormat.LINE_COLOR_INDEX] = trace.color;
+
                 this.lineSegments.clear();
             }
             List<StopEntry> path = this.currentPath.next();

@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import fr.u_paris.gla.project.utils.CSVTools;
 import fr.u_paris.gla.project.utils.GPS;
 
+
 /** Code of an extractor for the data from IDF mobilite.
  * 
  * @author Emmanuel Bigeon */
@@ -39,6 +40,8 @@ public class IDFMNetworkExtractor {
     // IDF mobilite csv formats
     private static final int IDFM_TRACE_ID_INDEX    = 0;
     private static final int IDFM_TRACE_SNAME_INDEX = 1;
+    private static final int IDFM_TRACE_ROUTETYPE_INDEX = 3;
+    private static final int IDFM_TRACE_COLOR_INDEX = 4;
     private static final int IDFM_TRACE_SHAPE_INDEX = 6;
 
     private static final int IDFM_STOPS_RID_INDEX  = 0;
@@ -57,11 +60,32 @@ public class IDFMNetworkExtractor {
         // Utility class
     }
 
-    /** Extractor of IDF mobilite data into a network as
-     * defined by this application.
+    /** 
+     * Extractor of IDF mobilite data into a network as
+     * defined by this application. 
+     * 
+     * <p>Each line of the output file will be:
+     * <ul>
+     *  <li>the name of the line</li>
+     *  <li>the variant of path of the stop</li>
+     *  <li>the type of transport</li>
+     *  <li>the color of the line</li>
+     *  <li>the name of the stop</li>
+     *  <li>the longitude of the stop</li>
+     *  <li>the latitude of the stop</li>
+     *  <li>the next stop on the line</li>
+     *  <li>the longitude of the next stop</li>
+     *  <li>the latitude of the next stop</li>
+     * </ul>
+     * </p>
+     * @throws IOException 
      * 
      */
-    public static void extract() {
+    public static void extract() throws IOException {
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Starting extraction of IDF mobilite data");
+        }
+
         Map<String, TraceEntry> traces = new HashMap<>();
         try {
             CSVTools.readCSVFromURL(TRACE_FILE_URL,
@@ -77,13 +101,13 @@ public class IDFMNetworkExtractor {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Error while reading the stops", e);
         }
-
+        
         cleanTraces(traces);
 
         CSVStreamProvider provider = new CSVStreamProvider(traces.values().iterator());
 
         try {
-            CSVTools.writeCSVToFile("output.csv", Stream.iterate(provider.next(),
+            CSVTools.writeCSVToFile("target/output.csv", Stream.iterate(provider.next(),
                     t -> provider.hasNext(), t -> provider.next()));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e,
@@ -138,7 +162,7 @@ public class IDFMNetworkExtractor {
     }
 
     private static void addLine(String[] line, Map<String, TraceEntry> traces) {
-        TraceEntry entry = new TraceEntry(line[IDFM_TRACE_SNAME_INDEX]);
+        TraceEntry entry = new TraceEntry(line[IDFM_TRACE_SNAME_INDEX], line[IDFM_TRACE_ROUTETYPE_INDEX], line[IDFM_TRACE_COLOR_INDEX]);
         List<List<StopEntry>> buildPaths = buildPaths(line[IDFM_TRACE_SHAPE_INDEX]);
         entry.addAll(buildPaths);
         if (buildPaths.isEmpty()) {

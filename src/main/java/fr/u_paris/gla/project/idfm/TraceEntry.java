@@ -11,15 +11,19 @@ import java.util.List;
  * 
  * @author Emmanuel Bigeon */
 public final class TraceEntry {
-    public final String           lname;
+    public final String lname;
+    public final String routetype;
+    public final String color;
     private List<List<StopEntry>> paths = new ArrayList<>();
 
     /** Create a transport line.
      * 
      * @param lname the name of the line */
-    public TraceEntry(String lname) {
+    public TraceEntry(String lname, String routetype, String color) {
         super();
         this.lname = lname;
+        this.routetype = routetype;
+        this.color = color;
     }
 
     // FIXME list of lists are bad practice in direct access...
