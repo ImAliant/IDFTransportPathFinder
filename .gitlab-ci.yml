@@ -1,11 +1,15 @@
-image: maven:3-openjdk-8
+image: maven:latest
+MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 stages:
   - verification 
   - compile
   - test
   - deploy
-
+cache:
+  paths:
+    - .m2/repository/
+    - target/
 
 
 verification_job:
