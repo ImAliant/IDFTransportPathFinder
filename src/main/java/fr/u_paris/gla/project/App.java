@@ -36,7 +36,7 @@ public class App {
     /**
      * Window of the application.
      */
-    private static AppWindow window;
+    private static Window window;
 
     // debug variable
     protected static boolean extractionCalled;
@@ -94,7 +94,7 @@ public class App {
             String title = props.getProperty("app.name");
 
             EventQueue.invokeLater(() -> {
-                window = new AppWindow(title);
+                window = new Window(title);
                 window.setVisible(true);
                 latch.countDown();
             });
@@ -111,7 +111,7 @@ public class App {
         // Si oui, on le charge
         // Si non, on appelle la fonction extraction()
 
-        File file = new File("target/output.csv");
+        File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
         if (!file.exists()) {
             try {
                 extraction();
@@ -130,7 +130,7 @@ public class App {
     }
 
     /** @return the window */
-    public static AppWindow getWindow() {
+    public static Window getWindow() {
         return window;
     }
 

@@ -53,8 +53,6 @@ public class NetworkLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        network.getLines().forEach(line -> System.out.println(line.getLineName() + " " + line.getType()));
     }
 
     /**

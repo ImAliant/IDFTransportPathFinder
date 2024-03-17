@@ -19,23 +19,22 @@ public class Network {
      */
     protected static Map<String, Stop> stops = new HashMap<>();
 
+    private static Network instance = null;
+
     /**
      * Private constructor to prevent instantiation from other classes
      */ 
     private Network() {}
 
     /**
-     * Private static inner class to hold the instance of the singleton class
-     */ 
-    private static class NetworkHolder {
-        private static final Network INSTANCE = new Network();
-    }
-    /**
      * Returns the instance of the singleton class
      * @return the instance of the singleton class
      */
     public static Network getInstance() {
-        return NetworkHolder.INSTANCE;
+        if (instance == null) {
+            instance = new Network();
+        }
+        return instance;
     }
     /**
      * Returns the line with the given name and route type
