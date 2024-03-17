@@ -1,10 +1,21 @@
 image: maven:3-openjdk-8
 
 stages:
+  - verification 
   - compile
   - test
   - deploy
 
+
+
+verification_job:
+  stage: verification
+  script:
+    - 'pwd'
+    - 'ls -l'
+    - 'mvn --version'
+    - 'java -version'
+    - 'javac -version'
 
 compile_job:
 
