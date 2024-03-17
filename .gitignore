@@ -1,7 +1,16 @@
 # Maven
 target/
 
+# Maven Shade Added Files
+dependency-reduced-pom.xml
+
 # Eclipse
 .settings/
 .project
 .classpath
+
+# Visual Studio Code
+.vscode/
+
+# Temporary files
+temp_code/

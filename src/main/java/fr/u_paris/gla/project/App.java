@@ -1,19 +1,21 @@
 package fr.u_paris.gla.project;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+import java.awt.EventQueue;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Properties;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.WindowConstants;
+import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
+import fr.u_paris.gla.project.idfnetwork.NetworkLoader;
 
 /** Simple application model.
  *
@@ -23,41 +25,38 @@ public class App {
      * 
      */
     private static final String UNSPECIFIED = "Unspecified";         //$NON-NLS-1$
-    /** The logo image name. */
-    private static final String LOGO_NAME   = "uparis_logo_rvb.png"; //$NON-NLS-1$
-    /** Image height. */
-    private static final int    HEIGHT      = 256;
-    /** Image width. */
-    private static final int    WIDTH       = HEIGHT;
+    /**
+     * String constants for command line arguments.
+     */
+    private static final String INFOCMD = "--info";
+    private static final String GUICMD = "--gui";
 
-    /** Resizes an image.
-     *
-     * @param src source image
-     * @param w width
-     * @param h height
-     * @return the resized image */
-    private static Image getScaledImage(Image src, int w, int h) {
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g2d = resizedImg.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.drawImage(src, 0, 0, w, h, null);
-        g2d.dispose();
-        return resizedImg;
-    }
+    /** Latch to wait for the window to be created. */
+    private static CountDownLatch latch = new CountDownLatch(1);
+    /**
+     * Window of the application.
+     */
+    private static AppWindow window;
+
+    // debug variable
+    protected static boolean extractionCalled;
+    protected static boolean loadCalled;
 
     /** Application entry point.
      *
-     * @param args launching arguments */
-    public static void main(String[] args) {
+     * @param args launching arguments 
+     * @throws InterruptedException 
+     * @throws ExecutionException 
+     * @throws IOException */
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         if (args.length > 0) {
             for (String string : args) {
-                if ("--info".equals(string)) { //$NON-NLS-1$
+                if (INFOCMD.equals(string)) { //$NON-NLS-1$
                     printAppInfos(System.out);
                     return;
                 }
-                if ("--gui".equals(string)) { //$NON-NLS-1$
-                    showLogo();
+                if (GUICMD.equals(string)) { //$NON-NLS-1$
+                    launch();
                 }
             }
         }
@@ -82,33 +81,67 @@ public class App {
         return props;
     }
 
-    /** Shows the logo in an image. */
-    public static void showLogo() {
-        Properties props = readApplicationProperties();
+    /** Launch the gui version of the application 
+     * @throws InterruptedException 
+     * @throws ExecutionException */
+    public static void launch() throws InterruptedException, ExecutionException {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        
+        Future<?> f1 = executor.submit(App::initNetwork);
 
-        JFrame frame = new JFrame(props.getProperty("app.name")); //$NON-NLS-1$
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        Future<?> f2 = executor.submit(() -> {
+            Properties props = readApplicationProperties();
+            String title = props.getProperty("app.name");
 
-        JLabel container = new JLabel();
+            EventQueue.invokeLater(() -> {
+                window = new AppWindow(title);
+                window.setVisible(true);
+                latch.countDown();
+            });
+        });
 
-        try (InputStream is = App.class.getResourceAsStream(LOGO_NAME)) {
-            if (is == null) {
-                container.setText("Image Not Found");
-            } else {
-                BufferedImage img = ImageIO.read(is);
-                ImageIcon icon = new ImageIcon(img);
-                ImageIcon resized = new ImageIcon(
-                        getScaledImage(icon.getImage(), WIDTH, HEIGHT));
+        f1.get();
+        f2.get();
 
-                container.setIcon(resized);
+        executor.shutdown();
+    }
+
+    public static void initNetwork() {
+        // On test si le fichier output.csv dans le répertoire target existe
+        // Si oui, on le charge
+        // Si non, on appelle la fonction extraction()
+
+        File file = new File("target/output.csv");
+        if (!file.exists()) {
+            try {
+                extraction();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            container.setText("Image Not Read: " + e.getLocalizedMessage());
         }
+            
+        NetworkLoader.load(file);
+        loadCalled = true;
+    }
 
-        frame.getContentPane().add(container);
+    public static void extraction() throws IOException {
+        IDFMNetworkExtractor.extract();
+        extractionCalled = true;
+    }
 
-        frame.pack();
-        frame.setVisible(true);
+    /** @return the window */
+    public static AppWindow getWindow() {
+        return window;
+    }
+
+    /** @return the latch */
+    public static CountDownLatch getLatch() {
+        return latch;
+    }
+
+    // debug method
+    public static void reset() {
+        extractionCalled = false;
+        loadCalled = false;
     }
 }
