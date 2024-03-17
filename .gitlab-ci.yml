@@ -1,5 +1,6 @@
 image: maven:latest
-MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 stages:
   - verification 
