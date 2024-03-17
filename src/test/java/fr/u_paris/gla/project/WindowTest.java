@@ -10,8 +10,8 @@ import javax.swing.JButton;
 import org.junit.jupiter.api.Test;
 
 /** Unit test for AppWindow class. */
-class AppWindowTest {
-    private AppWindow window = new AppWindow("Test");
+class WindowTest {
+    private Window window = new Window("Test");
 
     @Test
     void testMapIsNotNull() {

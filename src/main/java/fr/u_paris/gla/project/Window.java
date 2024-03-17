@@ -11,7 +11,7 @@ import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 
-public class AppWindow extends JFrame {
+public class Window extends JFrame {
     /**
      * 
      */
@@ -38,7 +38,7 @@ public class AppWindow extends JFrame {
      */
     private JButton zoomOut;
 
-    public AppWindow(String title) {
+    public Window(String title) {
         super();
 
         init(title);
@@ -49,8 +49,6 @@ public class AppWindow extends JFrame {
      */
     private void init(String title) {
         initFrame(title);
-
-        configureMapMouseListeners();
 
         /**
         * Container of the map and the buttons.
@@ -92,16 +90,6 @@ public class AppWindow extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-    }
-
-    /**
-     * Configure the mouse listeners of the map.
-     */
-    private void configureMapMouseListeners() {
-        MouseInputListener listener = new PanMouseInputListener(map);
-        map.addMouseListener(listener);
-        map.addMouseMotionListener(listener);
-        map.addMouseWheelListener(new ZoomMouseWheelListenerCursor(map));
     }
 
     // TESTABILITY

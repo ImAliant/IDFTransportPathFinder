@@ -1,7 +1,11 @@
 package fr.u_paris.gla.project;
 
+import javax.swing.event.MouseInputListener;
+
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
+import org.jxmapviewer.input.PanMouseInputListener;
+import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
@@ -54,13 +58,15 @@ public class Maps extends JXMapViewer {
         setSize(width, height);
 
         // Tile factory to get the map
-        createTileFactory();
+        createTiles();
 
         // Define the default position and zoom
         setDefaultLocation();
+
+        configureMapMouseListeners();
     }
 
-    private void createTileFactory() {
+    private void createTiles() {
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
         setTileFactory(tileFactory);
@@ -70,6 +76,13 @@ public class Maps extends JXMapViewer {
         GeoPosition idf = new GeoPosition(IDF_LATITUDE, IDF_LONGITUDE);
         setZoom(DEFAULT_ZOOM);
         setCenterPosition(idf);
+    }
+
+    private void configureMapMouseListeners() {
+        MouseInputListener listener = new PanMouseInputListener(this);
+        this.addMouseListener(listener);
+        this.addMouseMotionListener(listener);
+        this.addMouseWheelListener(new ZoomMouseWheelListenerCursor(this));
     }
 
     public void zoomIn() {
