@@ -49,12 +49,12 @@
                 <version>3.5.2</version>
                 <executions>
                 <execution>
-                     <phase>package</phase>
-                     <goals>
-                      <goal>shade</goal>
-                     </goals>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
                 </execution>
-               </executions>
+                </executions>
             </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
