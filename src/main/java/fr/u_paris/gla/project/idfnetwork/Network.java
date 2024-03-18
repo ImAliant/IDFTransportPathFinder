@@ -42,7 +42,7 @@ public class Network {
      * @param routetype
      * @return
      */
-    protected Line findLine(String lname, LineType type) {
+    public Line findLine(String lname, LineType type) {
         String key = generateLineKey(lname, type);
         return lines.get(key);
     }
@@ -61,7 +61,7 @@ public class Network {
      * @param latitude
      * @return
      */
-    protected Stop findStop(String name, double longitude, double latitude) {
+    public Stop findStop(String name, double longitude, double latitude) {
         String key = generateStopKey(name, longitude, latitude);
         return stops.get(key);
     }

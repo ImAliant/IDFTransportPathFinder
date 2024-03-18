@@ -1,5 +1,9 @@
 package fr.u_paris.gla.project;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.swing.event.MouseInputListener;
 
 import org.jxmapviewer.JXMapViewer;
@@ -9,6 +13,12 @@ import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jxmapviewer.viewer.WaypointPainter;
+
+import fr.u_paris.gla.project.idfnetwork.Network;
+import fr.u_paris.gla.project.idfnetwork.Stop;
+import fr.u_paris.gla.project.idfnetwork.view.StopRender;
+import fr.u_paris.gla.project.idfnetwork.view.StopWaypoint;
 
 public class Maps extends JXMapViewer {
     /**
@@ -35,6 +45,8 @@ public class Maps extends JXMapViewer {
      * Maximum zoom of the map.
      */
     public static final int MAX_ZOOM = 5;
+
+    private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
 
     /**
      * Constructor of the maps.
@@ -64,12 +76,39 @@ public class Maps extends JXMapViewer {
         setDefaultLocation();
 
         configureMapMouseListeners();
+
+        displayNetwork();
     }
 
-    private void createTiles() {
-        TileFactoryInfo info = new OSMTileFactoryInfo();
-        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
-        setTileFactory(tileFactory);
+    private void displayNetwork() {
+        Network network = Network.getInstance();
+
+        List<Stop> stops = network.getStops();
+        stops.forEach(this::addStopWaypoint);
+
+        initWaypoint();
+    }
+
+    private void addStopWaypoint(Stop stop) {
+        stopWaypoints.add(
+            new StopWaypoint(stop)
+        );
+    }
+
+    private void initWaypoint() {
+        WaypointPainter<StopWaypoint> wp = new StopRender();
+        wp.setWaypoints(stopWaypoints);
+        this.setOverlayPainter(wp);
+        for (StopWaypoint stopWaypoint : stopWaypoints) {
+            this.add(stopWaypoint.getButton());
+        }
+    }
+
+    private void configureMapMouseListeners() {
+        MouseInputListener listener = new PanMouseInputListener(this);
+        this.addMouseListener(listener);
+        this.addMouseMotionListener(listener);
+        this.addMouseWheelListener(new ZoomMouseWheelListenerCursor(this));
     }
 
     private void setDefaultLocation() {
@@ -78,11 +117,10 @@ public class Maps extends JXMapViewer {
         setCenterPosition(idf);
     }
 
-    private void configureMapMouseListeners() {
-        MouseInputListener listener = new PanMouseInputListener(this);
-        this.addMouseListener(listener);
-        this.addMouseMotionListener(listener);
-        this.addMouseWheelListener(new ZoomMouseWheelListenerCursor(this));
+    private void createTiles() {
+        TileFactoryInfo info = new OSMTileFactoryInfo();
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+        setTileFactory(tileFactory);
     }
 
     public void zoomIn() {
