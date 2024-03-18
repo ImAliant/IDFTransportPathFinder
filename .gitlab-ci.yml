@@ -8,5 +8,3 @@ installation_maven_job:
     - apt-get update -y
     - apt-get install -y maven
     - mvn -version
-  tags:
-    - docker
