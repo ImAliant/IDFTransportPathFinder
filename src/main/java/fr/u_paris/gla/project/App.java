@@ -33,7 +33,7 @@ public class App {
     /**
      * Window of the application.
      */
-    private static Window window;
+    private static AppWindow window;
 
     // debug variable
     protected static boolean extractionCalled;
@@ -88,7 +88,7 @@ public class App {
         String title = props.getProperty("app.name");
 
         EventQueue.invokeLater(() -> {
-            window = new Window(title);
+            window = new AppWindow(title);
             window.setVisible(true);
             latch.countDown();
         });
@@ -118,7 +118,7 @@ public class App {
     }
 
     /** @return the window */
-    public static Window getWindow() {
+    public static AppWindow getWindow() {
         return window;
     }
 

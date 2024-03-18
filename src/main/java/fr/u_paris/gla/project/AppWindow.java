@@ -7,7 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Window extends JFrame {
+public class AppWindow extends JFrame {
     /**
      * 
      */
@@ -34,7 +34,7 @@ public class Window extends JFrame {
      */
     private JButton zoomOut;
 
-    public Window(String title) {
+    public AppWindow(String title) {
         super();
 
         init(title);

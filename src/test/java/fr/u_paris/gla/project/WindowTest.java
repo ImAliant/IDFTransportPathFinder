@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 /** Unit test for AppWindow class. */
 class WindowTest {
-    private Window window = new Window("Test");
+    private AppWindow window = new AppWindow("Test");
 
     @Test
     void testMapIsNotNull() {
