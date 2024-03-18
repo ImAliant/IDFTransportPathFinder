@@ -7,5 +7,3 @@ installation_maven_job:
   script:
     - mvn -version
     - mvn clean install
-  tags:
-    - maven
