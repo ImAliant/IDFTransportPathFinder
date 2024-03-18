@@ -1,6 +1,5 @@
-image: maven:latest
-variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+image: ubuntu/jre
+
 
 stages:
   - verification 
@@ -16,11 +15,10 @@ cache:
 verification_job:
   stage: verification
   script:
-    - 'pwd'
-    - 'ls -l'
-    - 'mvn --version'
-    - 'java -version'
-    - 'javac -version'
+    - pwd
+    - apt-get update -y && apt-get install maven -y
+    - mvn -v
+
 
 compile_job:
 
@@ -32,7 +30,7 @@ verify_job:
   stage: test
   script:
     - 'mvn test'
- 
+
 
 deploy:
   stage: deploy
