@@ -10,9 +10,6 @@ import java.io.PrintStream;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
 import fr.u_paris.gla.project.idfnetwork.NetworkLoader;
@@ -48,7 +45,7 @@ public class App {
      * @throws InterruptedException 
      * @throws ExecutionException 
      * @throws IOException */
-    public static void main(String[] args) throws InterruptedException, ExecutionException {
+    public static void main(String[] args) {
         if (args.length > 0) {
             for (String string : args) {
                 if (INFOCMD.equals(string)) { //$NON-NLS-1$
@@ -84,26 +81,17 @@ public class App {
     /** Launch the gui version of the application 
      * @throws InterruptedException 
      * @throws ExecutionException */
-    public static void launch() throws InterruptedException, ExecutionException {
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        
-        Future<?> f1 = executor.submit(App::initNetwork);
+    public static void launch() {
+        initNetwork();
 
-        Future<?> f2 = executor.submit(() -> {
-            Properties props = readApplicationProperties();
-            String title = props.getProperty("app.name");
+        Properties props = readApplicationProperties();
+        String title = props.getProperty("app.name");
 
-            EventQueue.invokeLater(() -> {
-                window = new AppWindow(title);
-                window.setVisible(true);
-                latch.countDown();
-            });
+        EventQueue.invokeLater(() -> {
+            window = new AppWindow(title);
+            window.setVisible(true);
+            latch.countDown();
         });
-
-        f1.get();
-        f2.get();
-
-        executor.shutdown();
     }
 
     public static void initNetwork() {
@@ -111,7 +99,7 @@ public class App {
         // Si oui, on le charge
         // Si non, on appelle la fonction extraction()
 
-        File file = new File("target/output.csv");
+        File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
         if (!file.exists()) {
             try {
                 extraction();

@@ -1,7 +1,12 @@
 package fr.u_paris.gla.project;
 
-import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 
 import java.awt.*;
 
@@ -32,7 +37,7 @@ public class AppWindow extends JFrame {
 
     private void init(String title) {
         initFrame(title);
-        configureMapMouseListeners();
+
         JPanel container = new JPanel();
         addMapAndButtons(container);
         addFormComponents(container);
@@ -223,16 +228,6 @@ public class AppWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-    }
-
-    /**
-     * Configure the mouse listeners of the map.
-     */
-    private void configureMapMouseListeners() {
-        MouseInputListener listener = new PanMouseInputListener(map);
-        map.addMouseListener(listener);
-        map.addMouseMotionListener(listener);
-        map.addMouseWheelListener(new ZoomMouseWheelListenerCursor(map));
     }
 
     // TESTABILITY

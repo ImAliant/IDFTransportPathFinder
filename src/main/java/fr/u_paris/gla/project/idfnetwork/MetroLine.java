@@ -29,6 +29,11 @@ public class MetroLine extends Line {
     }
 
     @Override
+    public String toString() {
+        return "METRO " + lname;
+    }
+
+    @Override
     public LineType getType() {
         return LineType.METRO;
     }

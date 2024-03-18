@@ -12,12 +12,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
+
 /** Unit test for simple App. */
 class AppTest {
     @BeforeEach
     void setUp() {
         // Delete the output.csv file before each test
-        File file = new File("target/output.csv");
+        File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
         if (file.exists()) {
             file.delete();
         }
@@ -40,7 +42,7 @@ class AppTest {
 
     @Test
     void testInitNetworkFileExists() {
-        File file = new File("target/output.csv");
+        File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
         try {
             assertTrue(file.createNewFile());
         } catch (Exception e) {

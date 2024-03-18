@@ -28,6 +28,7 @@ import fr.u_paris.gla.project.utils.GPS;
  * 
  * @author Emmanuel Bigeon */
 public class IDFMNetworkExtractor {
+    public static final String PATH_TO_OUTPUT = "src/main/resources/fr/u_paris/gla/project/idfnetwork/output.csv";
 
     /** The logger for information on the process */
     private static final Logger LOGGER = Logger
@@ -107,7 +108,7 @@ public class IDFMNetworkExtractor {
         CSVStreamProvider provider = new CSVStreamProvider(traces.values().iterator());
 
         try {
-            CSVTools.writeCSVToFile("target/output.csv", Stream.iterate(provider.next(),
+            CSVTools.writeCSVToFile(PATH_TO_OUTPUT, Stream.iterate(provider.next(),
                     t -> provider.hasNext(), t -> provider.next()));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e,

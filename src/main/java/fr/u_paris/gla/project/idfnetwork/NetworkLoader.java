@@ -53,8 +53,6 @@ public class NetworkLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        network.getLines().forEach(line -> System.out.println(line.getLineName() + " " + line.getType()));
     }
 
     /**
@@ -76,10 +74,11 @@ public class NetworkLoader {
 
         currentLine.addPath(startStop, endStop, distance, duration);
         currentLine.addStop(startStop);
+        startStop.addLine(currentLine);
     }
 
     /**
-     * Find the line with the given name and route type or create it if it does not exist
+     * Find the line with the given name and route type in the network data or create it if it does not exist
      * @param lname
      * @param routetype
      * @param color
@@ -103,8 +102,8 @@ public class NetworkLoader {
     private static Stop processStop(int longlatIndex, int stopNameIndex) {
         String stopname = fields[stopNameIndex].trim();
         String longlat = fields[longlatIndex].trim();
-        double longitude = Double.parseDouble(longlat.split(",")[0]);
-        double latitude = Double.parseDouble(longlat.split(",")[1]);
+        double latitude = Double.parseDouble(longlat.split(",")[0]);
+        double longitude = Double.parseDouble(longlat.split(",")[1]);
         Stop temp = network.findStop(stopname, longitude, latitude);
         if (temp == null) {
             temp = new Stop(stopname, longitude, latitude);
