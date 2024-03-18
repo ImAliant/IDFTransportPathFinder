@@ -1,12 +1,11 @@
-image: ubuntu:22.04
+image: maven:3.1.1
 
 
 
 installation_maven_job:
   stage: build
   script:
-    - apt-get update -y
-    - apt-get install -y maven
     - mvn -version
     - mvn clean install
-    
+  tags:
+    - maven
