@@ -43,7 +43,7 @@ public class Stop {
      * @return
      */
     protected boolean addPath(Stop end, double distance, Integer duration) {
-        String key = generatePathKey(this, end, distance, duration);
+        String key = generatePathKey(this, end);
         return paths.putIfAbsent(key, new TravelPath(this, end, distance, duration)) == null;
     }
     /**
@@ -63,8 +63,8 @@ public class Stop {
      * @param duration
      * @return the key
      */
-    private String generatePathKey(Stop start, Stop end, double distance, Integer duration) {
-        return start.getStopName() + "-" + end.getStopName() + "-" + distance + "-" + duration;
+    private String generatePathKey(Stop start, Stop end/*, double distance, Integer duration*/) {
+        return start.getStopName() + "-" + end.getStopName()/* + "-" + distance + "-" + duration*/;
     }
     /**
      * Generate a key for a line
