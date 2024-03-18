@@ -2,7 +2,6 @@ package fr.u_paris.gla.project.idfnetwork;
 
 import java.util.List;
 import java.util.Objects;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -78,8 +77,12 @@ public class Stop {
 
     @Override
     public String toString() {
-        return MessageFormat.format("{0} [{1}, {2}]", this.lname, this.longitude, //$NON-NLS-1$
-                this.latitude);
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.lname);
+        sb.append(" [" + this.longitude + ", " + this.latitude + "]\n");
+        sb.append("Ligne(s): \n");
+        lines.forEach((k, line) -> sb.append(line + "\n"));
+        return sb.toString();
     }
 
     @Override

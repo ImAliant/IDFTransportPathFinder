@@ -29,6 +29,11 @@ public class TramwayLine extends Line {
     }
 
     @Override
+    public String toString() {
+        return "TRAMWAY " + lname;
+    }
+
+    @Override
     public LineType getType() {
         return LineType.TRAMWAY;
     }

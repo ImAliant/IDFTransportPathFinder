@@ -29,6 +29,11 @@ public class RERLine extends Line {
     }
 
     @Override
+    public String toString() {
+        return "RER " + lname;
+    }
+
+    @Override
     public LineType getType() {
         return LineType.RER;
     }
