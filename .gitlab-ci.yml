@@ -1,39 +1,12 @@
-image: ubuntu/jre
+image: ubuntu:22.04
 
 
-stages:
-  - verification 
-  - compile
-  - test
-  - deploy
-cache:
-  paths:
-    - .m2/repository/
-    - target/
 
-
-verification_job:
-  stage: verification
+installation_maven_job:
+  stage: build
   script:
-    - pwd
-    - apt-get update -y && apt-get install maven -y
-    - mvn -v
-
-
-compile_job:
-
-  stage: compile
-  script:
-    - 'mvn compile'
-
-verify_job:
-  stage: test
-  script:
-    - 'mvn test'
-
-
-deploy:
-  stage: deploy
-  script:
-    - echo "Deploying to GitLab Maven Repository Coming Soon"
-    - 'mvn deploy'
+    - apt-get update -y
+    - apt-get install -y maven
+    - mvn -version
+  tags:
+    - docker
