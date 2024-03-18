@@ -6,4 +6,4 @@ installation_maven_job:
   stage: build
   script:
     - mvn -version
-    - mvn verify
+    - mvn verify -X
