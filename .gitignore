@@ -4,6 +4,9 @@ target/
 # Maven Shade Added Files
 dependency-reduced-pom.xml
 
+# IDEA
+.idea
+
 # Eclipse
 .settings/
 .project
