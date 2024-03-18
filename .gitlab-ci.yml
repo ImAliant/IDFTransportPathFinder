@@ -9,3 +9,4 @@ installation_maven_job:
     - apt-get install -y maven
     - mvn -version
     - mvn clean install
+    
