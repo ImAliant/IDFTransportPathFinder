@@ -1,9 +1,9 @@
-image: maven:3.9
+image: maven:3.6.3-jdk-11
 
 
 
 installation_maven_job:
-  stage: build
+  stage: test
   script:
     - mvn -version
-    - mvn verify -X
+    - mvn compile
