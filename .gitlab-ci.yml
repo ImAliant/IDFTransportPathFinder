@@ -5,5 +5,4 @@ image: maven:3.6.3-jdk-11
 installation_maven_job:
   stage: test
   script:
-    - mvn --version
-    - mvn compile
+    - mvn 
