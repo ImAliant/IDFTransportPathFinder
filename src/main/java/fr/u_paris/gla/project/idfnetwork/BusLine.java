@@ -29,6 +29,11 @@ public class BusLine extends Line {
     }
 
     @Override
+    public String toString() {
+        return "BUS " + lname;
+    }
+
+    @Override
     public LineType getType() {
         return LineType.BUS;
     }

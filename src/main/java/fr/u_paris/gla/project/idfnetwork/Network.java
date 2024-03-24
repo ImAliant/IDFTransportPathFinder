@@ -19,23 +19,22 @@ public class Network {
      */
     protected static Map<String, Stop> stops = new HashMap<>();
 
+    private static Network instance = null;
+
     /**
      * Private constructor to prevent instantiation from other classes
      */ 
     private Network() {}
 
     /**
-     * Private static inner class to hold the instance of the singleton class
-     */ 
-    private static class NetworkHolder {
-        private static final Network INSTANCE = new Network();
-    }
-    /**
      * Returns the instance of the singleton class
      * @return the instance of the singleton class
      */
     public static Network getInstance() {
-        return NetworkHolder.INSTANCE;
+        if (instance == null) {
+            instance = new Network();
+        }
+        return instance;
     }
     /**
      * Returns the line with the given name and route type
@@ -43,7 +42,7 @@ public class Network {
      * @param routetype
      * @return
      */
-    protected Line findLine(String lname, LineType type) {
+    public Line findLine(String lname, LineType type) {
         String key = generateLineKey(lname, type);
         return lines.get(key);
     }
@@ -62,7 +61,7 @@ public class Network {
      * @param latitude
      * @return
      */
-    protected Stop findStop(String name, double longitude, double latitude) {
+    public Stop findStop(String name, double longitude, double latitude) {
         String key = generateStopKey(name, longitude, latitude);
         return stops.get(key);
     }

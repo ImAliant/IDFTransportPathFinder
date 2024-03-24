@@ -77,10 +77,8 @@ public abstract class Line {
         return stops.get(name);
     }
 
-    @Override
-    public String toString() {
-        // Affiche l'ensemble des trajets de la ligne
-        StringBuilder result = new StringBuilder(this.getClass().getName() + lname + ":\n");
+    public String pathsToString() {
+        StringBuilder result = new StringBuilder();
         for (TravelPath path: paths) {
             result.append(path.getStart().getStopName()).append(" -> ").append(path.getEnd().getStopName()).append("\n");
         }
