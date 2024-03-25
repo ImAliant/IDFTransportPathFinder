@@ -2,6 +2,9 @@ package fr.u_paris.gla.project.idfnetwork;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ItineraryCalculatorTest {
     @Test
     public void Trip1() {
@@ -200,5 +203,13 @@ public class ItineraryCalculatorTest {
 
     }
 
-
+    @Test
+    public void getStopsFromAdressTest(){
+        List<Stop> s= ItineraryCalculator.getStopsFromAdress(48.8483463,2.3573528);
+        assertFalse(s.isEmpty());
+        System.out.println(s.size());
+        for (Stop stop : s) {
+            System.out.println(stop);
+        }
+    }
 }
