@@ -21,6 +21,8 @@ public abstract class Line {
     protected Map<String, Stop> stops = new HashMap<>();
     /** Paths between stops*/
     protected List<TravelPath> paths = new ArrayList<>();
+    /** All the correspondances */
+    protected Map<String, Line> correspondances = new HashMap<>();
 
     /** Magic number: default speed of a line in km/h */
     private static final double DEFAULT_SPEED = 1.0;
@@ -102,4 +104,28 @@ public abstract class Line {
     public List<TravelPath> getPaths() {
         return Collections.unmodifiableList(new ArrayList<>(paths));
     }
+    public Map<String, List<Stop>> all_correspondances(List<Stop> stops) {
+        for (Stop stop : stops) {
+        // Check if the stop name is already in the map
+            if (correspondances.containsKey(stop.getStopName())) {
+            // If the stop name doesn't exist yet, create a new list and add the stop to it
+                // If the stop name doesn't exist yet, create a new list and add the stop to it
+                List<Line> linesList = new ArrayList<>();
+                
+                correspondances.put(stop.getStopName(), linesList);
+            } else {
+                // If the stop name already exists, check if there's a stop with different coordinates
+                List<Stop> stopList = associatedStops.get(stop.getStopName());
+                boolean isNewStation = true;
+                for (Stop existingStation : stopList) {
+                    // Compare the coordinates of the existing station with the current stop
+                    if (existingStation.getLongitude() == stop.getLongitude() &&
+                            existingStation.getLatitude() == stop.getLatitude()) {
+                        // If coordinates match, it's not a new station
+                        isNewStation = false;
+                        break;
+                    }
+                }
+            }
+        }
 }
