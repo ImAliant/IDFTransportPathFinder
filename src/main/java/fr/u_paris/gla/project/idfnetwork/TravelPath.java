@@ -13,6 +13,8 @@ public class TravelPath {
     /** The duration of the path */
     private double duration;
 
+    private Line line;
+
     /**
      * Create a new path with the given start, end, distance and duration
      * @param start
@@ -20,11 +22,12 @@ public class TravelPath {
      * @param distance
      * @param duration
      */
-    protected TravelPath(Stop start, Stop end, double distance, Integer duration) {
+    protected TravelPath(Stop start, Stop end, double distance, Integer duration, Line line) {
         this.start = start;
         this.end = end;
         this.distance = distance;
         this.duration = duration;
+        this.line = line;
     }
 
     public Stop getStart() {
@@ -41,5 +44,9 @@ public class TravelPath {
 
     public double getDuration() {
         return duration;
+    }
+
+    public Line getLine() {
+        return line;
     }
 }

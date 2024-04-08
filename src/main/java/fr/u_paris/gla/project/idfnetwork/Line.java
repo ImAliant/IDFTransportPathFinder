@@ -56,8 +56,8 @@ public abstract class Line {
      * @param distance
      * @param duration
      */
-    protected void addPath(Stop s1, Stop s2, double distance, Integer duration) {
-        s1.addPath(s2, distance, duration);
+    protected void addPath(Stop s1, Stop s2, double distance, Integer duration,Line line) {
+        s1.addPath(s2, distance, duration, line);
 
         // We ensure that the path is not already in the list
         for (TravelPath path: paths) {
@@ -65,7 +65,7 @@ public abstract class Line {
                 return;
             }
         }
-        paths.add(new TravelPath(s1, s2, distance, duration));
+        paths.add(new TravelPath(s1, s2, distance, duration,line));
     }
 
     /**

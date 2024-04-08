@@ -5,11 +5,14 @@ import java.util.Objects;
 
 public class Itinerary {
     private List<Stop> stops;
+
+    private List<Line> lines;
     private double totalDistance;
     private double totalDuration;
 
-    public Itinerary(List<Stop> stops, double totalDistance, double totalDuration){
+    public Itinerary(List<Stop> stops,List<Line> lines, double totalDistance, double totalDuration){
         this.stops = stops;
+        this.lines = lines;
         this.totalDistance = totalDistance;
         this.totalDuration = totalDuration;
 
@@ -17,6 +20,10 @@ public class Itinerary {
 
     public List<Stop> getStops(){
         return stops;
+    }
+
+    public List<Line> getLines(){
+        return lines;
     }
 
     public double getTotalDistance() {
@@ -41,7 +48,11 @@ public class Itinerary {
     public String toString(){
         StringBuilder builder = new StringBuilder();
         builder.append("Route{");
-        builder.append("Stops=").append(stops);
+        builder.append("Stop=" ).append(stops.get(0).getStopName());
+        for ( int i = 0; i < stops.size(); i++ ) {
+            builder.append("Stop=" ).append(stops.get(i+1).getStopName());
+            builder.append("Path=" ).append(lines.get(i));
+        }
         builder.append(", Total Distance=").append(totalDistance).append("km");
         builder.append(", Total Duration=").append(totalDuration).append(" minutes");
         builder.append("}");
