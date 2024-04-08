@@ -61,7 +61,7 @@ public class Network {
      * @param latitude
      * @return
      */
-    public Stop findStop(String name, double longitude, double latitude) {
+    public static Stop findStop(String name, double longitude, double latitude) {
         String key = generateStopKey(name, longitude, latitude);
         return stops.get(key);
     }
@@ -89,7 +89,7 @@ public class Network {
      * @param latitude
      * @return
      */
-    private String generateStopKey(String name, double longitude, double latitude) {
+    private static String generateStopKey(String name, double longitude, double latitude) {
         return name + "-" + longitude + "-" + latitude;
     }
     

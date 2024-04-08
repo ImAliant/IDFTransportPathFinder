@@ -42,12 +42,23 @@ public class ItineraryCalculator {
 
         // Construct road from previousStops
         List<Stop> stops = new ArrayList<>();
+        List<Line> lines = new ArrayList<>();
         Stop currentStop = destination;
-        while(currentStop != null){
+        Stop previous = previousStops.get(currentStop);
+        while(previous != null){
             stops.add(currentStop);
-            currentStop = previousStops.get(currentStop);
+            for (TravelPath path : previous.getPaths()) {
+                if (path.getEnd().equals(currentStop)){
+                    lines.add(path.getLine());
+                    break;
+                }
+            }
+            currentStop = previous;
+            previous = previousStops.get(currentStop);
         }
+        stops.add(start);
         Collections.reverse(stops);
+        Collections.reverse(lines);
 
         // Calculate total distance and duration
         double totalDistance = 0.0;
@@ -63,7 +74,7 @@ public class ItineraryCalculator {
                 }
             }
         }
-            return new Itinerary(stops,totalDistance,totalDuration);
+            return new Itinerary(stops,lines,totalDistance,totalDuration);
     }
 
 
@@ -81,3 +92,4 @@ public class ItineraryCalculator {
     }
 
 }
+
