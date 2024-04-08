@@ -1,5 +1,8 @@
 package fr.u_paris.gla.project.idfnetwork;
 
+import fr.u_paris.gla.project.App;
+import fr.u_paris.gla.project.utils.GPS;
+
 import java.util.*;
 
 public class ItineraryCalculator {
@@ -62,4 +65,19 @@ public class ItineraryCalculator {
         }
             return new Itinerary(stops,totalDistance,totalDuration);
     }
+
+
+    public static List<Stop> getStopsFromAdress(double latitude, double longitude){
+        App.initNetwork();
+        List<Stop> res= new ArrayList<>();
+        for(Stop s: Network.getInstance().getStops()){
+            //Périmètres défini à 100m
+            if(GPS.distance(latitude,longitude,s.getLatitude(),s.getLongitude())<0.1){
+                res.add(s);
+            }
+
+        }
+        return res;
+    }
+
 }
