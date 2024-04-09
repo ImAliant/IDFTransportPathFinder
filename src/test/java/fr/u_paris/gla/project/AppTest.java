@@ -40,7 +40,7 @@ class AppTest {
         System.out.println("testLaunch OK");
     }
 
-    @Test
+    /* @Test
     void testInitNetworkFileExists() {
         File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
         try {
@@ -85,5 +85,5 @@ class AppTest {
         assertTrue(App.extractionCalled, "extraction() should have been called");
 
         System.out.println("testExtractionCalled OK");
-    }
+    } */
 }

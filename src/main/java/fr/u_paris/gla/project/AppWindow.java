@@ -7,18 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
-import java.awt.*;
-
-import java.time.LocalDateTime;
-
-import javax.swing.*;
-import javax.swing.event.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class AppWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;

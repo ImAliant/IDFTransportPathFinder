@@ -41,9 +41,9 @@ public class Stop {
      * @param duration
      * @return
      */
-    protected boolean addPath(Stop end, double distance, Integer duration, Line line) {
-        String key = generatePathKey(this, end, distance, duration);
-        return paths.putIfAbsent(key, new TravelPath(this, end, distance, duration,line)) == null;
+    protected boolean addPath(Stop end, TravelPath path) {
+        String key = generatePathKey(this, end);
+        return paths.putIfAbsent(key, path) == null;
     }
     /**
      * Add a line to the stop if it is not already in the stop

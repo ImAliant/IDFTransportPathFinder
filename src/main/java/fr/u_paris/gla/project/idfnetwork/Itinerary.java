@@ -1,7 +1,6 @@
 package fr.u_paris.gla.project.idfnetwork;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Itinerary {
     private List<Stop> stops;

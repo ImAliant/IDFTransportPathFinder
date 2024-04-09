@@ -7,14 +7,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ItineraryCalculatorTest {
+    private Network network = Network.getInstance();
+
     @Test
     public void Trip1() {
+        
 
         App.initNetwork();
 
-        Stop a = Network.findStop("Charles de Gaulle - Etoile",	2.295927507409278,48.87494579313413);
+        Stop a = network.findStop("Charles de Gaulle - Etoile",	2.295927507409278,48.87494579313413);
 
-        Stop b =  Network.findStop("Alexandre Dumas", 2.3945914186721278, 48.856199097341126);
+        Stop b =  network.findStop("Alexandre Dumas", 2.3945914186721278, 48.856199097341126);
 
         Itinerary route = ItineraryCalculator.CalculateRoad(a, b);
 
@@ -33,10 +36,8 @@ public class ItineraryCalculatorTest {
     @Test
     public void Trip2() {
 
-        Stop c = Network.findStop("Hôpital Antoine Béclère",2.2537062315154497,  48.78670798237926
-        );
-        Stop d = Network.findStop("Gare de Chaville - Vélizy",2.1851142141000532, 48.79922054281981
-        );
+        Stop c = network.findStop("Hôpital Antoine Béclère",2.2537062315154497,  48.78670798237926);
+        Stop d = network.findStop("Gare de Chaville - Vélizy",2.1851142141000532, 48.79922054281981);
 
         Itinerary route = ItineraryCalculator.CalculateRoad(c, d);
 

@@ -72,7 +72,7 @@ public class NetworkLoader {
         double distance = Double.parseDouble(fields[DISTANCE_INDEX].trim());
         int duration = TimeFormat.convertToSeconds(fields[DURATION_INDEX].trim());
 
-        currentLine.addPath(startStop, endStop, distance, duration,currentLine);
+        currentLine.addPath(startStop, endStop, distance, duration);
         currentLine.addStop(startStop);
         startStop.addLine(currentLine);
     }
