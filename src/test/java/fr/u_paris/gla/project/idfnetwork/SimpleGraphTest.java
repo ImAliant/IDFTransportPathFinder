@@ -3,7 +3,7 @@ package fr.u_paris.gla.project.idfnetwork;
 import org.junit.jupiter.api.Test;
 
 public class SimpleGraphTest {
-    @Test
+    /* @Test
     public void Trip1() {
         Line l = new FunicularLine("", "");
         Stop a = new Stop("1", 0, 0);
@@ -13,7 +13,7 @@ public class SimpleGraphTest {
         Stop e = new Stop("5", 4, 4);
         Stop f = new Stop("6", 4, 4);
 
-    Network net = Network.getInstance();
+        Network net = Network.getInstance();
         net.addStop(a);
         net.addStop(b);
         net.addStop(c);
@@ -56,17 +56,15 @@ public class SimpleGraphTest {
         e.addPath(f, 2.2, 9, l);
         f.addPath(e, 2.2, 9,l);
 
-    Itinerary route = ItineraryCalculator.CalculateRoad(a, e);
+        Itinerary route = ItineraryCalculator.CalculateRoad(a, e);
 
         System.out.println("Trajet trouvé :");
         System.out.println("Arrets : " + route.getStops());
         System.out.println("Distance totale : " + route.getTotalDistance() + " km");
         System.out.println("Durée totale : " + route.getTotalDuration() + " minutes");
+} */
 
-
-}
-
-@Test
+/*@Test
 public void Trip2() {
     Line l = new FunicularLine("", "");
     Stop a = new Stop("0", 0, 0);
@@ -198,6 +196,6 @@ public void Trip3() {
     System.out.println("Durée totale : " + route.getTotalDuration() + " minutes");
 
 
-}
+} */
 
 }

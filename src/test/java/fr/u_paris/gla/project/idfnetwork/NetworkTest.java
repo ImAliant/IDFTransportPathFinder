@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 class NetworkTest {
 
-    static Network networkTest = null;
+    static Network networkTest = Network.getInstance();
 
     @BeforeAll
-    static void setup(){
-        networkTest = Network.getInstance();
+    static void clearNetwork(){
+        networkTest.clear();
     }
 
     @Test

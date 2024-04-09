@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import java.util.Collections;
 
+
 /**
  * Represents a transport line in the idf network
  */
@@ -21,6 +22,8 @@ public abstract class Line {
     protected Map<String, Stop> stops = new HashMap<>();
     /** Paths between stops*/
     protected List<TravelPath> paths = new ArrayList<>();
+    /** All the correspondances */
+    protected Map<String, Line> correspondances = new HashMap<>();
 
     /** Magic number: default speed of a line in km/h */
     private static final double DEFAULT_SPEED = 1.0;
@@ -56,16 +59,17 @@ public abstract class Line {
      * @param distance
      * @param duration
      */
-    protected void addPath(Stop s1, Stop s2, double distance, Integer duration,Line line) {
-        s1.addPath(s2, distance, duration, line);
-
+    protected void addPath(Stop s1, Stop s2, double distance, Integer duration) {
         // We ensure that the path is not already in the list
         for (TravelPath path: paths) {
             if (path.getStart().equals(s1) && path.getEnd().equals(s2)) {
                 return;
             }
         }
-        paths.add(new TravelPath(s1, s2, distance, duration,line));
+        
+        TravelPath path = new TravelPath(s1, s2, distance, duration, this);
+        s1.addPath(s2, path);
+        paths.add(path);
     }
 
     /**
@@ -102,4 +106,13 @@ public abstract class Line {
     public List<TravelPath> getPaths() {
         return Collections.unmodifiableList(new ArrayList<>(paths));
     }
+    public void correspondances_of_line() {
+        for (Stop s: stops.values()) {
+            List<Line> stopCorrespondances = s.getLines();
+            for (Line line: stopCorrespondances) {
+                correspondances.putIfAbsent(line.lname, line);
+            }
+        }
+    }
+
 }
