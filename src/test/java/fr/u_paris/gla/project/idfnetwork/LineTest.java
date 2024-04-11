@@ -1,7 +1,14 @@
 package fr.u_paris.gla.project.idfnetwork;
 
+import fr.u_paris.gla.project.App;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LineTest {
@@ -85,5 +92,29 @@ class LineTest {
 
     }
 
+    @BeforeAll
+    static void setup(){
+        App.initNetwork();
+    }
+
+    @Test
+    void getScheduleOfLine(){
+        //Return une liste de Horaire + Stop, faisant tous parti de la même ligne
+        //m14.schedulesGenerator();
+        List<Line> lines = Network.getInstance().getLines();
+        Line line = lines.get(0);
+//        for(Stop s: line.getStops()){
+//            System.out.println(s);
+//        }
+
+
+        line.schedulesGenerator();
+        //Map<String, ArrayList<Integer>> stop= line.horairesParStation;
+        ArrayList<Integer> schedule = line.getHorairesPourStation(line.getStops().get(0).getStopName());
+        System.out.println(schedule);
+        /*for(int i = 0; i < stop.get(0).size();i++){
+            System.out.println(stop.get(0).get(i));
+        }*/
+    }
 
 }

@@ -1,11 +1,6 @@
 package fr.u_paris.gla.project.idfnetwork;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
-
-import java.util.Collections;
+import java.util.*;
 
 
 /**
@@ -20,6 +15,8 @@ public abstract class Line {
     protected double speed;
     /** All the stops of the line */
     protected Map<String, Stop> stops = new HashMap<>();
+    /** Stop schedules */
+    protected Map<String, ArrayList<Integer>> schedule = new HashMap<>();
     /** Paths between stops*/
     protected List<TravelPath> paths = new ArrayList<>();
     /** All the correspondances */
@@ -113,6 +110,36 @@ public abstract class Line {
                 correspondances.putIfAbsent(line.lname, line);
             }
         }
+    }
+
+
+    public Map<String, ArrayList<Integer>> horairesParStation = new HashMap<>();
+
+    public void ajouterHoraire(String station, int horaire) {
+        if (!horairesParStation.containsKey(station)) {
+            horairesParStation.put(station, new ArrayList<>());
+        }
+        horairesParStation.get(station).add(horaire);
+    }
+
+    public ArrayList<Integer> getHorairesPourStation(String station) {
+        return horairesParStation.getOrDefault(station, new ArrayList<>());
+    }
+
+    //Rajouter l'horaire
+    public void ajouterHorairesPourListeStations(Set<String> stations) {
+        for (String station : stations) {
+            for (int i = 0; i < 10; i++) {
+                ajouterHoraire(station, i);
+            }
+        }
+    }
+
+    private int firstDepart;
+    private int lastDepart;
+    //1er départ à 5h30, dernier départ à 23h30
+    public void schedulesGenerator(){
+        ajouterHorairesPourListeStations(stops.keySet());
     }
 
 }
