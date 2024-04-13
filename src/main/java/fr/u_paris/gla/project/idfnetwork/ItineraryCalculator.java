@@ -1,6 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork;
 
 import fr.u_paris.gla.project.App;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.utils.GPS;
 
 import java.util.*;

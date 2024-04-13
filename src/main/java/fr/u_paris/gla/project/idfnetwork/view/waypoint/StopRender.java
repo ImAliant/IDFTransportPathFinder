@@ -1,4 +1,4 @@
-package fr.u_paris.gla.project.idfnetwork.view;
+package fr.u_paris.gla.project.idfnetwork.view.waypoint;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

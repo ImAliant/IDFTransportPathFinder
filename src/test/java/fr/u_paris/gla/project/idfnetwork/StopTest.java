@@ -4,25 +4,28 @@ package fr.u_paris.gla.project.idfnetwork;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import fr.u_paris.gla.project.idfnetwork.stop.MetroStop;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+
 import static org.junit.jupiter.api.Assertions.*;
 class StopTest {
 
     @Test
     void createStop(){
-        Stop s= new Stop("Gare du Nord",0.0,0.0);
+        Stop s= new MetroStop("Gare du Nord",0.0,0.0);
         assertEquals("Gare du Nord",s.getStopName());
     }
 
     private static Stop s1 = null,s2 = null;
     @BeforeEach
     void initialiseStops(){
-        s1= new Stop("Gare du Nord",0.0,0.0);
-        s2= new Stop("Chatelet les Halles", 200.0,-200.0);
+        s1= new MetroStop("Gare du Nord",0.0,0.0);
+        s2= new MetroStop("Chatelet les Halles", 200.0,-200.0);
     }
 
     @Test
     void compare2IdenticalStop(){
-        Stop s2= new Stop("Gare du Nord",0.0,0.0);
+        Stop s2= new MetroStop("Gare du Nord",0.0,0.0);
         assertEquals(s2,s1);
     }
 

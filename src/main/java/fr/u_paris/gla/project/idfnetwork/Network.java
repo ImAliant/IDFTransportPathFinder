@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+
 import java.util.HashMap;
 
 /**
@@ -107,7 +110,7 @@ public class Network {
     }
 
     //DEBUG function
-    protected void clear() {
+    public void clear() {
         lines.clear();
         stops.clear();
     }

@@ -16,9 +16,9 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
 
 import fr.u_paris.gla.project.idfnetwork.Network;
-import fr.u_paris.gla.project.idfnetwork.Stop;
-import fr.u_paris.gla.project.idfnetwork.view.StopRender;
-import fr.u_paris.gla.project.idfnetwork.view.StopWaypoint;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
+import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
 
 public class Maps extends JXMapViewer {
     /**
@@ -44,31 +44,23 @@ public class Maps extends JXMapViewer {
     /**
      * Maximum zoom of the map.
      */
-    public static final int MAX_ZOOM = 5;
+    public static final int MAX_ZOOM = 7;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
 
     /**
      * Constructor of the maps.
-     * 
-     * @param width
-     * @param height
      */
-    public Maps(int width, int height) {
+    public Maps() {
         super();
 
-        init(width, height);
+        init();
     }
 
     /**
-     * Initialize the map.
-     * 
-     * @param width width of the panel
-     * @param height height of the panel
+     * Initialize the map components.
      */
-    private void init(int width, int height) {
-        setSize(width, height);
-
+    private void init() {
         // Tile factory to get the map
         createTiles();
 
@@ -78,6 +70,8 @@ public class Maps extends JXMapViewer {
         configureMapMouseListeners();
 
         displayNetwork();
+
+        System.out.println(stopWaypoints.size());
     }
 
     private void displayNetwork() {

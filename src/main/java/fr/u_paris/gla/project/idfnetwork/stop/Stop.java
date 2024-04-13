@@ -1,7 +1,12 @@
-package fr.u_paris.gla.project.idfnetwork;
+package fr.u_paris.gla.project.idfnetwork.stop;
 
 import java.util.List;
 import java.util.Objects;
+
+import fr.u_paris.gla.project.idfnetwork.Line;
+import fr.u_paris.gla.project.idfnetwork.LineType;
+import fr.u_paris.gla.project.idfnetwork.TravelPath;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -29,7 +34,7 @@ public class Stop {
      * @param longitude
      * @param latitude
      */
-    protected Stop(String lname, double longitude, double latitude) {
+    public Stop(String lname, double longitude, double latitude) {
         this.lname = lname;
         this.longitude = longitude;
         this.latitude = latitude;
@@ -41,7 +46,7 @@ public class Stop {
      * @param duration
      * @return
      */
-    protected boolean addPath(Stop end, TravelPath path) {
+    public boolean addPath(Stop end, TravelPath path) {
         String key = generatePathKey(this, end);
         return paths.putIfAbsent(key, path) == null;
     }
@@ -50,7 +55,7 @@ public class Stop {
      * @param line
      * @return
      */
-    protected boolean addLine(Line line) {
+    public boolean addLine(Line line) {
         String key = generateLineKey(line.getLineName(), line.getType());
         return lines.putIfAbsent(key, line) == null;
     }

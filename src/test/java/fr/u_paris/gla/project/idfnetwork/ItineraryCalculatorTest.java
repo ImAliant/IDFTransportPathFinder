@@ -1,6 +1,8 @@
 package fr.u_paris.gla.project.idfnetwork;
 
 import fr.u_paris.gla.project.App;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

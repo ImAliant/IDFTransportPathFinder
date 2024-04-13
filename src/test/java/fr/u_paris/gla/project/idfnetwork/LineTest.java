@@ -2,6 +2,10 @@ package fr.u_paris.gla.project.idfnetwork;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import fr.u_paris.gla.project.idfnetwork.stop.MetroStop;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LineTest {
@@ -64,7 +68,7 @@ class LineTest {
 
     @Test
     void testAddStop(){
-        Stop s = new Stop("Madeleine",0.0,0.0);
+        Stop s = new MetroStop("Madeleine",0.0,0.0);
         m14.addStop(s);
         m14.addStop(s);
         assertEquals(s,m14.findStop("Madeleine"));
@@ -74,8 +78,8 @@ class LineTest {
 
     @Test
     void testAddPath(){
-        Stop s1 = new Stop("Chatelet",0.0,0.0);
-        Stop s2 = new Stop("Gare de Lyon",0.0,100.0);
+        Stop s1 = new MetroStop("Chatelet",0.0,0.0);
+        Stop s2 = new MetroStop("Gare de Lyon",0.0,100.0);
         m14.addPath(s1,s2,100,5);
         assertEquals(1,m14.getPaths().size());
     }
