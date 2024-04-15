@@ -1,5 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork;
 
+import fr.u_paris.gla.project.utils.GPS;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +20,8 @@ public class Network {
      * Stops of the idf network
      */
     protected static Map<String, Stop> stops = new HashMap<>();
+
+    protected static Map<String, HashMap<String, Stop>> sameStops = new HashMap<>();
 
     private static Network instance = null;
 
@@ -65,13 +69,35 @@ public class Network {
         String key = generateStopKey(name, longitude, latitude);
         return stops.get(key);
     }
+
+    public static Stop findSameStop(String name,double latitude, double longitude){
+        HashMap<String,Stop> stopMap = sameStops.get(name);
+        if (stopMap != null) {
+            for (Stop stop : stopMap.values()) {
+                double distance = Math.sqrt(Math.pow(latitude - stop.getLatitude(), 2) + Math.pow(longitude - stop.getLongitude(), 2));;
+                if (distance < 1000.0) {
+                    return stop;
+                }
+            }
+        }
+        return null;
+    }
     /**
      * Adds the given stop to the network
      * @param stop
      */ 
     protected void addStop(Stop stop) {
-        String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
-        stops.putIfAbsent(key, stop);
+//        String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
+//        stops.putIfAbsent(key, stop);
+
+        String key = generateStopNameKey(stop.getStopName());
+
+        if (!sameStops.containsKey(key)) {
+            sameStops.put(key, new HashMap<>());
+        }
+        String stopKey = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
+        sameStops.get(key).putIfAbsent(stopKey, stop);
+        stops.putIfAbsent(stopKey, stop);
     }
     /**
      * Generates a key for a line
@@ -89,10 +115,13 @@ public class Network {
      * @param latitude
      * @return
      */
-    private String generateStopKey(String name, double longitude, double latitude) {
+    private static String generateStopKey(String name, double longitude, double latitude) {
         return name + "-" + longitude + "-" + latitude;
     }
-    
+    private String generateStopNameKey(String name) {
+        return name;
+    }
+
     @Override
     public String toString() {
         return "Network [lines=" + lines + ", stops=" + stops + "]";

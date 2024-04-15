@@ -32,11 +32,18 @@ public class ItineraryCalculator {
 
                     Stop neighbor = path.getEnd();
                     double newDistance = duration.get(currentStop) + path.getDuration();
-                    if (newDistance < duration.get(neighbor)){
-                        duration.put(neighbor, newDistance);
-                        previousStops.put(neighbor, currentStop);
-                        queue.add(neighbor);
+                    if(previousStops.get(currentStop) != null) {
+                        for (TravelPath p : previousStops.get(currentStop).getPaths()) {
+                            if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()))) {
+                                newDistance += 1000;
+                            }
+                        }
                     }
+                        if (newDistance < duration.get(neighbor)) {
+                            duration.put(neighbor, newDistance);
+                            previousStops.put(neighbor, currentStop);
+                            queue.add(neighbor);
+                        }
             }
         }
 
@@ -63,14 +70,30 @@ public class ItineraryCalculator {
         // Calculate total distance and duration
         double totalDistance = 0.0;
         double totalDuration = 0.0;
-        for (int i = 0; i < stops.size() - 1; i++){
-            Stop current = stops.get(i);
-            Stop next = stops.get(i+1);
+        Stop current = stops.get(0);
+        Stop next = stops.get(1);
+        for (TravelPath path : current.getPaths()){
+                totalDistance += path.getDistance();
+                totalDuration += path.getDuration();
+                break;
+
+        }
+
+        for (int i = 1; i < stops.size() - 1; i++){
+            Stop previouss = stops.get(i-1);
+             current = stops.get(i);
+             next = stops.get(i+1);
             for (TravelPath path : current.getPaths()){
                 if (path.getEnd().equals(next)){
+                    for (TravelPath p : previouss.getPaths()) {
+                        if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()) )) {
+                            totalDuration += 300 ;
+                        }
+                    }
                     totalDistance += path.getDistance();
                     totalDuration += path.getDuration();
                     break;
+
                 }
             }
         }

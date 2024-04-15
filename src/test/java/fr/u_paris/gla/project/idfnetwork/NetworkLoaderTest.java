@@ -25,7 +25,9 @@ class NetworkLoaderTest {
 
     @Test
     public void getStopInNetwork(){
-        assertNotNull(Network.getInstance().findStop("Petit Morin",3.1225367926082375,48.94340574072161));
+        assertNotNull(Network.getInstance().findSameStop("Petit Morin",3.1225367926082375,48.94340574072161));
     }
     
 }
+
+
