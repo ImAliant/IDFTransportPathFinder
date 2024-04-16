@@ -46,9 +46,9 @@ public class IDFMNetworkExtractor {
     private static final int IDFM_TRACE_SHAPE_INDEX = 6;
 
     private static final int IDFM_STOPS_RID_INDEX  = 0;
-    private static final int IDFM_STOPS_NAME_INDEX = 5;
-    private static final int IDFM_STOPS_LON_INDEX  = 6;
-    private static final int IDFM_STOPS_LAT_INDEX  = 7;
+    private static final int IDFM_STOPS_NAME_INDEX = 3;
+    private static final int IDFM_STOPS_LON_INDEX  = 4;
+    private static final int IDFM_STOPS_LAT_INDEX  = 5;
 
     // Magically chosen values
     /** A number of stops on each line */
