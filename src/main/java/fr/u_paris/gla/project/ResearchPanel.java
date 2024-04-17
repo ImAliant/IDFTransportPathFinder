@@ -21,6 +21,7 @@ import javax.swing.event.DocumentListener;
 
 
 public class ResearchPanel extends JPanel {
+    private JPanel suggestionStations;
     private JTextField departureField;
     private JTextField arrivalField;
     private TimePicker timePicker;
@@ -51,9 +52,23 @@ public class ResearchPanel extends JPanel {
         departureLabel.setOpaque(true); // Permet d'afficher la couleur de fond
         addComponent(departureLabel, gbc);
 
-        departureField = new JTextField(15);
+        departureField = new JTextField();
         gbc.gridy++; // Passage à la ligne suivante
         addComponent(departureField, gbc);
+
+        
+        suggestionStations = new JPanel(new GridLayout(0, 1));
+        JScrollPane scrollPane1 = new JScrollPane(suggestionStations);
+        scrollPane1.setPreferredSize(new Dimension(150, 50));
+
+        gbc.gridy++; 
+        addComponent(scrollPane1, gbc);
+
+        departureField
+        .getDocument()
+        .addDocumentListener(
+          myDocumentListener(departureField, suggestionStations));
+        
 
         JLabel arrivalLabel = new JLabel("Arrivée:");
         arrivalLabel.setForeground(labelForeground);
@@ -65,6 +80,17 @@ public class ResearchPanel extends JPanel {
         arrivalField = new JTextField();
         gbc.gridy++;
         addComponent(arrivalField, gbc);
+
+        suggestionStations = new JPanel(new GridLayout(0, 1));
+        JScrollPane scrollPane2 = new JScrollPane(suggestionStations);
+        scrollPane2.setPreferredSize(new Dimension(150, 50));
+        gbc.gridy++; 
+        addComponent(scrollPane2, gbc);
+        arrivalField
+        .getDocument()
+        .addDocumentListener(
+          myDocumentListener(arrivalField, suggestionStations));
+        
 
 
 
@@ -115,6 +141,57 @@ public class ResearchPanel extends JPanel {
     public JButton getSearchButton() {
         return searchButton;
     }
-   
+    private void showSuggestions(JTextField prefix, JPanel allStations) {
+      List<Stop> stops = Network.getInstance().getStops();
+      List <String> stationNames = new ArrayList<>();
+      stops.forEach( stop -> {
+        stationNames.add(stop.getStopName());
+      });
+
+      String text = prefix.getText();
+      allStations.removeAll();
+      Border blackline = BorderFactory.createLineBorder(Color.black);
+      for (String station : stationNames) {
+        if (station.toLowerCase().contains(text.toLowerCase())) {
+          
+          JLabel suggestionLabel = new JLabel(station, JLabel.CENTER);
+  
+          suggestionLabel.setBorder(blackline);
+          suggestionLabel.addMouseListener(
+              new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                  prefix.setText(station);
+                  allStations.removeAll();
+                  
+                }
+              });
+          allStations.add(suggestionLabel);
+        }
+      }
+      allStations.revalidate();
+      allStations.repaint();
+  }
+  public DocumentListener myDocumentListener(JTextField t, JPanel j) {
+    DocumentListener res =
+      new DocumentListener() {
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+          SwingUtilities.invokeLater(() -> showSuggestions(t, j));
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+          SwingUtilities.invokeLater(() -> showSuggestions(t, j));
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+          SwingUtilities.invokeLater(() -> showSuggestions(t, j));
+        }
+      };
+    return res;
+  }
+
 
 }
