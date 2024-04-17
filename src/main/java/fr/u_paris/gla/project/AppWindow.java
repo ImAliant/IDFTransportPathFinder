@@ -30,7 +30,7 @@ public class AppWindow extends JFrame {
         addMapAndButtons(container);
 
         ResearchPanel researchPanel = new ResearchPanel();
-        container.add(researchPanel, BorderLayout.NORTH);
+        container.add(researchPanel, BorderLayout.WEST);
 
     }
 
