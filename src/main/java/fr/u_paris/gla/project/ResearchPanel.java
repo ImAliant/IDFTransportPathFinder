@@ -4,20 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import com.github.lgooddatepicker.components.TimePicker;
 
-import fr.u_paris.gla.project.idfnetwork.Network;
-import fr.u_paris.gla.project.idfnetwork.Stop;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.BorderFactory;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-
 
 
 public class ResearchPanel extends JPanel {
@@ -66,8 +52,7 @@ public class ResearchPanel extends JPanel {
 
         departureField
         .getDocument()
-        .addDocumentListener(
-          myDocumentListener(departureField, suggestionStations));
+        .addDocumentListener(AutoComplete.myDocumentListener(departureField, suggestionStations));
         
 
         JLabel arrivalLabel = new JLabel("Arrivée:");
@@ -86,10 +71,9 @@ public class ResearchPanel extends JPanel {
         scrollPane2.setPreferredSize(new Dimension(150, 50));
         gbc.gridy++; 
         addComponent(scrollPane2, gbc);
-        arrivalField
-        .getDocument()
-        .addDocumentListener(
-          myDocumentListener(arrivalField, suggestionStations));
+        arrivalField.
+        getDocument()
+        .addDocumentListener(AutoComplete.myDocumentListener(arrivalField, suggestionStations));
         
 
 
@@ -141,57 +125,6 @@ public class ResearchPanel extends JPanel {
     public JButton getSearchButton() {
         return searchButton;
     }
-    private void showSuggestions(JTextField prefix, JPanel allStations) {
-      List<Stop> stops = Network.getInstance().getStops();
-      List <String> stationNames = new ArrayList<>();
-      stops.forEach( stop -> {
-        stationNames.add(stop.getStopName());
-      });
-
-      String text = prefix.getText();
-      allStations.removeAll();
-      Border blackline = BorderFactory.createLineBorder(Color.black);
-      for (String station : stationNames) {
-        if (station.toLowerCase().contains(text.toLowerCase())) {
-          
-          JLabel suggestionLabel = new JLabel(station, JLabel.CENTER);
-  
-          suggestionLabel.setBorder(blackline);
-          suggestionLabel.addMouseListener(
-              new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                  prefix.setText(station);
-                  allStations.removeAll();
-                  
-                }
-              });
-          allStations.add(suggestionLabel);
-        }
-      }
-      allStations.revalidate();
-      allStations.repaint();
-  }
-  public DocumentListener myDocumentListener(JTextField t, JPanel j) {
-    DocumentListener res =
-      new DocumentListener() {
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-          SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-          SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-          SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-        }
-      };
-    return res;
-  }
 
 
 }
