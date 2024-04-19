@@ -29,6 +29,9 @@ public class AppWindow extends JFrame {
         JPanel container = new JPanel();
         addMapAndButtons(container);
 
+        ResearchPanel researchPanel = new ResearchPanel();
+        container.add(researchPanel, BorderLayout.WEST);
+
     }
 
     private void addMapAndButtons(JPanel container) {
