@@ -6,7 +6,6 @@ import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -47,33 +46,7 @@ public class AutoComplete {
             }
         }
         allStations.revalidate();
-
-        /* List<String> stationNames = new ArrayList<>();
-        stops.forEach(stop -> stationNames.add(stop.getStopName()));
-
-        String text = prefix.getText();
-        allStations.removeAll();
-        Border blackline = BorderFactory.createLineBorder(Color.black);
-        for (String station : stationNames) {
-            if (station.toLowerCase().contains(text.toLowerCase())) {
-
-                JLabel suggestionLabel = new JLabel(station, SwingConstants.CENTER);
-
-                suggestionLabel.setBorder(blackline);
-                suggestionLabel.addMouseListener(
-                        new MouseAdapter() {
-                            @Override
-                            public void mouseClicked(MouseEvent e) {
-                                prefix.setText(station);
-                                allStations.removeAll();
-
-                            }
-                        });
-                allStations.add(suggestionLabel);
-            }
-        }
-        allStations.revalidate();
-        allStations.repaint(); */
+        allStations.repaint();
     }
 
     public static DocumentListener myDocumentListener(JTextField t, JPanel j) {
