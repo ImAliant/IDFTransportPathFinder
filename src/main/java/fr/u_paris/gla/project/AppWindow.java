@@ -2,10 +2,19 @@ package fr.u_paris.gla.project;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import org.jxmapviewer.viewer.GeoPosition;
+
+import fr.u_paris.gla.project.idfnetwork.view.RoutingData;
+import fr.u_paris.gla.project.idfnetwork.view.RoutingService;
+import fr.u_paris.gla.project.idfnetwork.view.StopWaypoint;
 
 public class AppWindow extends JFrame {
 
@@ -16,6 +25,7 @@ public class AppWindow extends JFrame {
     private JButton zoomIn;
 
     private JButton zoomOut;
+    private Set<StopWaypoint> stopWaypoints;
 
     public AppWindow(String title) {
         super();
@@ -104,4 +114,26 @@ public class AppWindow extends JFrame {
     public JButton getZoomOutButton() {
         return zoomOut;
     }
+    public void createRoutingdata(){ //  Routing Data
+        if (stopWaypoints.size() == 2) {
+            GeoPosition start = null;
+            GeoPosition end = null;
+            for (StopWaypoint w : stopWaypoints) {
+                if (w.getPointType() == StopWaypoint.PointType.START) {
+                    start = w.getPosition();
+                } else if (w.getPointType() == StopWaypoint.PointType.END) {
+                    end = w.getPosition();
+                }
+            }
+            List <RoutingData> routingData =  new LinkedList<>();
+            if (start != null && end != null) {
+             routingData = RoutingService.getInstance().routing(start.getLatitude(), start.getLongitude(), end.getLatitude(), end.getLongitude());
+
+            } else {
+                routingData.clear();
+            }
+            jXMapViewer.setRoutingData(routingData);
+        }
+}
+
 }
