@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,11 +86,6 @@ class LineTest {
         Stop s2 = new Stop("Gare de Lyon",0.0,100.0);
         m14.addPath(s1,s2,100,5);
         assertEquals(1,m14.getPaths().size());
-    }
-
-
-    void testAddPaths(){
-
     }
 
     @BeforeAll
