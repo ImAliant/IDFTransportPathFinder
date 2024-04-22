@@ -1,6 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork;
 
 import fr.u_paris.gla.project.App;
+import fr.u_paris.gla.project.utils.GPS;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -127,8 +128,9 @@ public class ItineraryCalculatorTest {
     public void findSameStop(){
         Stop stop = network.findSameStop("Alexandre Dumas",2.3945914186721278,48.856199097341126);
         double distance = Math.sqrt(Math.pow(48.85624467843737 - stop.getLatitude(), 2) + Math.pow(2.3947127337554788 - stop.getLongitude(), 2));
+        double dist = GPS.distance(48.85624467843737,2.3947127337554788,stop.getLatitude(),stop.getLongitude());
         System.out.println(stop);
-        System.out.println("Distance :" + distance);
+        System.out.println("Distance :" + dist);
     }
 
 

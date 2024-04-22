@@ -35,7 +35,7 @@ public class ItineraryCalculator {
                     if(previousStops.get(currentStop) != null) {
                         for (TravelPath p : previousStops.get(currentStop).getPaths()) {
                             if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()))) {
-                                newDistance += 1000;
+                                newDistance += 0;
                             }
                         }
                     }
@@ -87,7 +87,7 @@ public class ItineraryCalculator {
                 if (path.getEnd().equals(next)){
                     for (TravelPath p : previouss.getPaths()) {
                         if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()) )) {
-                            totalDuration += 1000 ;
+                            totalDuration += 0 ;
                         }
                     }
                     totalDistance += path.getDistance();

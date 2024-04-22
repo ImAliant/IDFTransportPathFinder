@@ -76,7 +76,7 @@ public class Network {
             for (Stop stop : stopMap.values()) {
                 //double distance = Math.sqrt(Math.pow(latitude - stop.getLatitude(), 2) + Math.pow(longitude - stop.getLongitude(), 2));
                 double distance = GPS.distance(latitude,longitude,stop.getLatitude(),stop.getLongitude());
-                if (distance < 1.0) {
+                if (distance < 0.5) {
                     return stop;
                 }
             }
