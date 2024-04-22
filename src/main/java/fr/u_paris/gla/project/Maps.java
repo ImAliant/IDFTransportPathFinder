@@ -17,6 +17,7 @@ import org.jxmapviewer.viewer.WaypointPainter;
 
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.idfnetwork.view.listener.ZoomWheelStopVisibilityListener;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
 
@@ -70,8 +71,6 @@ public class Maps extends JXMapViewer {
         configureMapMouseListeners();
 
         displayNetwork();
-
-        System.out.println(stopWaypoints.size());
     }
 
     private void displayNetwork() {
@@ -102,7 +101,7 @@ public class Maps extends JXMapViewer {
         MouseInputListener listener = new PanMouseInputListener(this);
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
-        this.addMouseWheelListener(new ZoomMouseWheelListenerCursor(this));
+        this.addMouseWheelListener(new ZoomWheelStopVisibilityListener(this));
     }
 
     private void setDefaultLocation() {
@@ -121,12 +120,21 @@ public class Maps extends JXMapViewer {
         adjustZoom(-1);
     }
 
+    private void updateVisibleStop() {
+        int zoom = getZoom();
+        for (StopWaypoint stopWaypoint : stopWaypoints) {
+            stopWaypoint.getButton().updateVisibility(zoom);
+        }
+    }
+
     public void zoomOut() {
         adjustZoom(1);
     }
 
     private void adjustZoom(int factor) {
         setZoom(getZoom() + factor);
+
+        updateVisibleStop();
     }
 
     @Override
@@ -136,5 +144,9 @@ public class Maps extends JXMapViewer {
         }
 
         super.setZoom(zoom);
+    }
+
+    public Set<StopWaypoint> getWaypoints() {
+        return stopWaypoints;
     }
 }

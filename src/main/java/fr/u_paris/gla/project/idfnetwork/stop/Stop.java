@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.EnumMap;
 
 /**
  * Represents a stop in the idf network
@@ -59,6 +60,7 @@ public class Stop {
         String key = generateLineKey(line.getLineName(), line.getType());
         return lines.putIfAbsent(key, line) == null;
     }
+
     /**
      * Generate a key for a path
      * @param start
@@ -123,5 +125,28 @@ public class Stop {
 
     public List<Line> getLines() {
         return Collections.unmodifiableList(new ArrayList<>(lines.values()));
+    }
+
+    public LineType getLineType() {
+        Map<LineType, Integer> typePreference = new EnumMap<>(LineType.class);
+        typePreference.put(LineType.FUNICULAIRE, 0);
+        typePreference.put(LineType.BUS, 1);
+        typePreference.put(LineType.TRAMWAY, 2);
+        typePreference.put(LineType.METRO, 3);
+        typePreference.put(LineType.RER, 4);
+
+        LineType bestType = null;
+        int bestTypeValue = Integer.MAX_VALUE;
+
+        for (Line line : lines.values()) {
+            LineType type = LineType.fromLine(line);
+            int value = typePreference.get(type);
+            if (value < bestTypeValue) {
+                bestType = type;
+                bestTypeValue = value;
+            }
+        }
+
+        return bestType;
     }
 }
