@@ -144,5 +144,7 @@ public abstract class Line {
         return scheduleForStops.getOrDefault(station, new ArrayList<>());
     }
 
-
+    public List<ArrayList<LocalTime>> getSchedule() {
+        return Collections.unmodifiableList(new ArrayList<>(scheduleForStops.values()));
+    }
 }

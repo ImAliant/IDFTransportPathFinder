@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -106,16 +105,16 @@ class LineTest {
         }
     }
 
-    @Test
-    public void testPrintStops(){
-        List<Line> lines = Network.getInstance().getLines();
-        Line line = lines.get(0);
-
-        Set<String> stations=line.stops.keySet();
-        for(String station: stations){
-            System.out.println(station);
-        }
-    }
+//    @Test
+//    public void testPrintStops(){
+//        List<Line> lines = Network.getInstance().getLines();
+//        Line line = lines.get(0);
+//
+//        Set<String> stations=line.stops.keySet();
+//        for(String station: stations){
+//            System.out.println(station);
+//        }
+//    }
 
     @Test
     void getScheduleOfLine(){
@@ -123,7 +122,9 @@ class LineTest {
         List<Line> lines = Network.getInstance().getLines();
         Line line = lines.get(0);
 
+        assertTrue(line.getSchedule().isEmpty());
         line.schedulesGenerator();
+        assertFalse(line.getSchedule().isEmpty());
         String stationName = line.getStops().get(0).getStopName();
         ArrayList<LocalTime> schedule = line.getScheduleForAStop(stationName);
         System.out.println("Schedule for \"" +stationName+"\":");
