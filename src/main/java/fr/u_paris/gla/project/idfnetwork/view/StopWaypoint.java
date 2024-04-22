@@ -34,7 +34,8 @@ public class StopWaypoint extends DefaultWaypoint implements Serializable {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {}
+            public void mousePressed(MouseEvent e) {
+            }
 
             @Override
             public void mouseReleased(MouseEvent e) {}

@@ -28,16 +28,17 @@ public class RoutingService {
     }
 
     private RoutingService() {
-        hopper = createGraphHopperInstance("osm file/cambodia-latest.osm.pbf");
+        hopper = createGraphHopperInstance();
     }
 
-    private GraphHopper createGraphHopperInstance(String ghLoc) {
+    private GraphHopper createGraphHopperInstance() {
         GraphHopper graHopper = new GraphHopper();
-        graHopper.setOSMFile(ghLoc);
+      
         // specify where to store graphhopper files
         graHopper.setGraphHopperLocation("target/routing-graph-cache");
 
         // see docs/core/profiles.md to learn more about profiles
+        graHopper.setW
         graHopper.setProfiles(new Profile("car").setVehicle("car").setWeighting("fastest").setTurnCosts(false));
 
         // this enables speed mode for the profile we called car
