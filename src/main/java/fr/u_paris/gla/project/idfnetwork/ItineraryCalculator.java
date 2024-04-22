@@ -87,7 +87,7 @@ public class ItineraryCalculator {
                 if (path.getEnd().equals(next)){
                     for (TravelPath p : previouss.getPaths()) {
                         if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()) )) {
-                            totalDuration += 300 ;
+                            totalDuration += 1000 ;
                         }
                     }
                     totalDistance += path.getDistance();
@@ -102,7 +102,7 @@ public class ItineraryCalculator {
 
 
     public static List<Stop> getStopsFromAdress(double latitude, double longitude){
-        App.initNetwork();
+        Network.getInstance().getStops();
         List<Stop> res= new ArrayList<>();
         for(Stop s: Network.getInstance().getStops()){
             //Périmètres défini à 100m
