@@ -5,9 +5,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,23 +100,44 @@ class LineTest {
     }
 
     @Test
-    void getScheduleOfLine(){
-        //Return une liste de Horaire + Stop, faisant tous parti de la même ligne
-        //m14.schedulesGenerator();
+    void getTravelPath(){
         List<Line> lines = Network.getInstance().getLines();
         Line line = lines.get(0);
-//        for(Stop s: line.getStops()){
-//            System.out.println(s);
-//        }
 
+        List<TravelPath> path =line.paths;
+        for(TravelPath p : path){
+            System.out.println("Start :"+p.getStart().getStopName()+
+                    " End : " + p.getEnd().getStopName()+
+                    " Duration : " + p.getDuration());
+        }
+    }
+
+    @Test
+    public void testPrintStops(){
+        List<Line> lines = Network.getInstance().getLines();
+        Line line = lines.get(0);
+
+        Set<String> stations=line.stops.keySet();
+        for(String station: stations){
+            System.out.println(station);
+        }
+    }
+
+    @Test
+    void getScheduleOfLine(){
+        //Return une liste de Horaire + Stop, faisant tous parti de la même ligne
+        List<Line> lines = Network.getInstance().getLines();
+        Line line = lines.get(0);
 
         line.schedulesGenerator();
-        //Map<String, ArrayList<Integer>> stop= line.horairesParStation;
-        ArrayList<Integer> schedule = line.getHorairesPourStation(line.getStops().get(0).getStopName());
-        System.out.println(schedule);
-        /*for(int i = 0; i < stop.get(0).size();i++){
-            System.out.println(stop.get(0).get(i));
-        }*/
+        String stationName = line.getStops().get(0).getStopName();
+        ArrayList<LocalTime> schedule = line.getScheduleForAStop(stationName);
+        System.out.println("Schedule for \"" +stationName+"\":");
+
+        for (LocalTime horaire : schedule) {
+            System.out.println(horaire);
+        }
     }
+
 
 }

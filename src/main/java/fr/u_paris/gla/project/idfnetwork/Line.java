@@ -1,5 +1,6 @@
 package fr.u_paris.gla.project.idfnetwork;
 
+import java.time.LocalTime;
 import java.util.*;
 
 
@@ -15,12 +16,15 @@ public abstract class Line {
     protected double speed;
     /** All the stops of the line */
     protected Map<String, Stop> stops = new HashMap<>();
-    /** Stop schedules */
-    protected Map<String, ArrayList<Integer>> schedule = new HashMap<>();
     /** Paths between stops*/
     protected List<TravelPath> paths = new ArrayList<>();
     /** All the correspondances */
     protected Map<String, Line> correspondances = new HashMap<>();
+    /** Stop schedules */
+    protected Map<String, ArrayList<LocalTime>> scheduleForStops = new HashMap<>();
+    /** Time for schedules*/
+    private LocalTime firstDepart = LocalTime.of(5, 30);
+    private LocalTime lastDepart = LocalTime.of(23, 30);
 
     /** Magic number: default speed of a line in km/h */
     private static final double DEFAULT_SPEED = 1.0;
@@ -112,34 +116,33 @@ public abstract class Line {
         }
     }
 
-
-    public Map<String, ArrayList<Integer>> horairesParStation = new HashMap<>();
-
-    public void ajouterHoraire(String station, int horaire) {
-        if (!horairesParStation.containsKey(station)) {
-            horairesParStation.put(station, new ArrayList<>());
+    /*
+    * Used to initialize scheduleForStops and fill
+    */
+    public void addTimeToStop(String stopName, LocalTime time) {
+        if (!scheduleForStops.containsKey(stopName)) {
+            scheduleForStops.put(stopName, new ArrayList<>());
         }
-        horairesParStation.get(station).add(horaire);
+        scheduleForStops.get(stopName).add(time);
     }
 
-    public ArrayList<Integer> getHorairesPourStation(String station) {
-        return horairesParStation.getOrDefault(station, new ArrayList<>());
-    }
-
-    //Rajouter l'horaire
-    public void ajouterHorairesPourListeStations(Set<String> stations) {
+    public void addScheduleForStopList(Set<String> stations) {
         for (String station : stations) {
-            for (int i = 0; i < 10; i++) {
-                ajouterHoraire(station, i);
+            while (firstDepart.isBefore(lastDepart)) {
+                addTimeToStop(station, firstDepart);
+                firstDepart = firstDepart.plusMinutes(5);
             }
         }
     }
 
-    private int firstDepart;
-    private int lastDepart;
-    //1er départ à 5h30, dernier départ à 23h30
     public void schedulesGenerator(){
-        ajouterHorairesPourListeStations(stops.keySet());
+        addScheduleForStopList(stops.keySet());
     }
+
+    //Getter
+    public ArrayList<LocalTime> getScheduleForAStop(String station) {
+        return scheduleForStops.getOrDefault(station, new ArrayList<>());
+    }
+
 
 }
