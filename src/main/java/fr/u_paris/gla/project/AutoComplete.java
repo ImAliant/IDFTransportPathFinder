@@ -17,12 +17,15 @@ import javax.swing.JLabel;
 
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.Stop;
+import fr.u_paris.gla.project.idfnetwork.view.CustomTextField;
+import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsScrollPane;
 
 public class AutoComplete {
     private AutoComplete() {}
 
-    public static void showSuggestions(JTextField prefix, JPanel allStations) {
+    public static void showSuggestions(CustomTextField prefix, SuggestionStationsScrollPane suggestions) {
         List<Stop> stops = Network.getInstance().getStops();
+        JPanel allStations = suggestions.getSuggestions();
 
         allStations.removeAll();
         Border blackline = BorderFactory.createLineBorder(Color.black);
@@ -30,7 +33,7 @@ public class AutoComplete {
             String station = stop.getStopName();
             if (station.toLowerCase().contains(prefix.getText().toLowerCase())) {
 
-                JLabel suggestionLabel = new JLabel(station, SwingConstants.CENTER);
+                JLabel suggestionLabel = new JLabel(station, SwingConstants.LEFT);
 
                 suggestionLabel.setBorder(blackline);
                 suggestionLabel.addMouseListener(
@@ -47,28 +50,5 @@ public class AutoComplete {
         }
         allStations.revalidate();
         allStations.repaint();
-    }
-
-    public static DocumentListener myDocumentListener(JTextField t, JPanel j) {
-        // TODO Create a listener to show suggestions when the text changes
-
-        DocumentListener res =
-                new DocumentListener() {
-                    @Override
-                    public void insertUpdate(DocumentEvent e) {
-                        SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-                    }
-
-                    @Override
-                    public void removeUpdate(DocumentEvent e) {
-                        SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-                    }
-
-                    @Override
-                    public void changedUpdate(DocumentEvent e) {
-                        SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-                    }
-                };
-        return res;
     }
 }
