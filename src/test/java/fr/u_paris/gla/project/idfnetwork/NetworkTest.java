@@ -3,7 +3,6 @@ package fr.u_paris.gla.project.idfnetwork;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import fr.u_paris.gla.project.idfnetwork.stop.MetroStop;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +37,7 @@ class NetworkTest {
 
     @Test
     void testAddStop(){
-        Stop s1= new MetroStop("Gare du Nord",0.0,0.0);
+        Stop s1= new Stop("Gare du Nord",0.0,0.0);
         networkTest.addStop(s1);
         assertEquals(s1,networkTest.findStop("Gare du Nord",0.0,0.0));
         assertNull(networkTest.findStop("Gare du Nord",10.0,0.0));
@@ -46,9 +45,9 @@ class NetworkTest {
 
     @Test
     void testAddStops(){
-        Stop s1= new MetroStop("Gare du Nord",0.0,0.0);
-        Stop s2= new MetroStop("Chatelet les Halles", 200.0,-200.0);
-        Stop s3= new MetroStop("Stade De France",100.0,100.0);
+        Stop s1= new Stop("Gare du Nord",0.0,0.0);
+        Stop s2= new Stop("Chatelet les Halles", 200.0,-200.0);
+        Stop s3= new Stop("Stade De France",100.0,100.0);
         networkTest.addStop(s1);
         networkTest.addStop(s2);
         networkTest.addStop(s3);

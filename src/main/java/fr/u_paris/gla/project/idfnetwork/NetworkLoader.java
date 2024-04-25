@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import fr.u_paris.gla.project.idfnetwork.factory.LineFactory;
-import fr.u_paris.gla.project.idfnetwork.factory.StopFactory;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.io.TimeFormat;
 
@@ -69,8 +68,8 @@ public class NetworkLoader {
         LineType type = LineType.fromString(routetype);
         Line currentLine = findOrCreateLine(lname, type, color);
 
-        Stop startStop = processStop(/* type, */ LONGLAT_INDEX, STOP_NAME_INDEX);
-        Stop endStop = processStop(/* type, */ NEXT_LONGLAT_INDEX, NEXT_STOP_NAME_INDEX);
+        Stop startStop = processStop(LONGLAT_INDEX, STOP_NAME_INDEX);
+        Stop endStop = processStop(NEXT_LONGLAT_INDEX, NEXT_STOP_NAME_INDEX);
 
         double distance = Double.parseDouble(fields[DISTANCE_INDEX].trim());
         int duration = TimeFormat.convertToSeconds(fields[DURATION_INDEX].trim());
@@ -102,14 +101,14 @@ public class NetworkLoader {
      * @param stopNameIndex
      * @return
      */
-    private static Stop processStop(/* LineType type, */ int longlatIndex, int stopNameIndex) {
+    private static Stop processStop(int longlatIndex, int stopNameIndex) {
         String stopname = fields[stopNameIndex].trim();
         String longlat = fields[longlatIndex].trim();
         double latitude = Double.parseDouble(longlat.split(",")[0]);
         double longitude = Double.parseDouble(longlat.split(",")[1]);
         Stop temp = network.findStop(stopname, longitude, latitude);
         if (temp == null) {
-            temp = /* StopFactory.createStop(type, stopname, longitude, latitude); */new Stop(stopname, longitude, latitude);
+            temp = new Stop(stopname, longitude, latitude);
             network.addStop(temp);
         }
         return temp;

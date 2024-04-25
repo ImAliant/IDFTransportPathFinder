@@ -9,7 +9,6 @@ import javax.swing.event.MouseInputListener;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
@@ -17,7 +16,6 @@ import org.jxmapviewer.viewer.WaypointPainter;
 
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
-import fr.u_paris.gla.project.idfnetwork.view.listener.ZoomWheelStopVisibilityListener;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
 
@@ -101,7 +99,6 @@ public class Maps extends JXMapViewer {
         MouseInputListener listener = new PanMouseInputListener(this);
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
-        this.addMouseWheelListener(new ZoomWheelStopVisibilityListener(this));
     }
 
     private void setDefaultLocation() {
