@@ -1,6 +1,4 @@
 package fr.u_paris.gla.project;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.border.Border;
 
 import java.awt.Color;
@@ -8,15 +6,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 
 import fr.u_paris.gla.project.idfnetwork.Network;
-import fr.u_paris.gla.project.idfnetwork.Stop;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.idfnetwork.view.CustomTextField;
 import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsScrollPane;
 

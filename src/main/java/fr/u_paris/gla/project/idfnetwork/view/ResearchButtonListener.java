@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import fr.u_paris.gla.project.idfnetwork.Itinerary;
 import fr.u_paris.gla.project.idfnetwork.ItineraryCalculator;
 import fr.u_paris.gla.project.idfnetwork.Network;
-import fr.u_paris.gla.project.idfnetwork.Stop;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 
 public class ResearchButtonListener implements ActionListener {
     private CustomTextField departureField;
