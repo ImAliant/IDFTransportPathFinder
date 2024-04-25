@@ -6,10 +6,10 @@ import javax.swing.border.Border;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -17,30 +17,32 @@ import javax.swing.JLabel;
 
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.Stop;
+import fr.u_paris.gla.project.idfnetwork.view.CustomTextField;
+import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsScrollPane;
 
 public class AutoComplete {
+    private AutoComplete() {}
 
-    public static void showSuggestions(JTextField prefix, JPanel allStations) {
+    public static void showSuggestions(CustomTextField prefix, SuggestionStationsScrollPane suggestions) {
         List<Stop> stops = Network.getInstance().getStops();
-        List<String> stationNames = new ArrayList<>();
-        stops.forEach(stop -> {
-            stationNames.add(stop.getStopName());
-        });
+        JPanel allStations = suggestions.getSuggestions();
 
-        String text = prefix.getText();
         allStations.removeAll();
         Border blackline = BorderFactory.createLineBorder(Color.black);
-        for (String station : stationNames) {
-            if (station.toLowerCase().contains(text.toLowerCase())) {
+        for (Stop stop : stops) {
+            String station = stop.getStopName();
+            String linesForStop = stop.getLines().toString();
+            String stopWithLines = station + "[" + linesForStop +"]";
+            if (station.toLowerCase().contains(prefix.getText().toLowerCase())) {
 
-                JLabel suggestionLabel = new JLabel(station, JLabel.CENTER);
+                JLabel suggestionLabel = new JLabel(stopWithLines, SwingConstants.LEFT);
 
                 suggestionLabel.setBorder(blackline);
                 suggestionLabel.addMouseListener(
                         new MouseAdapter() {
                             @Override
                             public void mouseClicked(MouseEvent e) {
-                                prefix.setText(station);
+                                prefix.setText(stopWithLines);
                                 allStations.removeAll();
 
                             }
@@ -50,26 +52,5 @@ public class AutoComplete {
         }
         allStations.revalidate();
         allStations.repaint();
-    }
-
-    public static DocumentListener myDocumentListener(JTextField t, JPanel j) {
-        DocumentListener res =
-                new DocumentListener() {
-                    @Override
-                    public void insertUpdate(DocumentEvent e) {
-                        SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-                    }
-
-                    @Override
-                    public void removeUpdate(DocumentEvent e) {
-                        SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-                    }
-
-                    @Override
-                    public void changedUpdate(DocumentEvent e) {
-                        SwingUtilities.invokeLater(() -> showSuggestions(t, j));
-                    }
-                };
-        return res;
     }
 }

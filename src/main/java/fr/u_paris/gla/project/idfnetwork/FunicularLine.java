@@ -29,7 +29,7 @@ public class FunicularLine extends Line {
 
     @Override
     public String toString() {
-        return "FUNICULAIRE " + lname;
+        return "F " + lname;
     }
 
     @Override

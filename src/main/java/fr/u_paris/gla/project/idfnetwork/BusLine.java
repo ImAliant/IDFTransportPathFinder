@@ -30,7 +30,7 @@ public class BusLine extends Line {
 
     @Override
     public String toString() {
-        return "BUS " + lname;
+        return "B " + lname;
     }
 
     @Override
