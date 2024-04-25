@@ -21,7 +21,7 @@ class NetworkLoaderTest {
     public void getStopFromStopArray(){
         List<Stop> stop = Network.getInstance().getStops();
         assertNotNull(stop);
-        System.out.println(stop.get(0));
+        //System.out.println(stop.get(0));
     }
 
 

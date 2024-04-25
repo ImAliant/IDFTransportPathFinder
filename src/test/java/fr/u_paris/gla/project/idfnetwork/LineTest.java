@@ -84,9 +84,4 @@ class LineTest {
     }
 
 
-    void testAddPaths(){
-
-    }
-
-
 }
