@@ -35,7 +35,7 @@ public class ResearchPanel extends JPanel {
         CustomTextField departureField = new CustomTextField(departureSuggestion);
         CustomTextField arrivalField = new CustomTextField(arrivalSuggestion);
         TimePicker timePicker = new TimePicker();
-        ResearchButton searchButton = new ResearchButton("Recherche");
+        ResearchButton searchButton = new ResearchButton("Recherche", departureField, arrivalField);
 
         addComponent(departureLabel, gbc);
 
