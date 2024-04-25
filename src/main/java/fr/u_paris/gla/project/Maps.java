@@ -1,6 +1,7 @@
 package fr.u_paris.gla.project;
 
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -67,7 +68,7 @@ public class Maps extends JXMapViewer {
      */
     public Maps(int width, int height) {
         super();
-
+       
         init(width, height);
     }
 
@@ -88,10 +89,7 @@ public class Maps extends JXMapViewer {
 
         configureMapMouseListeners();
 
-        //displayNetwork();
-       
-        
-        this.setOverlayPainter(routePainter);
+        displayNetwork();
     }
 
     private void displayNetwork() {
@@ -101,7 +99,6 @@ public class Maps extends JXMapViewer {
         stops.forEach(this::addStopWaypoint);
 
         initWaypoint();
-        
     }
 
     private void addStopWaypoint(Stop stop) {
@@ -113,12 +110,20 @@ public class Maps extends JXMapViewer {
     private void initWaypoint() {
         WaypointPainter<StopWaypoint> wp = new StopRender();
         wp.setWaypoints(stopWaypoints);
+        
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
-       
-        
-  
+        //Ligne du RER B
+        Line line = Network.getInstance().findLine("B",LineType.RER);
+        this.drawLine(line);
+
+        //Create a compound painter that uses both the route-painter and the waypoint-painter
+        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+        painters.add(routePainter);
+        painters.add(wp);
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+        this.setOverlayPainter(painter);
     }
 
     private void configureMapMouseListeners() {
@@ -157,9 +162,21 @@ public class Maps extends JXMapViewer {
         if (zoom > MAX_ZOOM) {
             return;
         }
-
         super.setZoom(zoom);
-
     }
- 
+
+    void drawLine(Line line){
+        List<TravelPath> paths = line.getPaths();
+        if (line.getColor().length() != 6) {
+            routePainter = new RoutePainter(paths);
+        }
+        else{
+
+        Color couleur = Color.decode("#" + line.getColor());
+
+        routePainter = new RoutePainter(paths,couleur);
+        }
+    }
+
+
 }

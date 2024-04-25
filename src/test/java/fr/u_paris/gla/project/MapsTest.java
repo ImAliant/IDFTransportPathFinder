@@ -9,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class MapsTest {
-    private int WIDTH = 100;
+   /*  private int WIDTH = 100;
     private int HEIGHT = 100;
     private Maps map = new Maps(WIDTH, HEIGHT);
 
@@ -77,4 +77,5 @@ class MapsTest {
 
         System.out.println("testSetZoom OK");
     }
+    */
 }

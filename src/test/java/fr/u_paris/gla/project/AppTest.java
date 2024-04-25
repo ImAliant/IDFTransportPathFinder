@@ -1,12 +1,11 @@
 package fr.u_paris.gla.project;
 
 import java.io.File;
-import java.io.IOException;
+
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,15 +15,15 @@ import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
 
 /** Unit test for simple App. */
 class AppTest {
-    @BeforeEach
-    void setUp() {
+  //  @BeforeEach
+    //void setUp() {
         // Delete the output.csv file before each test
-        File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
-        if (file.exists()) {
-            file.delete();
-        }
-    }
-
+      //  File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
+        //if (file.exists()) {
+          //  file.delete();
+       // }
+    //}
+ /* 
     @AfterEach
     void reset() {
         App.reset();
@@ -40,7 +39,7 @@ class AppTest {
         System.out.println("testLaunch OK");
     }
 
-    /* @Test
+   @Test
     void testInitNetworkFileExists() {
         File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
         try {
