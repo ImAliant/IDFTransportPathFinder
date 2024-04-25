@@ -31,14 +31,15 @@ public class RoutePainter implements Painter<JXMapViewer>
     public RoutePainter(List<TravelPath> track,Color color)
     {
      
-        this.track = new ArrayList<TravelPath>();
+        this.track = new ArrayList<TravelPath>(track);
         this.color = color;
     }
     public RoutePainter(List<TravelPath> track)
     {
      
-        this.track = new ArrayList<TravelPath>();
-       }
+        this.track = new ArrayList<TravelPath>(track);
+       
+    }
 
 
 
@@ -71,17 +72,27 @@ public class RoutePainter implements Painter<JXMapViewer>
 
     private void drawRoute(Graphics2D g, JXMapViewer map)
     {
-        
+       
+
+        boolean first = true;
 
         for (TravelPath path : track)
         {
-            GeoPosition gPosStart=new GeoPosition(path.getStart().getLatitude(),path.getStart().getLongitude());
-            GeoPosition gPosEnd=new GeoPosition(path.getEnd().getLatitude(),path.getEnd().getLongitude());
-            Point2D pointaStart = map.getTileFactory().geoToPixel(gPosStart, map.getZoom());
-            Point2D pointEnd = map.getTileFactory().geoToPixel(gPosEnd, map.getZoom());
+            GeoPosition gp = new  GeoPosition(path.getStart().getLatitude(), path.getStart().getLongitude());
+            Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
+            GeoPosition gp2 = new  GeoPosition(path.getEnd().getLatitude(), path.getEnd().getLongitude());
+            Point2D pt2 = map.getTileFactory().geoToPixel(gp2, map.getZoom());
+
+            if (first)
+            {
+                first = false;
+            }
+            else
+            {
+                g.drawLine((int) pt.getX(), (int) pt.getY(), (int )pt2.getX(),(int) pt2.getY());
+            }
 
            
-                g.drawLine((int)pointaStart.getX(),(int) pointaStart.getY(), (int)pointEnd.getX(), (int)pointEnd.getY());
         }
     }
 }
