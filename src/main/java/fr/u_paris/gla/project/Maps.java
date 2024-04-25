@@ -89,7 +89,7 @@ public class Maps extends JXMapViewer {
         configureMapMouseListeners();
 
         //displayNetwork();
-        this.DrawRERALine();
+       
         
         this.setOverlayPainter(routePainter);
     }
@@ -101,6 +101,7 @@ public class Maps extends JXMapViewer {
         stops.forEach(this::addStopWaypoint);
 
         initWaypoint();
+        
     }
 
     private void addStopWaypoint(Stop stop) {
@@ -115,13 +116,6 @@ public class Maps extends JXMapViewer {
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
-        
-        this.DrawRERALine();
-        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
-        painters.add(wp);
-        painters.add(routePainter);
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        this.setOverlayPainter(painter);
        
         
   
@@ -167,18 +161,5 @@ public class Maps extends JXMapViewer {
         super.setZoom(zoom);
 
     }
-    void DrawRERALine(){
-        Line RERA = Network.getInstance().findLine("A", LineType.RER);
-
-       
-
-        List<TravelPath> paths = RERA.getPaths();
-       
-        
-        routePainter = new RoutePainter(paths);
-        }
-
-
-
-
+ 
 }
