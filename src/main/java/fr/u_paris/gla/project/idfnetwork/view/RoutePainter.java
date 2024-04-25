@@ -19,16 +19,17 @@ import org.jxmapviewer.painter.Painter;
 
 public class RoutePainter implements Painter<JXMapViewer>
 {
-    private Color color = Color.RED;
+    private Color color ;
     private boolean antiAlias = true;
 
     private List<GeoPosition> track;
 
  
-    public RoutePainter(List<GeoPosition> track)
+    public RoutePainter(List<GeoPosition> track,Color color)
     {
      
         this.track = new ArrayList<GeoPosition>(track);
+        this.color = color;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class RoutePainter implements Painter<JXMapViewer>
 
         for (GeoPosition gp : track)
         {
-            // convert geo-coordinate to world bitmap pixel
+         
             Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
 
             if (first)
