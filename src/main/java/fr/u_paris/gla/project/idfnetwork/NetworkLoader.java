@@ -75,6 +75,7 @@ public class NetworkLoader {
         currentLine.addPath(startStop, endStop, distance, duration);
         currentLine.addStop(startStop);
         startStop.addLine(currentLine);
+        endStop.addLine(currentLine);
     }
 
     /**
