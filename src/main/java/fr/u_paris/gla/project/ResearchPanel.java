@@ -92,7 +92,7 @@ public class ResearchPanel extends JPanel {
                 String departName = departureField.getText();
                 String arriveName = arrivalField.getText();
 
-                Stop startStop = Network.getInstance().findStopByName(departName);/* new Stop(departName); */
+                Stop startStop = Network.getInstance().findStopByName(departName);
                 Stop destinationStop = Network.getInstance().findStopByName(arriveName);
                 if (startStop == null || destinationStop == null) {
                     System.out.println("Un des arrêts n'est pas trouvé.");

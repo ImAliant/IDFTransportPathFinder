@@ -84,17 +84,6 @@ public class Network {
         return null; 
     }
 
-    /* public List<Stop> findAllStopsByName(String name) {
-        List<Stop> stops = Network.getInstance().getStops();
-        List<Stop> foundStops = new ArrayList<>();
-        for (Stop stop : stops) {
-            if (stop.getStopName().equalsIgnoreCase(name)) {
-                foundStops.add(stop);
-            }
-        }
-        return foundStops;
-    } */
-
     /**
      * Adds the given stop to the network
      * 
