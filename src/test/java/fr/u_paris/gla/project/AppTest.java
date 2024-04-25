@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
+import fr.u_paris.gla.project.idfnetwork.Network;
 
 /** Unit test for simple App. */
 class AppTest {
@@ -23,6 +24,7 @@ class AppTest {
         if (file.exists()) {
             file.delete();
         }
+        Network.getInstance().clear();
     }
 
     @AfterEach

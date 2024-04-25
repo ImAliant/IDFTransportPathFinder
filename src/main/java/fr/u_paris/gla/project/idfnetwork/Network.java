@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+
 import java.util.HashMap;
 
 /**
@@ -130,8 +133,8 @@ public class Network {
         return Collections.unmodifiableList(new ArrayList<>(stops.values()));
     }
 
-    // DEBUG function
-    protected void clear() {
+    //DEBUG function
+    public void clear() {
         lines.clear();
         stops.clear();
     }

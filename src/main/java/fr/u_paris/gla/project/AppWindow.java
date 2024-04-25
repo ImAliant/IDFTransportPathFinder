@@ -3,24 +3,31 @@ package fr.u_paris.gla.project;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class AppWindow extends JFrame {
-
     private static final long serialVersionUID = 1L;
+
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
 
     private Maps map;
 
     private JButton zoomIn;
-
     private JButton zoomOut;
 
     public AppWindow(String title) {
         super();
-        this.map = new Maps(WIDTH, HEIGHT);
+
+        this.map = new Maps();
+        
         init(title);
+
+        pack();
     }
 
     private void init(String title) {
@@ -68,7 +75,6 @@ public class AppWindow extends JFrame {
 
         // Add the container to the frame
         add(container);
-
     }
 
     /**
@@ -76,9 +82,9 @@ public class AppWindow extends JFrame {
      */
     private void initFrame(String title) {
         setTitle(title);
-        // setSize(WIDTH, HEIGHT);
+        super.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLocationRelativeTo(null);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
     }

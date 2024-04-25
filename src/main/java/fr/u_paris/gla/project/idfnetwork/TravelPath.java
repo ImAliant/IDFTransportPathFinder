@@ -1,5 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork;
 
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+
 /**
  * Represents a path between two stops
  */

@@ -2,6 +2,9 @@ package fr.u_paris.gla.project.idfnetwork;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class LineTest {

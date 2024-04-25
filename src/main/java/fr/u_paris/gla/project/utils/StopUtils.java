@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fr.u_paris.gla.project.idfnetwork.Stop;
 import fr.u_paris.gla.project.idfnetwork.Network;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.utils.GPS;
 
 /**

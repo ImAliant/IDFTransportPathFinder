@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import fr.u_paris.gla.project.idfnetwork.factory.LineFactory;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.io.TimeFormat;
 
 /**
@@ -64,7 +65,8 @@ public class NetworkLoader {
         String routetype = fields[ROUTETYPE_INDEX].trim();
         String color = fields[COLOR_INDEX].trim();
         
-        Line currentLine = findOrCreateLine(lname, LineType.fromString(routetype), color);
+        LineType type = LineType.fromString(routetype);
+        Line currentLine = findOrCreateLine(lname, type, color);
 
         Stop startStop = processStop(LONGLAT_INDEX, STOP_NAME_INDEX);
         Stop endStop = processStop(NEXT_LONGLAT_INDEX, NEXT_STOP_NAME_INDEX);
