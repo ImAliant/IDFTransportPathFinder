@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+
 public class AppWindow extends JFrame {
     private static final long serialVersionUID = 1L;
 
@@ -110,4 +111,6 @@ public class AppWindow extends JFrame {
     public JButton getZoomOutButton() {
         return zoomOut;
     }
+   
+
 }
