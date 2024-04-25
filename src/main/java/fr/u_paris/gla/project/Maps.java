@@ -15,6 +15,7 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
+import org.jxmapviewer.painter.Painter;
 
 
 
@@ -143,10 +144,17 @@ public class Maps extends JXMapViewer {
         if (zoom > MAX_ZOOM) {
             return;
         }
+       
 
         super.setZoom(zoom);
     }
 
-   
+//dessiner une ligne entre deux points
+    public void myDrawLine() {
+
+        
+        
+
+    }
 
 }
