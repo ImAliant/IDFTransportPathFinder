@@ -78,9 +78,11 @@ public class Network {
     }
 
     public Stop findStopByName(String name) {
+        String[] parts = name.split("\\["); // on utilise \\[ car [ est un caractère spécial dans les expressions régulières.
+        String stopName = parts[0].trim();
         List<Stop> stops = Network.getInstance().getStops();
         for (Stop stop : stops) {
-            if (stop.getStopName().equalsIgnoreCase(name)) {
+            if (stop.getStopName().equalsIgnoreCase(stopName)) {
                 return stop;
             }
         }
