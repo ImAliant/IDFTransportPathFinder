@@ -3,13 +3,11 @@ package fr.u_paris.gla.project;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
-import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import fr.u_paris.gla.project.idfnetwork.view.StopWaypoint;
 
 public class AppWindow extends JFrame {
 

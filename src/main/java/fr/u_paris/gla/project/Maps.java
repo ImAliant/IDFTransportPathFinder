@@ -54,7 +54,7 @@ public class Maps extends JXMapViewer {
     /**
      * Maximum zoom of the map.
      */
-    public static final int MAX_ZOOM = 50;
+    public static final int MAX_ZOOM = 5;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
     WaypointPainter<StopWaypoint> wp ;
@@ -114,16 +114,17 @@ public class Maps extends JXMapViewer {
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
-        //Ligne du RER B
+        /* Draw RER B
         Line line = Network.getInstance().findLine("B",LineType.RER);
         this.drawLine(line);
+        */
 
         //Create a compound painter that uses both the route-painter and the waypoint-painter
-        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+        /* List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
         painters.add(routePainter);
         painters.add(wp);
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        this.setOverlayPainter(painter);
+        this.setOverlayPainter(painter) */;
     }
 
     private void configureMapMouseListeners() {
