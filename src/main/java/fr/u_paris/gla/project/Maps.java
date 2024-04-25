@@ -1,5 +1,7 @@
 package fr.u_paris.gla.project;
 
+import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +23,7 @@ import org.jxmapviewer.painter.Painter;
 
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.Stop;
+import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.StopWaypoint;
 
@@ -147,11 +150,21 @@ public class Maps extends JXMapViewer {
        
 
         super.setZoom(zoom);
+
+        this.myDrawLine();
     }
 
 //dessiner une ligne entre deux points
     public void myDrawLine() {
+        List<GeoPosition> track = new ArrayList<>();
+        track.add(new GeoPosition(48.85656189753147, 2.4002576758282745));
+        track.add(new GeoPosition(48.85656189753147, 2.4002576758282745));
+        track.add(new GeoPosition(48.857436224971075, 2.3991565457579562));
+        track.add(new GeoPosition(48.855996348902664, 2.406178499856704));
 
+            RoutePainter routePainter = new RoutePainter(   track );
+            Graphics2D g = (Graphics2D) this.getGraphicsConfiguration().createCompatibleImage(WIDTH, HEIGHT).getGraphics();
+            routePainter.paint(g, this, WIDTH, HEIGHT);
         
         
 
