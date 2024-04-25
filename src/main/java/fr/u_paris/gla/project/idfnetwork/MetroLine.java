@@ -30,7 +30,7 @@ public class MetroLine extends Line {
 
     @Override
     public String toString() {
-        return "METRO " + lname;
+        return "M " + lname;
     }
 
     @Override

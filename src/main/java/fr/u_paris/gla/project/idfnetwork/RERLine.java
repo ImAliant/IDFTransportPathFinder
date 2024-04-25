@@ -30,7 +30,7 @@ public class RERLine extends Line {
 
     @Override
     public String toString() {
-        return "RER " + lname;
+        return "R " + lname;
     }
 
     @Override
