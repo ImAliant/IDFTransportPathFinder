@@ -73,6 +73,17 @@ public abstract class Line {
     }
 
     /**
+     * Remove all paths from the line
+     */
+    public void removePaths() {
+        paths.clear();
+        for (Stop stop : stops.values()) {
+            stop.removePaths();
+        }
+    }
+
+
+    /**
      * Find a stop by its name
      * @param name
      * @return the stop with the given name, or null if it does not exist

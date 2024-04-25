@@ -1,7 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork;
 
 public enum LineType {
-    BUS, TRAMWAY, RER, METRO, FUNICULAIRE;
+    BUS, TRAMWAY, RER, METRO, FUNICULAIRE, WALKING;
 
     public static LineType fromString(String type) {
         switch (type) {
@@ -15,6 +15,8 @@ public enum LineType {
                 return METRO;
             case "Funicular":
                 return FUNICULAIRE;
+            case "Walking":
+                return WALKING;
             default:
                 throw new IllegalArgumentException("Unknown line type: " + type);
         }

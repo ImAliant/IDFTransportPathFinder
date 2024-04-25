@@ -8,6 +8,44 @@ import java.util.*;
 public class ItineraryCalculator {
     public static Itinerary CalculateRoad(Stop start, Stop destination) {
 
+        Stop tmpStart = null;
+        Stop tmpDest = null;
+        List<Stop> nearDest = new ArrayList<>();;
+        double AVERAGE_WALKING_SPEED = 5.0*3600;
+        Line walk = new WalkingLine("Marche", "Bleu");
+
+        if(Network.findSameStop(start.getStopName(), start.getLongitude(), start.getLatitude()) == null){
+            tmpStart = start;
+            Network.addStop(start);
+            List<Stop> nearStops = getStopsFromAdress(start.getLatitude(), start.getLongitude());
+            if(!nearStops.isEmpty()) {
+                for (Stop stop : nearStops) {
+                    double distance = Math.sqrt(Math.pow(start.getLatitude() - stop.getLatitude(), 2) + Math.pow(start.getLongitude() - stop.getLongitude(), 2));
+                    int duration = (int) ((int) distance/AVERAGE_WALKING_SPEED);
+
+                    walk.addPath(start, stop, distance, duration);
+                    walk.addStop(start);
+                    start.addLine(walk);
+                }
+            }
+        }
+
+        if(Network.findSameStop(destination.getStopName(), destination.getLongitude(), destination.getLatitude()) == null){
+            tmpDest = destination;
+            Network.addStop(destination);
+            nearDest = getStopsFromAdress(destination.getLatitude(), destination.getLongitude());
+            if(!nearDest.isEmpty()) {
+                for (Stop stop : nearDest) {
+                    double distance = Math.sqrt(Math.pow(destination.getLatitude() - stop.getLatitude(), 2) + Math.pow(destination.getLongitude() - stop.getLongitude(), 2));
+                    int duration = (int) ((int) distance/AVERAGE_WALKING_SPEED);
+
+                    walk.addPath( stop, destination, distance, duration);
+                    walk.addStop(stop);
+                    stop.addLine(walk);
+                }
+            }
+        }
+
         // Initialize Dijskstra algorithm
         Map<Stop, Double> duration = new HashMap<>();
         Map<Stop, Stop> previousStops = new HashMap<>();
@@ -35,7 +73,10 @@ public class ItineraryCalculator {
                     if(previousStops.get(currentStop) != null) {
                         for (TravelPath p : previousStops.get(currentStop).getPaths()) {
                             if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()))) {
-                                newDistance += 0;
+                                double distance = Math.sqrt(Math.pow(path.getStart().getLatitude() - p.getEnd().getLatitude(), 2) +
+                                        Math.pow(path.getStart().getLongitude() - p.getEnd().getLongitude(), 2));
+                                newDistance += (int) ((int) distance/AVERAGE_WALKING_SPEED);
+
                             }
                         }
                     }
@@ -87,7 +128,9 @@ public class ItineraryCalculator {
                 if (path.getEnd().equals(next)){
                     for (TravelPath p : previouss.getPaths()) {
                         if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()) )) {
-                            totalDuration += 0 ;
+                            double distance = Math.sqrt(Math.pow(path.getStart().getLatitude() - p.getEnd().getLatitude(), 2) +
+                                    Math.pow(path.getStart().getLongitude() - p.getEnd().getLongitude(), 2));
+                            totalDuration += (int) ((int) distance/AVERAGE_WALKING_SPEED);
                         }
                     }
                     totalDistance += path.getDistance();
@@ -97,7 +140,16 @@ public class ItineraryCalculator {
                 }
             }
         }
-            return new Itinerary(stops,lines,totalDistance,totalDuration);
+        if(!nearDest.isEmpty()) {
+            for (Stop stop : nearDest) {
+                stop.removeLine(walk);
+            }
+        }
+        walk.removePaths();
+        Network.removeStop(tmpDest);
+        Network.removeStop(tmpStart);
+
+        return new Itinerary(stops,lines,totalDistance,totalDuration);
     }
 
 

@@ -74,8 +74,8 @@ public class Network {
         HashMap<String,Stop> stopMap = sameStops.get(name);
         if (stopMap != null) {
             for (Stop stop : stopMap.values()) {
-                //double distance = Math.sqrt(Math.pow(latitude - stop.getLatitude(), 2) + Math.pow(longitude - stop.getLongitude(), 2));
-                double distance = GPS.distance(latitude,longitude,stop.getLatitude(),stop.getLongitude());
+                double distance = Math.sqrt(Math.pow(latitude - stop.getLatitude(), 2) + Math.pow(longitude - stop.getLongitude(), 2));
+                //double distance = GPS.distance(latitude,longitude,stop.getLatitude(),stop.getLongitude());
                 if (distance < 0.5) {
                     return stop;
                 }
@@ -87,7 +87,7 @@ public class Network {
      * Adds the given stop to the network
      * @param stop
      */ 
-    protected void addStop(Stop stop) {
+    protected static void addStop(Stop stop) {
         String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
         stops.putIfAbsent(key, stop);
 
@@ -97,6 +97,16 @@ public class Network {
             sameStops.put(namekey, new HashMap<>());
         }
         sameStops.get(namekey).putIfAbsent(key, stop);
+    }
+
+    protected static void removeStop(Stop stop) {
+        if(stop != null) {
+            String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
+            stops.remove(key, stop);
+
+            String namekey = generateStopNameKey(stop.getStopName());
+            sameStops.get(namekey).remove(key, stop);
+        }
     }
     /**
      * Generates a key for a line
@@ -117,7 +127,7 @@ public class Network {
     private static String generateStopKey(String name, double longitude, double latitude) {
         return name + "-" + longitude + "-" + latitude;
     }
-    private String generateStopNameKey(String name) {
+    private static String generateStopNameKey(String name) {
         return name;
     }
 

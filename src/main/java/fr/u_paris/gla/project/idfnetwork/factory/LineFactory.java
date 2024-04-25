@@ -1,12 +1,6 @@
 package fr.u_paris.gla.project.idfnetwork.factory;
 
-import fr.u_paris.gla.project.idfnetwork.BusLine;
-import fr.u_paris.gla.project.idfnetwork.FunicularLine;
-import fr.u_paris.gla.project.idfnetwork.Line;
-import fr.u_paris.gla.project.idfnetwork.LineType;
-import fr.u_paris.gla.project.idfnetwork.MetroLine;
-import fr.u_paris.gla.project.idfnetwork.RERLine;
-import fr.u_paris.gla.project.idfnetwork.TramwayLine;
+import fr.u_paris.gla.project.idfnetwork.*;
 
 public class LineFactory {
     private LineFactory() {}
@@ -23,6 +17,8 @@ public class LineFactory {
                 return new MetroLine(name, color);
             case FUNICULAIRE:
                 return new FunicularLine(name, color);
+            case WALKING:
+                return new WalkingLine(name, color);
             default:
                 throw new IllegalArgumentException("Unknown line type: " + type);
         }

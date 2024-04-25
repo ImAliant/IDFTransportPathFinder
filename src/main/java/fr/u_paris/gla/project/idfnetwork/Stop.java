@@ -45,6 +45,10 @@ public class Stop {
         String key = generatePathKey(this, end);
         return paths.putIfAbsent(key, path) == null;
     }
+
+    public void removePaths() {
+        paths.clear();
+    }
     /**
      * Add a line to the stop if it is not already in the stop
      * @param line
@@ -53,6 +57,11 @@ public class Stop {
     protected boolean addLine(Line line) {
         String key = generateLineKey(line.getLineName(), line.getType());
         return lines.putIfAbsent(key, line) == null;
+    }
+
+    protected boolean removeLine(Line line) {
+        String key = generateLineKey(line.getLineName(), line.getType());
+        return lines.remove(key, line);
     }
     /**
      * Generate a key for a path
