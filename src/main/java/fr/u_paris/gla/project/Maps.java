@@ -25,6 +25,7 @@ import fr.u_paris.gla.project.idfnetwork.Line;
 import fr.u_paris.gla.project.idfnetwork.LineType;
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.Stop;
+import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.StopWaypoint;
@@ -53,9 +54,11 @@ public class Maps extends JXMapViewer {
     /**
      * Maximum zoom of the map.
      */
-    public static final int MAX_ZOOM = 5;
+    public static final int MAX_ZOOM = 100;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
+    WaypointPainter<StopWaypoint> wp ;
+    RoutePainter routePainter;
 
     /**
      * Constructor of the maps.
@@ -110,12 +113,15 @@ public class Maps extends JXMapViewer {
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
+        
+        this.DrawRERALine();
         List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
         painters.add(wp);
-
+        painters.add(routePainter);
         CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
         this.setOverlayPainter(painter);
-        this.DrawRERALine();
+       
+        
   
     }
 
@@ -155,28 +161,24 @@ public class Maps extends JXMapViewer {
         if (zoom > MAX_ZOOM) {
             return;
         }
-       
 
         super.setZoom(zoom);
 
-       
     }
     void DrawRERALine(){
         Line RERA = Network.getInstance().findLine("A", LineType.RER);
+
         List<Stop> stops = RERA.getStops();
+
+        List<TravelPath> paths = RERA.getPaths();
         List<GeoPosition> track = new ArrayList<>();
         for (Stop stop : stops) {   
             track.add(new GeoPosition(stop.getLatitude(), stop.getLongitude()));
         }
-        RoutePainter routePainter = new RoutePainter(track, Color.RED);
-        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
-        painters.add(routePainter);
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        this.setOverlayPainter(painter);
+        routePainter = new RoutePainter(track);
+        }
 
 
-
-    }
 
 
 }

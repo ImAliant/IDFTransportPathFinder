@@ -19,7 +19,7 @@ import org.jxmapviewer.painter.Painter;
 
 public class RoutePainter implements Painter<JXMapViewer>
 {
-    private Color color ;
+    private Color color = Color.RED;
     private boolean antiAlias = true;
 
     private List<GeoPosition> track;
@@ -31,6 +31,13 @@ public class RoutePainter implements Painter<JXMapViewer>
         this.track = new ArrayList<GeoPosition>(track);
         this.color = color;
     }
+    public RoutePainter(List<GeoPosition> track)
+    {
+     
+        this.track = new ArrayList<GeoPosition>(track);
+       }
+
+
 
     @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h)
