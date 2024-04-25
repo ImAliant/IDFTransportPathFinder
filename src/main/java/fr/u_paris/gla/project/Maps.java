@@ -1,7 +1,6 @@
 package fr.u_paris.gla.project;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +53,7 @@ public class Maps extends JXMapViewer {
     /**
      * Maximum zoom of the map.
      */
-    public static final int MAX_ZOOM = 100;
+    public static final int MAX_ZOOM = 50;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
     WaypointPainter<StopWaypoint> wp ;
@@ -89,7 +88,10 @@ public class Maps extends JXMapViewer {
 
         configureMapMouseListeners();
 
-        displayNetwork();
+        //displayNetwork();
+        this.DrawRERALine();
+        
+        this.setOverlayPainter(routePainter);
     }
 
     private void displayNetwork() {
@@ -168,14 +170,12 @@ public class Maps extends JXMapViewer {
     void DrawRERALine(){
         Line RERA = Network.getInstance().findLine("A", LineType.RER);
 
-        List<Stop> stops = RERA.getStops();
+       
 
         List<TravelPath> paths = RERA.getPaths();
-        List<GeoPosition> track = new ArrayList<>();
-        for (Stop stop : stops) {   
-            track.add(new GeoPosition(stop.getLatitude(), stop.getLongitude()));
-        }
-        routePainter = new RoutePainter(track);
+       
+        
+        routePainter = new RoutePainter(paths);
         }
 
 

@@ -14,6 +14,9 @@ import java.util.List;
 
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
+
+import fr.u_paris.gla.project.idfnetwork.TravelPath;
+
 import org.jxmapviewer.painter.Painter;
 
 
@@ -22,19 +25,19 @@ public class RoutePainter implements Painter<JXMapViewer>
     private Color color = Color.RED;
     private boolean antiAlias = true;
 
-    private List<GeoPosition> track;
+    private List<TravelPath> track;
 
  
-    public RoutePainter(List<GeoPosition> track,Color color)
+    public RoutePainter(List<TravelPath> track,Color color)
     {
      
-        this.track = new ArrayList<GeoPosition>(track);
+        this.track = new ArrayList<TravelPath>();
         this.color = color;
     }
-    public RoutePainter(List<GeoPosition> track)
+    public RoutePainter(List<TravelPath> track)
     {
      
-        this.track = new ArrayList<GeoPosition>(track);
+        this.track = new ArrayList<TravelPath>();
        }
 
 
@@ -68,27 +71,17 @@ public class RoutePainter implements Painter<JXMapViewer>
 
     private void drawRoute(Graphics2D g, JXMapViewer map)
     {
-        int lastX = 0;
-        int lastY = 0;
+        
 
-        boolean first = true;
-
-        for (GeoPosition gp : track)
+        for (TravelPath path : track)
         {
-         
-            Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
+            GeoPosition gPosStart=new GeoPosition(path.getStart().getLatitude(),path.getStart().getLongitude());
+            GeoPosition gPosEnd=new GeoPosition(path.getEnd().getLatitude(),path.getEnd().getLongitude());
+            Point2D pointaStart = map.getTileFactory().geoToPixel(gPosStart, map.getZoom());
+            Point2D pointEnd = map.getTileFactory().geoToPixel(gPosEnd, map.getZoom());
 
-            if (first)
-            {
-                first = false;
-            }
-            else
-            {
-                g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
-            }
-
-            lastX = (int) pt.getX();
-            lastY = (int) pt.getY();
+           
+                g.drawLine((int)pointaStart.getX(),(int) pointaStart.getY(), (int)pointEnd.getX(), (int)pointEnd.getY());
         }
     }
 }
