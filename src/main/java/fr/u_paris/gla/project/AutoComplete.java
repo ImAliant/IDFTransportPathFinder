@@ -31,16 +31,18 @@ public class AutoComplete {
         Border blackline = BorderFactory.createLineBorder(Color.black);
         for (Stop stop : stops) {
             String station = stop.getStopName();
+            String linesForStop = stop.getLines().toString();
+            String stopWithLines = station + "[" + linesForStop +"]";
             if (station.toLowerCase().contains(prefix.getText().toLowerCase())) {
 
-                JLabel suggestionLabel = new JLabel(station, SwingConstants.LEFT);
+                JLabel suggestionLabel = new JLabel(stopWithLines, SwingConstants.LEFT);
 
                 suggestionLabel.setBorder(blackline);
                 suggestionLabel.addMouseListener(
                         new MouseAdapter() {
                             @Override
                             public void mouseClicked(MouseEvent e) {
-                                prefix.setText(station);
+                                prefix.setText(stopWithLines);
                                 allStations.removeAll();
 
                             }

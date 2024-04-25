@@ -17,19 +17,16 @@ public class SuggestionDocumentListener implements DocumentListener {
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        System.out.println("insertUpdate");
         updateSuggestion(e);
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        System.out.println("removeUpdate");
         updateSuggestion(e);
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        System.out.println("changedUpdate");
         updateSuggestion(e);
 
     }
