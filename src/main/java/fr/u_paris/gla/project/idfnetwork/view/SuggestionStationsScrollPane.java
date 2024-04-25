@@ -26,6 +26,12 @@ public class SuggestionStationsScrollPane extends JScrollPane {
         suggestions.add(new CustomLabel(suggestion));
     }
 
+    public void clearSuggestion() {
+        suggestions.removeAll();
+        suggestions.revalidate();
+        suggestions.repaint();
+    }
+
     @Override
     public void setPreferredSize(Dimension preferredSize) {
         super.setPreferredSize(new Dimension(WIDTH, HEIGHT));

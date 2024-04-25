@@ -18,7 +18,7 @@ Dans sa version initiale, le programme fournit est un simple code qui se lance e
 
 Une fois le programme compilé, vous trouverez un jar executable dans le dossier target. Au nom de jar près (version changeante), vous pourrez l'exécuter avec:
 ```
-java -jar project-2024.1.0.0-SNAPSHOT.jar --info
+java -jar target/project-2024.1.0.0-SNAPSHOT-jar-with-dependencies.jar 
 ```
 
 L'option de lancement `--info` causera l'affichage dans la console d'informations de l'application.

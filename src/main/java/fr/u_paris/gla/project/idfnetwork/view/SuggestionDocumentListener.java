@@ -9,7 +9,7 @@ import fr.u_paris.gla.project.AutoComplete;
 public class SuggestionDocumentListener implements DocumentListener {
     private CustomTextField t;
     private SuggestionStationsScrollPane suggestions;
-    
+
     public SuggestionDocumentListener(CustomTextField t, SuggestionStationsScrollPane suggestions) {
         this.t = t;
         this.suggestions = suggestions;
@@ -17,16 +17,31 @@ public class SuggestionDocumentListener implements DocumentListener {
 
     @Override
     public void insertUpdate(DocumentEvent e) {
-        SwingUtilities.invokeLater(() -> AutoComplete.showSuggestions(t, suggestions));
+        System.out.println("insertUpdate");
+        updateSuggestion(e);
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
-        SwingUtilities.invokeLater(() -> AutoComplete.showSuggestions(t, suggestions));
+        System.out.println("removeUpdate");
+        updateSuggestion(e);
     }
 
     @Override
     public void changedUpdate(DocumentEvent e) {
-        SwingUtilities.invokeLater(() -> AutoComplete.showSuggestions(t, suggestions));
+        System.out.println("changedUpdate");
+        updateSuggestion(e);
+
     }
+
+    public void updateSuggestion(DocumentEvent e) {
+        SwingUtilities.invokeLater(() -> AutoComplete.showSuggestions(t, suggestions));
+
+        SwingUtilities.invokeLater(() -> {
+            if (t.getText().isEmpty()) {
+                suggestions.clearSuggestion();
+            }
+        });
+    }
+
 }
