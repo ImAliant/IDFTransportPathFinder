@@ -36,14 +36,14 @@ public static void showSuggestions(CustomTextField prefix, SuggestionStationsCom
             @Override
             public void mouseClicked(MouseEvent e) {
                 String selectItem = (String) suggestions.getSelectedItem();
-                
+                if(selectItem != null){
                 String[] parts = selectItem.split("\\["); // on utilise \\[ car [ est un caractère spécial dans les expressions régulières.
                 String stopName = parts[0].trim();
 
                 prefix.setText(stopName);
                 
                 SwingUtilities.invokeLater(() -> suggestions.clearSuggestion());
-                
+                }
             }
         }
     );
