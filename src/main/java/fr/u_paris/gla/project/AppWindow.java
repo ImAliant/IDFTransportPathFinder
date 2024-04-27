@@ -7,15 +7,31 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+
+import fr.u_paris.gla.project.idfnetwork.view.button.OpenLineDisplayPanelButton;
+import fr.u_paris.gla.project.idfnetwork.view.button.OpenResearchPanelButton;
 
 public class AppWindow extends JFrame {
     private static final long serialVersionUID = 1L;
 
+    private static final int X_OFFSET = 0;
+    private static final int Y_OFFSET = 40;
+
+    private static final int X_COL1_BUTTON = 10;
+    private static final int Y_COL1_BUTTON = 10;
+
+    private static final int MAX_WIDTH = 1920;
+    private static final int MAX_HEIGHT = 1080;
+
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
 
+    private JPanel container;
+
     private Maps map;
+    private ResearchPanel researchPanel;
 
     private JButton zoomIn;
     private JButton zoomOut;
@@ -23,8 +39,10 @@ public class AppWindow extends JFrame {
     public AppWindow(String title) {
         super();
 
+        this.container = new JPanel();
         this.map = new Maps();
-        
+        this.researchPanel = new ResearchPanel();
+
         init(title);
 
         pack();
@@ -33,22 +51,37 @@ public class AppWindow extends JFrame {
     private void init(String title) {
         initFrame(title);
 
-        JPanel container = new JPanel();
-        addMapAndButtons(container);
-
-        ResearchPanel researchPanel = new ResearchPanel();
-        container.add(researchPanel, BorderLayout.WEST);
-
+        addPanelAndButtons(container);
     }
 
-    private void addMapAndButtons(JPanel container) {
+    private void addPanelAndButtons(JPanel container) {
         /**
          * Container of the map and the buttons.
          */
         container.setLayout(new BorderLayout());
 
+        JLayeredPane lPane = new JLayeredPane();
+        lPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+
+        OpenResearchPanelButton searchButton = new OpenResearchPanelButton(
+                X_COL1_BUTTON, Y_COL1_BUTTON,
+                researchPanel);
+        OpenLineDisplayPanelButton lineButton = new OpenLineDisplayPanelButton(
+                X_COL1_BUTTON, Y_COL1_BUTTON + 40/*,
+                researchPanel */);
+
+        /* JButton test2 = new JButton();
+        test2.setBounds(10, 50, 25, 25); */
+
+        map.setBounds(0, 0, MAX_WIDTH, MAX_HEIGHT);
+
+        lPane.add(map, 0, 0);
+        lPane.add(searchButton, 1, 0);
+        lPane.add(lineButton, 1, 0);
+
         // Add the map to the center of the container
-        container.add(map, BorderLayout.CENTER);
+        container.add(lPane, BorderLayout.CENTER);
+        container.add(researchPanel, BorderLayout.WEST);
 
         /**
          * Panel to put the buttons.

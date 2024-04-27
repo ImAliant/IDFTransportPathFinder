@@ -1,6 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork.view.waypoint.button;
 
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.utils.IconUtils;
 
 public class DefaultStopButtonWaypoint extends StopButtonWaypoint {
     private static final int ZOOM_THRESHOLD = 0;
@@ -11,7 +12,7 @@ public class DefaultStopButtonWaypoint extends StopButtonWaypoint {
         this.zoom = ZOOM_THRESHOLD;
 
         try {
-            setupIcon();
+            IconUtils.setupIcon(this, WIDTH, HEIGHT, iconPath);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork.view.waypoint.button;
 
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.utils.IconUtils;
 
 public class RERStopButtonWaypoint extends StopButtonWaypoint {
     private static final String RER_ICON_PATH = "src/main/resources/fr/u_paris/gla/project/stop_logo/rer_stop_logo.png";
@@ -12,7 +13,7 @@ public class RERStopButtonWaypoint extends StopButtonWaypoint {
         this.iconPath = RER_ICON_PATH;
 
         try {
-            setupIcon();
+            IconUtils.setupIcon(this, WIDTH, HEIGHT, iconPath);
         } catch (Exception e) {
             e.printStackTrace();
         }

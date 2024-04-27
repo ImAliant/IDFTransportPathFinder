@@ -1,6 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork.view.waypoint.button;
 
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.utils.IconUtils;
 
 public class FunicularStopButtonWaypoint extends StopButtonWaypoint {
     private static final String FUNICULAR_ICON_PATH = "src/main/resources/fr/u_paris/gla/project/stop_logo/funicular_stop_logo.png";
@@ -12,7 +13,7 @@ public class FunicularStopButtonWaypoint extends StopButtonWaypoint {
         this.iconPath = FUNICULAR_ICON_PATH;
 
         try {
-            setupIcon();
+            IconUtils.setupIcon(this, WIDTH, HEIGHT, iconPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
