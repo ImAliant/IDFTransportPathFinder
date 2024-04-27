@@ -30,11 +30,15 @@ public class AppWindow extends JFrame {
 
     private JPanel container;
 
+    private JLayeredPane lPane;
     private Maps map;
     private ResearchPanel researchPanel;
+    private LineDisplayPanel lineDisplayPanel;
 
-    private JButton zoomIn;
-    private JButton zoomOut;
+    private ZoomInButton zoomIn;
+    private ZoomOutButton zoomOut;
+    private OpenResearchPanelButton openResearchButton;
+    private OpenLineDisplayPanelButton openLineButton;
 
     public AppWindow(String title) {
         super();
@@ -42,6 +46,7 @@ public class AppWindow extends JFrame {
         this.container = new JPanel();
         this.map = new Maps();
         this.researchPanel = new ResearchPanel();
+        this.lineDisplayPanel = new LineDisplayPanel();
 
         init(title);
 
@@ -51,49 +56,51 @@ public class AppWindow extends JFrame {
     private void init(String title) {
         initFrame(title);
 
-        addPanelAndButtons(container);
+        setLayoutContainer();
+
+        initializeComponentOfLayeredPane();
+
+        initializeObservers();
+        
+        addComponentsToContainer();
+
+        add(container);
     }
 
-    private void addPanelAndButtons(JPanel container) {
-        /**
-         * Container of the map and the buttons.
-         */
+    private void setLayoutContainer() {
         container.setLayout(new BorderLayout());
+    }
 
-        JLayeredPane lPane = new JLayeredPane();
+    private void initializeComponentOfLayeredPane() {
+        lPane = new JLayeredPane();
         lPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-
-        OpenResearchPanelButton openResearchButton = new OpenResearchPanelButton(
-                X_COL1_BUTTON, Y_COL1_BUTTON);
-        OpenLineDisplayPanelButton lineButton = new OpenLineDisplayPanelButton(
-                X_COL1_BUTTON, Y_COL1_BUTTON + Y_OFFSET/*
-                                                        * ,
-                                                        * researchPanel
-                                                        */);
 
         map.setBounds(0, 0, MAX_WIDTH, MAX_HEIGHT);
 
-        ZoomInButton zoomInButton = new ZoomInButton(
-                X_COL1_BUTTON, Y_COL1_BUTTON + 2 * Y_OFFSET);
-        ZoomOutButton zoomOutButton = new ZoomOutButton(
-                X_COL1_BUTTON, Y_COL1_BUTTON + 3 * Y_OFFSET);
+        openResearchButton = new OpenResearchPanelButton(X_COL1_BUTTON, Y_COL1_BUTTON);
+        openLineButton = new OpenLineDisplayPanelButton(X_COL1_BUTTON, Y_COL1_BUTTON + Y_OFFSET);
 
-        zoomInButton.addObserver(map);
-        zoomOutButton.addObserver(map);
-        openResearchButton.addObserver(researchPanel);
+        zoomIn = new ZoomInButton(X_COL1_BUTTON, Y_COL1_BUTTON + 2 * Y_OFFSET);
+        zoomOut = new ZoomOutButton(X_COL1_BUTTON, Y_COL1_BUTTON + 3 * Y_OFFSET);
 
         lPane.add(map, 0, 0);
         lPane.add(openResearchButton, 1, 0);
-        lPane.add(lineButton, 1, 0);
-        lPane.add(zoomInButton, 1, 0);
-        lPane.add(zoomOutButton, 1, 0);
+        lPane.add(openLineButton, 1, 0);
+        lPane.add(zoomIn, 1, 0);
+        lPane.add(zoomOut, 1, 0);
+    }
 
-        // Add the map to the center of the container
+    private void initializeObservers() {
+        zoomIn.addObserver(map);
+        zoomOut.addObserver(map);
+        openResearchButton.addObserver(researchPanel);
+        openLineButton.addObserver(lineDisplayPanel);
+    }
+
+    private void addComponentsToContainer() {
         container.add(lPane, BorderLayout.CENTER);
         container.add(researchPanel, BorderLayout.WEST);
-
-        // Add the container to the frame
-        add(container);
+        container.add(lineDisplayPanel, BorderLayout.NORTH);
     }
 
     /**

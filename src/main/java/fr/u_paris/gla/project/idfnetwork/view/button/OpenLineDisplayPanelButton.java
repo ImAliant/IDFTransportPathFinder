@@ -28,8 +28,6 @@ public class OpenLineDisplayPanelButton extends MiniButton {
 
     @Override
     public void onClick() {
-        System.out.println("OpenLineDisplayPanelButton.onClick");
-
-        /* notifyObservers(); */
+        notifyObservers();
     }
 }
