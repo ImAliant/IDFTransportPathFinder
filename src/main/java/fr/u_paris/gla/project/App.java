@@ -89,17 +89,12 @@ public class App {
      * @throws InterruptedException 
      * @throws ExecutionException */
     public static void launch() {
-        LoadingScreen screen = new LoadingScreen();
-        SwingUtilities.invokeLater(() -> {
-            addObserver(screen);
-
-            screen.setVisible(true);
-        });
-
-        initNetwork();
-
         Properties props = readApplicationProperties();
         String title = props.getProperty("app.name");
+
+        launchLoadingScreen(title);
+
+        initNetwork();
 
         EventQueue.invokeLater(() -> {
             window = new AppWindow(title);
@@ -132,6 +127,15 @@ public class App {
     public static void extraction() throws IOException {
         IDFMNetworkExtractor.extract();
         extractionCalled = true;
+    }
+
+    private static void launchLoadingScreen(String title) {
+        LoadingScreen screen = new LoadingScreen(title);
+        SwingUtilities.invokeLater(() -> {
+            addObserver(screen);
+
+            screen.setVisible(true);
+        });
     }
 
     private static void closeLoadingScreen() {
