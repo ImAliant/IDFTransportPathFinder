@@ -7,17 +7,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.SwingUtilities;
+
 import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
 import fr.u_paris.gla.project.idfnetwork.NetworkLoader;
+import fr.u_paris.gla.project.observer.LoadingObserver;
 
 /** Simple application model.
  *
  * @author Emmanuel Bigeon */
 public class App {
+    private static LoadingObserver loadingObserver = null;
+
     /**
      * 
      */
@@ -82,6 +89,13 @@ public class App {
      * @throws InterruptedException 
      * @throws ExecutionException */
     public static void launch() {
+        LoadingScreen screen = new LoadingScreen();
+        SwingUtilities.invokeLater(() -> {
+            addObserver(screen);
+
+            screen.setVisible(true);
+        });
+
         initNetwork();
 
         Properties props = readApplicationProperties();
@@ -90,6 +104,9 @@ public class App {
         EventQueue.invokeLater(() -> {
             window = new AppWindow(title);
             window.setVisible(true);
+            
+            closeLoadingScreen();
+
             latch.countDown();
         });
     }
@@ -115,6 +132,29 @@ public class App {
     public static void extraction() throws IOException {
         IDFMNetworkExtractor.extract();
         extractionCalled = true;
+    }
+
+    private static void closeLoadingScreen() {
+        if (loadingObserver == null) {
+            return;
+        }
+
+        notifyObserver();
+        removeObserver();
+    }
+
+    private static void addObserver(LoadingObserver observer) {
+        loadingObserver = observer;
+    }
+
+    private static void removeObserver() {
+        loadingObserver = null;
+    }
+
+    private static void notifyObserver() {
+        if (loadingObserver != null) {
+            loadingObserver.onLoadingDone();
+        }
     }
 
     /** @return the window */
