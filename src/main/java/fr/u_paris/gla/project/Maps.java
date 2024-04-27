@@ -18,8 +18,10 @@ import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
+import fr.u_paris.gla.project.observer.ZoomInObserver;
+import fr.u_paris.gla.project.observer.ZoomOutObserver;
 
-public class Maps extends JXMapViewer {
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
     /**
      * 
      */
@@ -113,6 +115,7 @@ public class Maps extends JXMapViewer {
         setTileFactory(tileFactory);
     }
 
+    @Override
     public void zoomIn() {
         adjustZoom(-1);
     }
@@ -124,6 +127,7 @@ public class Maps extends JXMapViewer {
         }
     }
 
+    @Override
     public void zoomOut() {
         adjustZoom(1);
     }

@@ -12,8 +12,9 @@ import fr.u_paris.gla.project.idfnetwork.view.CustomLabel;
 import fr.u_paris.gla.project.idfnetwork.view.CustomTextField;
 import fr.u_paris.gla.project.idfnetwork.view.ResearchButton;
 import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsScrollPane;
+import fr.u_paris.gla.project.observer.ResearchPanelObserver;
 
-public class ResearchPanel extends JPanel {
+public class ResearchPanel extends JPanel implements ResearchPanelObserver {
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
     private static final int MARGIN = 18;
 
@@ -72,5 +73,10 @@ public class ResearchPanel extends JPanel {
     // Méthode pour ajouter un composant avec GridBagConstraints
     private void addComponent(Component component, GridBagConstraints gbc) {
         this.add(component, gbc);
+    }
+
+    @Override
+    public void updateVisibility() {
+        setVisible(!isVisible());
     }
 }

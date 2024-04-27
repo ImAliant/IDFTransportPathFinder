@@ -1,7 +1,6 @@
 package fr.u_paris.gla.project;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 
 import java.awt.Dimension;
 
@@ -12,11 +11,12 @@ import javax.swing.JPanel;
 
 import fr.u_paris.gla.project.idfnetwork.view.button.OpenLineDisplayPanelButton;
 import fr.u_paris.gla.project.idfnetwork.view.button.OpenResearchPanelButton;
+import fr.u_paris.gla.project.idfnetwork.view.button.ZoomInButton;
+import fr.u_paris.gla.project.idfnetwork.view.button.ZoomOutButton;
 
 public class AppWindow extends JFrame {
     private static final long serialVersionUID = 1L;
 
-    private static final int X_OFFSET = 0;
     private static final int Y_OFFSET = 40;
 
     private static final int X_COL1_BUTTON = 10;
@@ -63,45 +63,34 @@ public class AppWindow extends JFrame {
         JLayeredPane lPane = new JLayeredPane();
         lPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-        OpenResearchPanelButton searchButton = new OpenResearchPanelButton(
-                X_COL1_BUTTON, Y_COL1_BUTTON,
-                researchPanel);
+        OpenResearchPanelButton openResearchButton = new OpenResearchPanelButton(
+                X_COL1_BUTTON, Y_COL1_BUTTON);
         OpenLineDisplayPanelButton lineButton = new OpenLineDisplayPanelButton(
-                X_COL1_BUTTON, Y_COL1_BUTTON + 40/*,
-                researchPanel */);
+                X_COL1_BUTTON, Y_COL1_BUTTON + Y_OFFSET/*
+                                                        * ,
+                                                        * researchPanel
+                                                        */);
 
         map.setBounds(0, 0, MAX_WIDTH, MAX_HEIGHT);
 
+        ZoomInButton zoomInButton = new ZoomInButton(
+                X_COL1_BUTTON, Y_COL1_BUTTON + 2 * Y_OFFSET);
+        ZoomOutButton zoomOutButton = new ZoomOutButton(
+                X_COL1_BUTTON, Y_COL1_BUTTON + 3 * Y_OFFSET);
+
+        zoomInButton.addObserver(map);
+        zoomOutButton.addObserver(map);
+        openResearchButton.addObserver(researchPanel);
+
         lPane.add(map, 0, 0);
-        lPane.add(searchButton, 1, 0);
+        lPane.add(openResearchButton, 1, 0);
         lPane.add(lineButton, 1, 0);
+        lPane.add(zoomInButton, 1, 0);
+        lPane.add(zoomOutButton, 1, 0);
 
         // Add the map to the center of the container
         container.add(lPane, BorderLayout.CENTER);
         container.add(researchPanel, BorderLayout.WEST);
-
-        /**
-         * Panel to put the buttons.
-         */
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(1, 2));
-
-        /**
-         * Button to zoom in the map.
-         */
-        zoomIn = new JButton("Zoom In");
-        zoomIn.addActionListener(e -> map.zoomIn());
-        /**
-         * Button to zoom out the map.
-         */
-        zoomOut = new JButton("Zoom Out");
-        zoomOut.addActionListener(e -> map.zoomOut());
-
-        buttonsPanel.add(zoomOut);
-        buttonsPanel.add(zoomIn);
-
-        // Add the buttons to the bottom of the container
-        container.add(buttonsPanel, BorderLayout.SOUTH);
 
         // Add the container to the frame
         add(container);
