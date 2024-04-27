@@ -5,13 +5,17 @@ import javax.swing.Icon;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.utils.IconUtils;
 
+/**
+ * Button for a default stop waypoint.
+ * 
+ * @see StopButtonWaypoint
+ */
 public class DefaultStopButtonWaypoint extends StopButtonWaypoint {
+    /** The default stop button is always visible. */
     private static final int ZOOM_THRESHOLD = 0;
 
     protected DefaultStopButtonWaypoint(Stop stop) {
         super(stop);
-
-        this.zoom = ZOOM_THRESHOLD;
 
         try {
             Icon icon = IconUtils.createIcon(iconPath, WIDTH, HEIGHT);

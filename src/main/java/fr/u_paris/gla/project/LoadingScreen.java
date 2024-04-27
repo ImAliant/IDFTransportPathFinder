@@ -3,19 +3,32 @@ package fr.u_paris.gla.project;
 import javax.swing.JLabel;
 import javax.swing.JDialog;
 import javax.swing.Timer;
-import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import fr.u_paris.gla.project.observer.LoadingObserver;
-import fr.u_paris.gla.project.utils.IconUtils;
 
+/**
+ * Class to represent a loading screen.
+ * 
+ * @see JDialog
+ * @see LoadingObserver
+ */
 public class LoadingScreen extends JDialog implements LoadingObserver {
+    /** Width of the loading screen */
     private static final int WIDTH = 300;
+    /** Height of the loading screen */
     private static final int HEIGHT = 100;
 
+    /** Label to display the loading text */
     private JLabel loadingLabel;
+    /** Number of dots to display */
     private int dotCount = 0;
 
+    /**
+     * Create a new loading screen with the given title.
+     * 
+     * @param title The title of the application.
+     */
     public LoadingScreen(String title) {
         super();
         this.setTitle(title);
@@ -31,7 +44,11 @@ public class LoadingScreen extends JDialog implements LoadingObserver {
         init();
     }
 
+    /**
+     * Initialize the loading screen.
+     */
     private void init() {
+        // Create a timer to animate the loading text
         Timer timer = new Timer(500, e -> {
             dotCount = (dotCount + 1) % 4;
             StringBuilder text = new StringBuilder("Loading");

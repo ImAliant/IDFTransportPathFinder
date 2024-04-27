@@ -127,6 +127,14 @@ public class Stop {
         return Collections.unmodifiableList(new ArrayList<>(lines.values()));
     }
 
+    /**
+     * Get the most important line type that passes through this stop
+     * 
+     * The importance of a line type is defined by the following order:
+     * <p>Metro > RER > Tramway > Bus > Funiculaire</p>
+     * 
+     * @return the most important line type
+     */
     public LineType getLineType() {
         Map<LineType, Integer> typePreference = new EnumMap<>(LineType.class);
         typePreference.put(LineType.FUNICULAIRE, 0);
