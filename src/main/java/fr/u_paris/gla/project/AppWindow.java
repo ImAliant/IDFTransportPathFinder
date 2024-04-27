@@ -70,9 +70,6 @@ public class AppWindow extends JFrame {
                 X_COL1_BUTTON, Y_COL1_BUTTON + 40/*,
                 researchPanel */);
 
-        /* JButton test2 = new JButton();
-        test2.setBounds(10, 50, 25, 25); */
-
         map.setBounds(0, 0, MAX_WIDTH, MAX_HEIGHT);
 
         lPane.add(map, 0, 0);
