@@ -1,7 +1,5 @@
 package fr.u_paris.gla.project;
 
-import java.awt.EventQueue;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,13 +9,19 @@ import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.SwingUtilities;
+
 import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
 import fr.u_paris.gla.project.idfnetwork.NetworkLoader;
+import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
+import fr.u_paris.gla.project.observer.LoadingObserver;
 
 /** Simple application model.
  *
  * @author Emmanuel Bigeon */
 public class App {
+    private static LoadingObserver loadingObserver = null;
+
     /**
      * 
      */
@@ -82,14 +86,24 @@ public class App {
      * @throws InterruptedException 
      * @throws ExecutionException */
     public static void launch() {
-        initNetwork();
-
         Properties props = readApplicationProperties();
         String title = props.getProperty("app.name");
 
-        EventQueue.invokeLater(() -> {
+        launchLoadingScreen(title);
+
+        initNetwork();
+
+        LoadingProgressBar.getInstance().incrementProgress(10);
+
+        SwingUtilities.invokeLater(() -> {
             window = new AppWindow(title);
+
             window.setVisible(true);
+
+            LoadingProgressBar.getInstance().setValue(LoadingProgressBar.getInstance().getMaximum());
+            
+            closeLoadingScreen();
+
             latch.countDown();
         });
     }
@@ -115,6 +129,39 @@ public class App {
     public static void extraction() throws IOException {
         IDFMNetworkExtractor.extract();
         extractionCalled = true;
+    }
+
+    private static void launchLoadingScreen(String title) {
+        SwingUtilities.invokeLater(() -> {
+            LoadingScreen screen = new LoadingScreen(title);
+            
+            addObserver(screen);
+
+            screen.setVisible(true);
+        });
+    }
+
+    private static void closeLoadingScreen() {
+        if (loadingObserver == null) {
+            return;
+        }
+
+        notifyObserver();
+        removeObserver();
+    }
+
+    private static void addObserver(LoadingObserver observer) {
+        loadingObserver = observer;
+    }
+
+    private static void removeObserver() {
+        loadingObserver = null;
+    }
+
+    private static void notifyObserver() {
+        if (loadingObserver != null) {
+            loadingObserver.onLoadingDone();
+        }
     }
 
     /** @return the window */

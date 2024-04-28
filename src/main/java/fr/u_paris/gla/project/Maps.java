@@ -24,12 +24,18 @@ import fr.u_paris.gla.project.idfnetwork.Line;
 import fr.u_paris.gla.project.idfnetwork.LineType;
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+<<<<<<< src/main/java/fr/u_paris/gla/project/Maps.java
+import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
+
 import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
+>>>>>>> src/main/java/fr/u_paris/gla/project/Maps.java
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
+import fr.u_paris.gla.project.observer.ZoomInObserver;
+import fr.u_paris.gla.project.observer.ZoomOutObserver;
 
-public class Maps extends JXMapViewer {
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
     /**
      * 
      */
@@ -65,6 +71,8 @@ public class Maps extends JXMapViewer {
         super();
 
         init();
+
+        LoadingProgressBar.getInstance().incrementProgress(25);
     }
 
     /**
@@ -86,7 +94,7 @@ public class Maps extends JXMapViewer {
         Network network = Network.getInstance();
 
         List<Stop> stops = network.getStops();
-        stops.forEach(this::addStopWaypoint);
+        stops.parallelStream().forEach(this::addStopWaypoint);
 
         initWaypoint();
     }
@@ -135,6 +143,7 @@ public class Maps extends JXMapViewer {
         setTileFactory(tileFactory);
     }
 
+    @Override
     public void zoomIn() {
         adjustZoom(-1);
     }
@@ -146,6 +155,7 @@ public class Maps extends JXMapViewer {
         }
     }
 
+    @Override
     public void zoomOut() {
         adjustZoom(1);
     }

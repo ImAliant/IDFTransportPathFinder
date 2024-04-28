@@ -9,6 +9,12 @@ import javax.swing.JLabel;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.WaypointPainter;
 
+/**
+ * Class to render a stop.
+ * 
+ * @see WaypointPainter
+ * @see StopWaypoint
+ */
 public class StopRender extends WaypointPainter<StopWaypoint> {
     @Override
     protected void doPaint(Graphics2D g, JXMapViewer map, int width, int height) {

@@ -1,4 +1,5 @@
 package fr.u_paris.gla.project;
+
 import javax.swing.JPanel;
 
 import java.awt.Color;
@@ -7,20 +8,23 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import com.github.lgooddatepicker.components.TimePicker;
 
 import fr.u_paris.gla.project.idfnetwork.view.CustomLabel;
 import fr.u_paris.gla.project.idfnetwork.view.CustomTextField;
 import fr.u_paris.gla.project.idfnetwork.view.ResearchButton;
+<<<<<<< src/main/java/fr/u_paris/gla/project/ResearchPanel.java
+import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsScrollPane;
+import fr.u_paris.gla.project.observer.ResearchPanelObserver;
 import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsComboBox;
+>>>>>>> src/main/java/fr/u_paris/gla/project/ResearchPanel.java
 
-
-
-public class ResearchPanel extends JPanel {
+public class ResearchPanel extends JPanel implements ResearchPanelObserver {
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
     private static final int MARGIN = 18;
+<<<<<<< src/main/java/fr/u_paris/gla/project/ResearchPanel.java
     private static final int WIDTH = 250;
     
+>>>>>>> src/main/java/fr/u_paris/gla/project/ResearchPanel.java
     public ResearchPanel() {
         setLayout(new GridBagLayout()); // Utilisation de GridBagLayout
         setBackground(BACKGROUND_COLOR); 
@@ -30,14 +34,12 @@ public class ResearchPanel extends JPanel {
 
         CustomLabel departureLabel = new CustomLabel("Départ:");
         CustomLabel arrivalLabel = new CustomLabel("Arrivée:");
-        CustomLabel hourLabel = new CustomLabel("Heure:");
 
         SuggestionStationsComboBox departureSuggestion = new SuggestionStationsComboBox();
         SuggestionStationsComboBox arrivalSuggestion = new SuggestionStationsComboBox();
 
         CustomTextField departureField = new CustomTextField(departureSuggestion);
         CustomTextField arrivalField = new CustomTextField(arrivalSuggestion);
-        TimePicker timePicker = new TimePicker();
         ResearchButton searchButton = new ResearchButton("Recherche", departureField, arrivalField);
 
         departureSuggestion.setVisible(false);
@@ -59,12 +61,6 @@ public class ResearchPanel extends JPanel {
 
         incrementGridY(gbc);
         addComponent(arrivalSuggestion, gbc);
-        
-        incrementGridY(gbc);
-        addComponent(hourLabel, gbc);
-
-        incrementGridY(gbc);
-        addComponent(timePicker, gbc);
 
         incrementGridY(gbc);
         addComponent(searchButton, gbc);
@@ -88,5 +84,10 @@ public class ResearchPanel extends JPanel {
     // Méthode pour ajouter un composant avec GridBagConstraints
     private void addComponent(Component component, GridBagConstraints gbc) {
         this.add(component, gbc);
+    }
+
+    @Override
+    public void updateVisibility() {
+        setVisible(!isVisible());
     }
 }
