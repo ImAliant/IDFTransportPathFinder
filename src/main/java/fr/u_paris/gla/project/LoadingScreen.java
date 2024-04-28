@@ -5,6 +5,9 @@ import javax.swing.JDialog;
 import javax.swing.Timer;
 import javax.swing.SwingConstants;
 
+import java.awt.BorderLayout;
+
+import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
 import fr.u_paris.gla.project.observer.LoadingObserver;
 
 /**
@@ -21,6 +24,9 @@ public class LoadingScreen extends JDialog implements LoadingObserver {
 
     /** Label to display the loading text */
     private JLabel loadingLabel;
+
+    private LoadingProgressBar progressBar;
+
     /** Number of dots to display */
     private int dotCount = 0;
 
@@ -37,9 +43,13 @@ public class LoadingScreen extends JDialog implements LoadingObserver {
         this.setLocationRelativeTo(null);
         this.setModal(true);
 
-        loadingLabel = new JLabel("Loading...", SwingConstants.CENTER);
+        this.setLayout(new BorderLayout());
 
-        add(loadingLabel);
+        loadingLabel = new JLabel("Loading...", SwingConstants.CENTER);
+        progressBar = LoadingProgressBar.getInstance();
+
+        add(loadingLabel, BorderLayout.NORTH);
+        add(progressBar, BorderLayout.CENTER);
 
         init();
     }

@@ -47,23 +47,23 @@ public class AppWindow extends JFrame {
         this.map = new Maps();
         this.researchPanel = new ResearchPanel();
         this.lineDisplayPanel = new LineDisplayPanel();
-
+        
         init(title);
-
+        
         pack();
     }
 
     private void init(String title) {
         initFrame(title);
-
+        
         setLayoutContainer();
-
+        
         initializeComponentOfLayeredPane();
-
+        
         initializeObservers();
         
         addComponentsToContainer();
-
+        
         add(container);
     }
 

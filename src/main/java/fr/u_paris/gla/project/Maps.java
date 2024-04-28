@@ -16,6 +16,7 @@ import org.jxmapviewer.viewer.WaypointPainter;
 
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
 import fr.u_paris.gla.project.observer.ZoomInObserver;
@@ -56,6 +57,8 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         super();
 
         init();
+
+        LoadingProgressBar.getInstance().incrementProgress(25);
     }
 
     /**
@@ -77,7 +80,7 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         Network network = Network.getInstance();
 
         List<Stop> stops = network.getStops();
-        stops.forEach(this::addStopWaypoint);
+        stops.parallelStream().forEach(this::addStopWaypoint);
 
         initWaypoint();
     }
