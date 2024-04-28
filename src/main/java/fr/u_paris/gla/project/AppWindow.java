@@ -137,4 +137,6 @@ public class AppWindow extends JFrame {
     public JButton getZoomOutButton() {
         return zoomOut;
     }
+   
+
 }

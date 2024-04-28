@@ -8,15 +8,19 @@ import fr.u_paris.gla.project.AutoComplete;
 
 public class SuggestionDocumentListener implements DocumentListener {
     private CustomTextField t;
-    private SuggestionStationsScrollPane suggestions;
+    private SuggestionStationsComboBox suggestions;
 
-    public SuggestionDocumentListener(CustomTextField t, SuggestionStationsScrollPane suggestions) {
+    public SuggestionDocumentListener(CustomTextField t, SuggestionStationsComboBox suggestions) {
         this.t = t;
         this.suggestions = suggestions;
     }
 
     @Override
     public void insertUpdate(DocumentEvent e) {
+        if (!suggestions.isVisible()) {
+            suggestions.setVisible(true);
+        }
+
         updateSuggestion(e);
     }
 
@@ -28,7 +32,6 @@ public class SuggestionDocumentListener implements DocumentListener {
     @Override
     public void changedUpdate(DocumentEvent e) {
         updateSuggestion(e);
-
     }
 
     public void updateSuggestion(DocumentEvent e) {
@@ -37,6 +40,7 @@ public class SuggestionDocumentListener implements DocumentListener {
         SwingUtilities.invokeLater(() -> {
             if (t.getText().isEmpty()) {
                 suggestions.clearSuggestion();
+                suggestions.setVisible(false);
             }
         });
     }

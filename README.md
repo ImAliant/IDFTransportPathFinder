@@ -9,9 +9,17 @@ Il s'agit d'un projet Java. Ce dépôt définit un système de build et une appl
 ## Lancement du programme
 Ce projet utilise [maven](https://maven.apache.org/) de Apache pour la gestion de construction.
 
+Afin de compiler sans lancer les tets unitaires, éxecutez simplement
+```
+mvn install -DskipTests
+
+
+```
+
 Afin de compiler et lancer les tests, éxecutez simplement
 ```
 mvn verify
+
 ```
 
 Dans sa version initiale, le programme fournit est un simple code qui se lance en terminal ou en application graphique.
