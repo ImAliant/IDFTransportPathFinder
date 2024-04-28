@@ -61,7 +61,7 @@ public class ItineraryCalculatorTest {
 
     @Test
     public void getStopsFromAdressTest(){
-        List<Stop> s= ItineraryCalculator.getStopsFromAdress(48.8483463,2.3573528);
+        List<Stop> s= Network.findStopFromGeoPosition(48.8483463,2.3573528, 0.1);
         assertFalse(s.isEmpty());
         System.out.println(s.size());
         for (Stop stop : s) {

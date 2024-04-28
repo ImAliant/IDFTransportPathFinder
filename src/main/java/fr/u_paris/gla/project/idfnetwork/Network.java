@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.utils.GPS;
 
 import java.util.HashMap;
 
@@ -85,6 +86,32 @@ public class Network {
             }
         }
         return null; 
+    }
+
+    public static List<Stop> findStopFromGeoPosition(double latitude, double longitude, double distance) {
+        List<Stop> res = new ArrayList<>();
+        List<Stop> stops = Network.getInstance().getStops();
+
+        for (Stop s: stops) {
+            if (GPS.distance(latitude, longitude, s.getLatitude(), s.getLongitude()) < distance) {
+                res.add(s);
+            }
+        }
+
+        return res;
+    }
+
+    public static Stop findClosestStopByGeoPosition(double latitude, double longitude) {
+        double distance = 0.01; // begin with 10m distance
+        List<Stop> closestStops = new ArrayList<>();
+
+        while (closestStops.isEmpty()) {
+            closestStops = findStopFromGeoPosition(latitude, longitude, distance);
+
+            distance += 0.01;
+        }
+
+        return closestStops.get(0);
     }
 
     /**
