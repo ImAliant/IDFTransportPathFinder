@@ -22,8 +22,9 @@ public class AppWindow extends JFrame {
     private static final int X_COL1_BUTTON = 10;
     private static final int Y_COL1_BUTTON = 10;
 
-    private static final int MAX_WIDTH = 1920;
-    private static final int MAX_HEIGHT = 1080;
+    // need to be reworked
+    private static final int MAX_WIDTH = 3500;
+    private static final int MAX_HEIGHT = 3500;
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
