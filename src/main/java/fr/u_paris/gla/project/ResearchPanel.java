@@ -2,6 +2,8 @@ package fr.u_paris.gla.project;
 
 import javax.swing.JPanel;
 
+import org.jxmapviewer.viewer.GeoPosition;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -11,6 +13,7 @@ import java.awt.Insets;
 
 import fr.u_paris.gla.project.idfnetwork.view.CustomLabel;
 import fr.u_paris.gla.project.idfnetwork.view.CustomTextField;
+import fr.u_paris.gla.project.idfnetwork.view.ItineraryByMapButton;
 import fr.u_paris.gla.project.idfnetwork.view.ResearchButton;
 import fr.u_paris.gla.project.observer.ResearchPanelObserver;
 import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsComboBox;
@@ -19,6 +22,10 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
     private static final int MARGIN = 18;
     private static final int WIDTH = 250;
+
+    private CustomTextField departureField;
+    private CustomTextField arrivalField;
+    private ItineraryByMapButton departureEnablingMapButton;
     
     public ResearchPanel() {
         setLayout(new GridBagLayout()); // Utilisation de GridBagLayout
@@ -33,18 +40,22 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
         SuggestionStationsComboBox departureSuggestion = new SuggestionStationsComboBox();
         SuggestionStationsComboBox arrivalSuggestion = new SuggestionStationsComboBox();
 
-        CustomTextField departureField = new CustomTextField(departureSuggestion);
+        departureField = new CustomTextField(departureSuggestion);
         CustomTextField arrivalField = new CustomTextField(arrivalSuggestion);
         ResearchButton searchButton = new ResearchButton("Recherche", departureField, arrivalField);
+        departureEnablingMapButton = new ItineraryByMapButton(0, 0);
 
         departureSuggestion.setVisible(false);
         arrivalSuggestion.setVisible(false);
 
         addComponent(departureLabel, gbc);
-
+        
         incrementGridY(gbc);
         addComponent(departureField, gbc);
-
+        
+        incrementGridY(gbc);
+        addComponent(departureEnablingMapButton, gbc);
+        
         incrementGridY(gbc);
         addComponent(departureSuggestion, gbc);
         
@@ -85,4 +96,16 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
     public void updateVisibility() {
         setVisible(!isVisible());
     }
+
+    public ItineraryByMapButton getDepartureEnablingMapButton() {
+        return departureEnablingMapButton;
+    }
+
+    public CustomTextField getDepartureTextField() {
+        return departureField;
+    }
+    public CustomTextField getArrivalTextField() {
+        return arrivalField;
+    }
+
 }

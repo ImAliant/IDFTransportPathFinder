@@ -1,7 +1,9 @@
 package fr.u_paris.gla.project;
 
-
-import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,13 +33,17 @@ import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
+import fr.u_paris.gla.project.observer.GeoPositionObserver;
+import fr.u_paris.gla.project.observer.ItineraryMapButtonObserver;
 import fr.u_paris.gla.project.observer.ZoomInObserver;
 import fr.u_paris.gla.project.observer.ZoomOutObserver;
 
-public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver, ItineraryMapButtonObserver {
     /**
      * 
      */
+    private List<GeoPositionObserver> observers = new ArrayList<>();
+
     private static final long serialVersionUID = 1L;
     /**
      * Default latitude of the map. Latitude of Paris.
@@ -59,6 +65,9 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
      * Maximum zoom of the map.
      */
     public static final int MAX_ZOOM = 7;
+
+    private boolean isGeoPositionClickEnabled = false;
+    private GeoPosition geoPositionClicked;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
     private RoutePainter routePainter;
@@ -126,8 +135,18 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     private void configureMapMouseListeners() {
         MouseInputListener listener = new PanMouseInputListener(this);
-        this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+        this.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent e) {
+                boolean isLeftButtonClicked = e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1;
+                if(isLeftButtonClicked && isGeoPositionClickEnabled){
+                    Point p = e.getPoint();
+                    geoPositionClicked = convertPointToGeoPosition(p);
+
+                    notifyObservers();
+                }
+            }
+        });
     }
 
     private void setDefaultLocation() {
@@ -166,6 +185,11 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     }
 
     @Override
+    public void onChange(boolean value) {
+        isGeoPositionClickEnabled = value;
+    }
+
+    @Override
     public void setZoom(int zoom) {
         if (zoom > MAX_ZOOM) {
             return;
@@ -186,7 +210,34 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         }
     }
 
+    public void addObserver(GeoPositionObserver observer){
+        observers.add(observer);
+    }
+
+    public void removeObserver(GeoPositionObserver observer){
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(){
+        for (GeoPositionObserver observer : observers){
+            observer.getGeoPosition(geoPositionClicked);
+        }
+
+        isGeoPositionClickEnabled = false;
+    }
+
+
+
     public Set<StopWaypoint> getWaypoints() {
         return stopWaypoints;
+    }
+
+
+
+
+
+
+    public List<GeoPositionObserver> getObservers() {
+        return observers;
     }
 }
