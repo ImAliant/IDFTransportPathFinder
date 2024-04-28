@@ -24,12 +24,11 @@ import fr.u_paris.gla.project.idfnetwork.Line;
 import fr.u_paris.gla.project.idfnetwork.LineType;
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
-<<<<<<< src/main/java/fr/u_paris/gla/project/Maps.java
+
 import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
 
 import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
->>>>>>> src/main/java/fr/u_paris/gla/project/Maps.java
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
 import fr.u_paris.gla.project.observer.ZoomInObserver;

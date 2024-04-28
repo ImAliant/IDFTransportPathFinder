@@ -12,19 +12,14 @@ import java.awt.Insets;
 import fr.u_paris.gla.project.idfnetwork.view.CustomLabel;
 import fr.u_paris.gla.project.idfnetwork.view.CustomTextField;
 import fr.u_paris.gla.project.idfnetwork.view.ResearchButton;
-<<<<<<< src/main/java/fr/u_paris/gla/project/ResearchPanel.java
-import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsScrollPane;
 import fr.u_paris.gla.project.observer.ResearchPanelObserver;
 import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsComboBox;
->>>>>>> src/main/java/fr/u_paris/gla/project/ResearchPanel.java
 
 public class ResearchPanel extends JPanel implements ResearchPanelObserver {
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
     private static final int MARGIN = 18;
-<<<<<<< src/main/java/fr/u_paris/gla/project/ResearchPanel.java
     private static final int WIDTH = 250;
     
->>>>>>> src/main/java/fr/u_paris/gla/project/ResearchPanel.java
     public ResearchPanel() {
         setLayout(new GridBagLayout()); // Utilisation de GridBagLayout
         setBackground(BACKGROUND_COLOR); 
