@@ -19,6 +19,9 @@ import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 public class Maps extends JXMapViewer {
     /**
      * 
@@ -44,6 +47,7 @@ public class Maps extends JXMapViewer {
      * Maximum zoom of the map.
      */
     public static final int MAX_ZOOM = 7;
+    private GeoPosition geo;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
 
@@ -82,8 +86,7 @@ public class Maps extends JXMapViewer {
 
     private void addStopWaypoint(Stop stop) {
         stopWaypoints.add(
-            new StopWaypoint(stop)
-        );
+                new StopWaypoint(stop));
     }
 
     private void initWaypoint() {
@@ -97,8 +100,16 @@ public class Maps extends JXMapViewer {
 
     private void configureMapMouseListeners() {
         MouseInputListener listener = new PanMouseInputListener(this);
-        this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+        this.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1){
+                    java.awt.Point p = e.getPoint();
+                    geo = convertPointToGeoPosition(p);
+                    System.out.println("X:"+geo.getLatitude()+",Y:"+geo.getLongitude());
+                }
+            }
+        });
     }
 
     private void setDefaultLocation() {
@@ -146,4 +157,9 @@ public class Maps extends JXMapViewer {
     public Set<StopWaypoint> getWaypoints() {
         return stopWaypoints;
     }
+    
+    public GeoPosition getGeo(){
+        return geo;
+    }
+
 }
