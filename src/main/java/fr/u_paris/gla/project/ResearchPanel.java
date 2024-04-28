@@ -3,6 +3,7 @@ import javax.swing.JPanel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -11,17 +12,19 @@ import com.github.lgooddatepicker.components.TimePicker;
 import fr.u_paris.gla.project.idfnetwork.view.CustomLabel;
 import fr.u_paris.gla.project.idfnetwork.view.CustomTextField;
 import fr.u_paris.gla.project.idfnetwork.view.ResearchButton;
-import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsScrollPane;
+import fr.u_paris.gla.project.idfnetwork.view.SuggestionStationsComboBox;
 
 
 
 public class ResearchPanel extends JPanel {
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
     private static final int MARGIN = 18;
+    private static final int WIDTH = 250;
     
     public ResearchPanel() {
         setLayout(new GridBagLayout()); // Utilisation de GridBagLayout
         setBackground(BACKGROUND_COLOR); 
+        setPreferredSize(new Dimension(WIDTH, getHeight()));
 
         GridBagConstraints gbc = initGridBagConstraints();
 
@@ -29,13 +32,16 @@ public class ResearchPanel extends JPanel {
         CustomLabel arrivalLabel = new CustomLabel("Arrivée:");
         CustomLabel hourLabel = new CustomLabel("Heure:");
 
-        SuggestionStationsScrollPane departureSuggestion = new SuggestionStationsScrollPane();
-        SuggestionStationsScrollPane arrivalSuggestion = new SuggestionStationsScrollPane();
+        SuggestionStationsComboBox departureSuggestion = new SuggestionStationsComboBox();
+        SuggestionStationsComboBox arrivalSuggestion = new SuggestionStationsComboBox();
 
         CustomTextField departureField = new CustomTextField(departureSuggestion);
         CustomTextField arrivalField = new CustomTextField(arrivalSuggestion);
         TimePicker timePicker = new TimePicker();
         ResearchButton searchButton = new ResearchButton("Recherche", departureField, arrivalField);
+
+        departureSuggestion.setVisible(false);
+        arrivalSuggestion.setVisible(false);
 
         addComponent(departureLabel, gbc);
 
