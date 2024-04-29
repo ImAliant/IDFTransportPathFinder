@@ -6,15 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.u_paris.gla.project.idfnetwork.Itinerary;
-import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
-
-import fr.u_paris.gla.project.idfnetwork.TravelPath;
 
 import org.jxmapviewer.painter.Painter;
 

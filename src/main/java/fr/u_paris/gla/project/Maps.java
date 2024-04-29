@@ -2,7 +2,6 @@ package fr.u_paris.gla.project;
 
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +17,6 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
-import org.jxmapviewer.painter.CompoundPainter;
 import org.jxmapviewer.painter.Painter;
 
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
