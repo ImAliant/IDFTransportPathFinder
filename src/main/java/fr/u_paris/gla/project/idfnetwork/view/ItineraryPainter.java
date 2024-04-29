@@ -44,19 +44,9 @@ public class ItineraryPainter implements Painter<JXMapViewer>
 
         if (antiAlias)
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-/*
-        // do the drawing
-        g.setColor(Color.BLACK);
-        g.setStroke(new BasicStroke(4));
 
         drawRoute(g, map);
 
-        // do the drawing again
-        g.setColor(color);
-        g.setStroke(new BasicStroke(2));
-
-        drawRoute(g, map);
-*/
         g.dispose();
     }
 
@@ -66,10 +56,17 @@ public class ItineraryPainter implements Painter<JXMapViewer>
         int lastY = 0;
 
         boolean first = true;
+        List<GeoPosition> track = path.getStops().stream().map(
+                stop -> new GeoPosition(stop.getLatitude(), stop.getLongitude())
+        ).toList();
+        List<Color> colors = path.getLines().stream().map(
+                line ->  Color.decode("#" + line.getColor())
+        ).toList();
+        GeoPosition gp;
+        for (int i=0; i < track.size(); i++)
 
-
-        for (GeoPosition gp : track)
         {
+            gp = track.get(i);
             // convert geo-coordinate to world bitmap pixel
             Point2D pt = map.getTileFactory().geoToPixel(gp, map.getZoom());
 
@@ -78,7 +75,14 @@ public class ItineraryPainter implements Painter<JXMapViewer>
                 first = false;
             }
             else
-            {
+            {   // ligne noir pour le contraste
+                g.setColor(Color.BLACK);
+                g.setStroke(new BasicStroke(4));
+                g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
+
+                //ligne colorée
+                g.setColor(colors.get(i-1));
+                g.setStroke(new BasicStroke(2));
                 g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
             }
 

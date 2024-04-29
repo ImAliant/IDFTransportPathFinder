@@ -24,7 +24,7 @@ import org.jxmapviewer.painter.Painter;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 
 import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
-
+import fr.u_paris.gla.project.idfnetwork.view.ItineraryPainter;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
@@ -33,7 +33,7 @@ import fr.u_paris.gla.project.observer.ZoomOutObserver;
 
 public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     /**
@@ -58,7 +58,7 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     public static final int MAX_ZOOM = 7;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
-    private RoutePainter routePainter;
+    private Painter<JXMapViewer> routePainter;
 
     /**
      * Constructor of the maps.
@@ -93,32 +93,25 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         stops.parallelStream().forEach(this::addStopWaypoint);
 
         initWaypoint();
+
     }
+
 
     private void addStopWaypoint(Stop stop) {
         stopWaypoints.add(
-            new StopWaypoint(stop)
+                new StopWaypoint(stop)
         );
     }
 
     private void initWaypoint() {
         WaypointPainter<StopWaypoint> wp = new StopRender();
         wp.setWaypoints(stopWaypoints);
-        
+
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
 
-        // DEBUG Draw RER B
-        Line line = Network.getInstance().findLine("B",LineType.RER);
-        this.drawLine(line);
-       
-        //Create a compound painter that uses both the route-painter and the waypoint-painter
-        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
-        painters.add(routePainter);
-        painters.add(wp);
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        this.setOverlayPainter(painter);
+        this.setOverlayPainter(wp);
     }
 
     private void configureMapMouseListeners() {
@@ -141,12 +134,10 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     @Override
     public void zoomIn() {
-        //adjustZoom(-1);
 
-        Stop stopPoissy=Network.getInstance().findStop("Poissy",48.93324983956547, 2.040804469960689);
-        Stop stopRoissy=Network.getInstance().findStop("Roissy-en-Brie",48.79563367624288, 2.650530702348584);
-        Itinerary myItinerary= ItineraryCalculator.CalculateRoad(stopPoissy,stopRoissy);
-        printItinerary(myItinerary);
+
+        adjustZoom(-1);
+        //this.remove( routePainter);
     }
 
     private void updateVisibleStop() {
@@ -176,27 +167,26 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         super.setZoom(zoom);
     }
 
-    public RoutePainter drawLine(Line line){
+    public void drawLine(Line line){
+        this.removeAll();
+        // maybe setvisible false for the stops
         List<TravelPath> paths = line.getPaths();
         if (line.getColor().length() != 6) {
             routePainter = new RoutePainter(paths);
         }
         else{
-        Color couleur = Color.decode("#" + line.getColor());
-        routePainter = new RoutePainter(paths,couleur);
+            Color couleur = Color.decode("#" + line.getColor());
+            routePainter = new RoutePainter(paths,couleur);
         }
-        return  routePainter;
+        this.setOverlayPainter(routePainter);
+        this.repaint();
     }
 
     public void printItinerary(Itinerary itinerary){
-        List<Line> itineraryLines= itinerary.getLines();
-        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+        this.removeAll();
+        this.routePainter = new ItineraryPainter(itinerary);
 
-        for(Line line: itineraryLines){
-            painters.add(drawLine(line));
-        }
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        this.setOverlayPainter(painter);
+        this.setOverlayPainter(routePainter);
         this.repaint();
     }
 
