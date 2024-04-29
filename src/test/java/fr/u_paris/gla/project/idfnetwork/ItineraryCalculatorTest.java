@@ -2,20 +2,26 @@ package fr.u_paris.gla.project.idfnetwork;
 
 import fr.u_paris.gla.project.App;
 import fr.u_paris.gla.project.utils.GPS;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ItineraryCalculatorTest {
-    private Network network = Network.getInstance();
+    private static Network network = Network.getInstance();
+
+//    @BeforeAll
+//    static void setup() {
+//        Network.getInstance().clear();
+//        App.initNetwork();
+//    }
 
     @Test
     public void Trip1() {
-
-
         App.initNetwork();
-
         Stop a = network.findSameStop("Charles de Gaulle - Etoile",	2.295927507409278,48.87494579313413);
 
         Stop b =  network.findSameStop("Alexandre Dumas", 2.3945914186721278, 48.856199097341126);
@@ -530,7 +536,80 @@ public class ItineraryCalculatorTest {
         }
     }
 
+    @Test
+    public void Trip32() {
 
+        Stop a = network.findSameStop("Gare de Lyon", 2.3741104576711205, 48.843412822797156);
+        Stop b = network.findSameStop("Lieusaint - Moissy", 2.569507070898012, 48.62833648393033);
+
+        System.out.println("Lyon :" + a);
+
+        if (a != null && b != null) {
+            Itinerary route = ItineraryCalculator.CalculateRoad(a, b);
+            assertEquals(a, route.getStops().get(0));
+            assertEquals(b, route.getStops().get(route.getStops().size() - 1));
+            System.out.println("Trajet trouvé :");
+            System.out.println("Départ : " + route.getStops().get(0).getStopName());
+            for ( int i = 0; i < route.getLines().size() - 1; i++ ) {
+                // if (!route.getLines().get(i).equals(route.getLines().get(i+1))  )
+                System.out.println("Prendre : " + route.getLines().get(i) + " -  Arret : " + route.getStops().get(i+1).getStopName());
+            }
+            System.out.println("Prendre : " + route.getLines().get(route.getLines().size() - 1) + " -  Arrivé à destination : " + route.getStops().get(route.getStops().size() - 1).getStopName());
+            System.out.println("Distance totale : " + route.getTotalDistance() + " km");
+            System.out.println("Durée totale : " + route.getTotalDuration() + " secondes");
+        } else {
+            fail("L'un des arrêts est introuvable");
+        }
+    }
+
+
+    @Test
+    void testRandomTrip() {
+        Random rand = new Random();
+        List<Stop> stops = Network.getInstance().getStops();
+        Stop start = stops.get(rand.nextInt(stops.size()));
+        int index = rand.nextInt(stops.size());
+        Stop destination = stops.get(index);
+
+        if (start.equals(destination)) {
+            if (index == stops.size()-1) index--;
+            if (index == 0) index++;
+
+            destination = stops.get(index);
+        }
+
+        if (start != null && destination != null) {
+            Itinerary route = ItineraryCalculator.CalculateRoad(start, destination);
+
+            assertEquals(start, route.getStops().get(0));
+            assertEquals(destination, route.getStops().get(route.getStops().size() - 1));
+
+//                    System.out.println("Trajet trouvé :");
+//        System.out.println("Départ : " + route.getStops().get(0).getStopName());
+//        for ( int i = 0; i < route.getLines().size() - 1; i++ ) {
+//            // if (!route.getLines().get(i).equals(route.getLines().get(i+1))  )
+//            System.out.println("Prendre : " + route.getLines().get(i) + " -  Arret : " + route.getStops().get(i+1).getStopName());
+//        }
+//        System.out.println("Prendre : " + route.getLines().get(route.getLines().size() - 1) + " -  Arrivé à destination : " + route.getStops().get(route.getStops().size() - 1).getStopName());
+//        System.out.println("Distance totale : " + route.getTotalDistance() + " km");
+//        System.out.println("Durée totale : " + route.getTotalDuration() + " secondes");
+//        } else {
+//            fail("L'un des arrêts est introuvable");
+        }
+    }
+
+
+
+    @Test
+    void testMultipleRandom() {
+        int i;
+        int nb_tests = 50;
+        for (i = 0; i < nb_tests; i++) {
+            testRandomTrip();
+        }
+
+        assertEquals(nb_tests, i, "All the tests should be good");
+    }
 
 
     @Test

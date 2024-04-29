@@ -7,7 +7,7 @@ import java.util.*;
 
 public class ItineraryCalculator {
     public static Itinerary CalculateRoad(Stop start, Stop destination) {
-
+        int DURATION_BETWEEN_TWO_DIFFERENT_STOPS = 300;
         Stop tmpStart = null;
         Stop tmpDest = null;
         List<Stop> nearDest = new ArrayList<>();;
@@ -73,9 +73,7 @@ public class ItineraryCalculator {
                     if(previousStops.get(currentStop) != null) {
                         for (TravelPath p : previousStops.get(currentStop).getPaths()) {
                             if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()))) {
-                                double distance = Math.sqrt(Math.pow(path.getStart().getLatitude() - p.getEnd().getLatitude(), 2) +
-                                        Math.pow(path.getStart().getLongitude() - p.getEnd().getLongitude(), 2));
-                                newDistance += (int) ((int) distance/AVERAGE_WALKING_SPEED);
+                                newDistance += DURATION_BETWEEN_TWO_DIFFERENT_STOPS;
 
                             }
                         }
@@ -112,7 +110,7 @@ public class ItineraryCalculator {
         double totalDistance = 0.0;
         double totalDuration = 0.0;
         Stop current = stops.get(0);
-        Stop next = stops.get(1);
+        Stop next = null;
         for (TravelPath path : current.getPaths()){
                 totalDistance += path.getDistance();
                 totalDuration += path.getDuration();
@@ -128,9 +126,7 @@ public class ItineraryCalculator {
                 if (path.getEnd().equals(next)){
                     for (TravelPath p : previouss.getPaths()) {
                         if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()) )) {
-                            double distance = Math.sqrt(Math.pow(path.getStart().getLatitude() - p.getEnd().getLatitude(), 2) +
-                                    Math.pow(path.getStart().getLongitude() - p.getEnd().getLongitude(), 2));
-                            totalDuration += (int) ((int) distance/AVERAGE_WALKING_SPEED);
+                            totalDuration += DURATION_BETWEEN_TWO_DIFFERENT_STOPS;
                         }
                     }
                     totalDistance += path.getDistance();
