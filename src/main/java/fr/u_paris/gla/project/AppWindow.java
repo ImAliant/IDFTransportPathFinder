@@ -35,6 +35,7 @@ public class AppWindow extends JFrame {
     private Maps map;
     private ResearchPanel researchPanel;
     private LineDisplayPanel lineDisplayPanel;
+    private ShowResultPanel showResultPanel;
 
     private ZoomInButton zoomIn;
     private ZoomOutButton zoomOut;
@@ -48,6 +49,7 @@ public class AppWindow extends JFrame {
         this.map = new Maps();
         this.researchPanel = new ResearchPanel();
         this.lineDisplayPanel = new LineDisplayPanel();
+        this.showResultPanel = new ShowResultPanel();
         
         init(title);
         
@@ -96,12 +98,14 @@ public class AppWindow extends JFrame {
         zoomOut.addObserver(map);
         openResearchButton.addObserver(researchPanel);
         openLineButton.addObserver(lineDisplayPanel);
+        researchPanel.getSearchButton().addObserver(showResultPanel);
     }
 
     private void addComponentsToContainer() {
         container.add(lPane, BorderLayout.CENTER);
         container.add(researchPanel, BorderLayout.WEST);
         container.add(lineDisplayPanel, BorderLayout.NORTH);
+        container.add(showResultPanel, BorderLayout.EAST);
     }
 
     /**

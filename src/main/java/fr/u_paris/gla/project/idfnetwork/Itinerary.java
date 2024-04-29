@@ -1,5 +1,6 @@
 package fr.u_paris.gla.project.idfnetwork;
 
+import java.util.Collections;
 import java.util.List;
 
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
@@ -20,11 +21,11 @@ public class Itinerary {
     }
 
     public List<Stop> getStops(){
-        return stops;
+        return Collections.unmodifiableList(stops);
     }
 
     public List<Line> getLines(){
-        return lines;
+        return Collections.unmodifiableList(lines);
     }
 
     public double getTotalDistance() {
@@ -59,6 +60,4 @@ public class Itinerary {
         builder.append("}");
         return builder.toString();
     }
-
-
 }

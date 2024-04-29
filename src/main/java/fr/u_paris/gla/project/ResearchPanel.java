@@ -19,6 +19,8 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
     private static final int MARGIN = 18;
     private static final int WIDTH = 250;
+
+    private ResearchButton searchButton;
     
     public ResearchPanel() {
         setLayout(new GridBagLayout()); // Utilisation de GridBagLayout
@@ -35,7 +37,7 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
 
         CustomTextField departureField = new CustomTextField(departureSuggestion);
         CustomTextField arrivalField = new CustomTextField(arrivalSuggestion);
-        ResearchButton searchButton = new ResearchButton("Recherche", departureField, arrivalField);
+        searchButton = new ResearchButton("Recherche", departureField, arrivalField);
 
         departureSuggestion.setVisible(false);
         arrivalSuggestion.setVisible(false);
@@ -84,5 +86,9 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
     @Override
     public void updateVisibility() {
         setVisible(!isVisible());
+    }
+
+    public ResearchButton getSearchButton() {
+        return searchButton;
     }
 }
