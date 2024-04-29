@@ -15,6 +15,7 @@ public class ResearchButton extends JButton {
 
         ResearchButtonListener listener = new ResearchButtonListener(departureTF, arrivalTF);
         addListener(listener);
+
     }
 
     private void addListener(ResearchButtonListener listener) {

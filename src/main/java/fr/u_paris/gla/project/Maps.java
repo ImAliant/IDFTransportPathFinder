@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.swing.event.MouseInputListener;
 
+import fr.u_paris.gla.project.idfnetwork.*;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -20,14 +21,10 @@ import org.jxmapviewer.viewer.WaypointPainter;
 import org.jxmapviewer.painter.CompoundPainter;
 import org.jxmapviewer.painter.Painter;
 
-import fr.u_paris.gla.project.idfnetwork.Line;
-import fr.u_paris.gla.project.idfnetwork.LineType;
-import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 
 import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
 
-import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
@@ -144,7 +141,12 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     @Override
     public void zoomIn() {
-        adjustZoom(-1);
+        //adjustZoom(-1);
+
+        Stop stopPoissy=Network.getInstance().findStop("Poissy",48.93324983956547, 2.040804469960689);
+        Stop stopRoissy=Network.getInstance().findStop("Roissy-en-Brie",48.79563367624288, 2.650530702348584);
+        Itinerary myItinerary= ItineraryCalculator.CalculateRoad(stopPoissy,stopRoissy);
+        printItinerary(myItinerary);
     }
 
     private void updateVisibleStop() {
@@ -157,6 +159,7 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     @Override
     public void zoomOut() {
         adjustZoom(1);
+
     }
 
     private void adjustZoom(int factor) {
@@ -173,17 +176,28 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         super.setZoom(zoom);
     }
 
-    public void drawLine(Line line){
+    public RoutePainter drawLine(Line line){
         List<TravelPath> paths = line.getPaths();
         if (line.getColor().length() != 6) {
             routePainter = new RoutePainter(paths);
         }
         else{
-
         Color couleur = Color.decode("#" + line.getColor());
-
         routePainter = new RoutePainter(paths,couleur);
         }
+        return  routePainter;
+    }
+
+    public void printItinerary(Itinerary itinerary){
+        List<Line> itineraryLines= itinerary.getLines();
+        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+
+        for(Line line: itineraryLines){
+            painters.add(drawLine(line));
+        }
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+        this.setOverlayPainter(painter);
+        this.repaint();
     }
 
     public Set<StopWaypoint> getWaypoints() {
