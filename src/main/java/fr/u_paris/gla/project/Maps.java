@@ -2,7 +2,6 @@ package fr.u_paris.gla.project;
 
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +9,7 @@ import java.util.Set;
 
 import javax.swing.event.MouseInputListener;
 
+import fr.u_paris.gla.project.idfnetwork.*;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
@@ -17,17 +17,12 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
-import org.jxmapviewer.painter.CompoundPainter;
 import org.jxmapviewer.painter.Painter;
 
-import fr.u_paris.gla.project.idfnetwork.Line;
-import fr.u_paris.gla.project.idfnetwork.LineType;
-import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 
 import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
-
-import fr.u_paris.gla.project.idfnetwork.TravelPath;
+import fr.u_paris.gla.project.idfnetwork.view.ItineraryPainter;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
@@ -36,7 +31,7 @@ import fr.u_paris.gla.project.observer.ZoomOutObserver;
 
 public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     /**
@@ -61,7 +56,7 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     public static final int MAX_ZOOM = 7;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
-    private RoutePainter routePainter;
+    private Painter<JXMapViewer> routePainter;
 
     /**
      * Constructor of the maps.
@@ -96,32 +91,25 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         stops.parallelStream().forEach(this::addStopWaypoint);
 
         initWaypoint();
+
     }
+
 
     private void addStopWaypoint(Stop stop) {
         stopWaypoints.add(
-            new StopWaypoint(stop)
+                new StopWaypoint(stop)
         );
     }
 
     private void initWaypoint() {
         WaypointPainter<StopWaypoint> wp = new StopRender();
         wp.setWaypoints(stopWaypoints);
-        
+
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
 
-        // DEBUG Draw RER B
-        Line line = Network.getInstance().findLine("B",LineType.RER);
-        this.drawLine(line);
-       
-        //Create a compound painter that uses both the route-painter and the waypoint-painter
-        List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
-        painters.add(routePainter);
-        painters.add(wp);
-        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
-        this.setOverlayPainter(painter);
+        this.setOverlayPainter(wp);
     }
 
     private void configureMapMouseListeners() {
@@ -144,7 +132,10 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     @Override
     public void zoomIn() {
+
+
         adjustZoom(-1);
+        //this.remove( routePainter);
     }
 
     private void updateVisibleStop() {
@@ -157,6 +148,7 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     @Override
     public void zoomOut() {
         adjustZoom(1);
+
     }
 
     private void adjustZoom(int factor) {
@@ -174,16 +166,26 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     }
 
     public void drawLine(Line line){
+        this.removeAll();
+        // maybe setvisible false for the stops
         List<TravelPath> paths = line.getPaths();
         if (line.getColor().length() != 6) {
             routePainter = new RoutePainter(paths);
         }
         else{
-
-        Color couleur = Color.decode("#" + line.getColor());
-
-        routePainter = new RoutePainter(paths,couleur);
+            Color couleur = Color.decode("#" + line.getColor());
+            routePainter = new RoutePainter(paths,couleur);
         }
+        this.setOverlayPainter(routePainter);
+        this.repaint();
+    }
+
+    public void printItinerary(Itinerary itinerary){
+        this.removeAll();
+        this.routePainter = new ItineraryPainter(itinerary);
+
+        this.setOverlayPainter(routePainter);
+        this.repaint();
     }
 
     public Set<StopWaypoint> getWaypoints() {

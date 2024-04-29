@@ -8,7 +8,6 @@ import java.util.*;
 
 public class ItineraryCalculator {
     public static Itinerary CalculateRoad(Stop start, Stop destination) {
-
         // Initialize Dijskstra algorithm
         Map<Stop, Double> duration = new HashMap<>();
         Map<Stop, Stop> previousStops = new HashMap<>();
@@ -28,9 +27,7 @@ public class ItineraryCalculator {
             if(currentStop.equals(destination)){
                 break;
             }
-
             for(TravelPath path : currentStop.getPaths()){
-
                     Stop neighbor = path.getEnd();
                     double newDistance = duration.get(currentStop) + path.getDuration();
                     if (newDistance < duration.get(neighbor)){
@@ -87,7 +84,6 @@ public class ItineraryCalculator {
             if(GPS.distance(latitude,longitude,s.getLatitude(),s.getLongitude())<0.1){
                 res.add(s);
             }
-
         }
         return res;
     }
