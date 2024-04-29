@@ -13,15 +13,12 @@ import fr.u_paris.gla.project.idfnetwork.view.button.transportButton.PlansButton
 import fr.u_paris.gla.project.idfnetwork.view.button.transportButton.RERButton;
 import fr.u_paris.gla.project.idfnetwork.view.button.transportButton.TramButton;
 import fr.u_paris.gla.project.observer.LineDisplayPanelObserver;
-//import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 
 public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver {
     public LineDisplayPanel() {
         super();
-        // super(new FlowLayout(FlowLayout.LEFT)); // This will arrange buttons side by
-        // side
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // Set layout to vertical
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // Set layout to horizantal
         setBackground(new Color(100, 181, 246));
         setVisible(false);
         initializeButtons();

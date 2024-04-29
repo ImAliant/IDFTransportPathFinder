@@ -1,5 +1,8 @@
 package fr.u_paris.gla.project.idfnetwork.view.button.transportButton;
 
+import java.util.List;
+
+import fr.u_paris.gla.project.idfnetwork.Line;
 import fr.u_paris.gla.project.idfnetwork.view.button.TransportButton;
 
 public class BusButton extends TransportButton {
@@ -9,6 +12,11 @@ public class BusButton extends TransportButton {
     }
 
     protected void onClick() {
+        // TODO
+    }
+
+    @Override
+    protected void showClickedLineType(List<Line> lineTypeLines) {
         // TODO
     }
 }
