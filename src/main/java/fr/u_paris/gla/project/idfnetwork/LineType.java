@@ -1,7 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork;
 
 public enum LineType {
-    BUS, TRAMWAY, RER, METRO, FUNICULAIRE;
+    BUS, TRAMWAY, RER, METRO, FUNICULAIRE, WALKING;
 
     public static LineType fromString(String type) {
         switch (type) {
@@ -31,6 +31,8 @@ public enum LineType {
             return METRO;
         } else if (line instanceof FunicularLine) {
             return FUNICULAIRE;
+        } else if (line instanceof WalkingLine) {
+            return WALKING;
         } else {
             throw new IllegalArgumentException("Unknown line type: " + line.getClass().getName());
         }

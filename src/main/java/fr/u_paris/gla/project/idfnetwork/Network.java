@@ -23,6 +23,9 @@ public class Network {
      */
     protected static Map<String, Stop> stops = new HashMap<>();
 
+    protected static Map<String, HashMap<String, Stop>> sameStops = new HashMap<>();
+
+
     private static Network instance = null;
 
     /**
@@ -78,6 +81,20 @@ public class Network {
         return stops.get(key);
     }
 
+    public Stop findSameStop(String name,double longitude, double latitude){
+        HashMap<String,Stop> stopMap = sameStops.get(name);
+        if (stopMap != null) {
+            for (Stop stop : stopMap.values()) {
+                //double distance = Math.sqrt(Math.pow(latitude - stop.getLatitude(), 2) + Math.pow(longitude - stop.getLongitude(), 2));
+                double distance = GPS.distance(latitude,longitude,stop.getLatitude(),stop.getLongitude());
+                if (distance < 0.5) {
+                    return stop;
+                }
+            }
+        }
+        return null;
+    }
+
     public Stop findStopByName(String name) {
         List<Stop> stops = Network.getInstance().getStops();
         for (Stop stop : stops) {
@@ -122,6 +139,22 @@ public class Network {
     protected void addStop(Stop stop) {
         String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
         stops.putIfAbsent(key, stop);
+
+        String namekey = generateStopNameKey(stop.getStopName());
+
+        sameStops.computeIfAbsent(namekey, k -> new HashMap<>());
+
+        sameStops.get(namekey).putIfAbsent(key, stop);
+    }
+
+    public static void removeStop(Stop stop) {
+        if(stop != null) {
+            String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
+            stops.remove(key, stop);
+
+            String namekey = generateStopNameKey(stop.getStopName());
+            sameStops.get(namekey).remove(key, stop);
+        }
     }
 
     /**
@@ -143,8 +176,12 @@ public class Network {
      * @param latitude
      * @return
      */
-    private String generateStopKey(String name, double longitude, double latitude) {
+    private static String generateStopKey(String name, double longitude, double latitude) {
         return name + "-" + longitude + "-" + latitude;
+    }
+
+    private static String generateStopNameKey(String name) {
+        return name;
     }
 
     @Override
