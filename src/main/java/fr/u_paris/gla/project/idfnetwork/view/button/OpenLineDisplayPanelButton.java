@@ -3,6 +3,7 @@ package fr.u_paris.gla.project.idfnetwork.view.button;
 import java.util.List;
 import java.util.ArrayList;
 
+import fr.u_paris.gla.project.LineDisplayPanel;
 import fr.u_paris.gla.project.observer.LineDisplayPanelObserver;
 
 /**
@@ -24,8 +25,8 @@ public class OpenLineDisplayPanelButton extends MiniButton {
      * @param x The x position of the button.
      * @param y The y position of the button.
      */
-    public OpenLineDisplayPanelButton(/* int x, int y */) {
-        super(/* x, y */);
+    public OpenLineDisplayPanelButton() {
+        super();
 
         /* Icon icon = IconUtils.createIcon(PATH, WIDTH, HEIGHT);
         setIcon(icon); */

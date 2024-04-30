@@ -17,7 +17,6 @@ public class IconUtils {
             return new ImageIcon(resized);
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(1);
             return null;
         }
     }

@@ -3,7 +3,9 @@ package fr.u_paris.gla.project.idfnetwork;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import fr.u_paris.gla.project.utils.GPS;
@@ -56,6 +58,14 @@ public class Network {
     public Line findLine(String lname, LineType type) {
         String key = generateLineKey(lname, type);
         return lines.get(key);
+    }
+
+    public static List<Line> getLinesByType(LineType type) {
+        return lines.values()
+            .stream()
+            .filter(line -> line.getType() == type)
+            .sorted(Comparator.comparing(Line::toString))
+            .collect(Collectors.toList()); 
     }
 
     /**
