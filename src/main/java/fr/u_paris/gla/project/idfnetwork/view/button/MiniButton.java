@@ -1,5 +1,7 @@
 package fr.u_paris.gla.project.idfnetwork.view.button;
 
+import java.awt.Dimension;
+
 import javax.swing.JButton;
 
 /**
@@ -17,10 +19,10 @@ public abstract class MiniButton extends JButton {
      * @param x The x position of the button.
      * @param y The y position of the button.
      */
-    protected MiniButton(int x, int y) {
+    protected MiniButton(/* int x, int y */) {
         super();
         
-        setBounds(x, y, WIDTH, HEIGHT);
+        setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
         addActionListener(e -> onClick());
     }

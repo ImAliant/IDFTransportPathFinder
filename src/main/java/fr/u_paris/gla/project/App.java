@@ -16,16 +16,18 @@ import fr.u_paris.gla.project.idfnetwork.NetworkLoader;
 import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
 import fr.u_paris.gla.project.observer.LoadingObserver;
 
-/** Simple application model.
+/**
+ * Simple application model.
  *
- * @author Emmanuel Bigeon */
+ * @author Emmanuel Bigeon
+ */
 public class App {
     private static LoadingObserver loadingObserver = null;
 
     /**
      * 
      */
-    private static final String UNSPECIFIED = "Unspecified";         //$NON-NLS-1$
+    private static final String UNSPECIFIED = "Unspecified"; //$NON-NLS-1$
     /**
      * String constants for command line arguments.
      */
@@ -43,20 +45,22 @@ public class App {
     protected static boolean extractionCalled;
     protected static boolean loadCalled;
 
-    /** Application entry point.
+    /**
+     * Application entry point.
      *
-     * @param args launching arguments 
-     * @throws InterruptedException 
-     * @throws ExecutionException 
-     * @throws IOException */
+     * @param args launching arguments
+     * @throws InterruptedException
+     * @throws ExecutionException
+     * @throws IOException
+     */
     public static void main(String[] args) {
         if (args.length > 0) {
             for (String string : args) {
-                if (INFOCMD.equals(string)) { //$NON-NLS-1$
+                if (INFOCMD.equals(string)) { // $NON-NLS-1$
                     printAppInfos(System.out);
                     return;
                 }
-                if (GUICMD.equals(string)) { //$NON-NLS-1$
+                if (GUICMD.equals(string)) { // $NON-NLS-1$
                     launch();
                 }
             }
@@ -82,9 +86,12 @@ public class App {
         return props;
     }
 
-    /** Launch the gui version of the application 
-     * @throws InterruptedException 
-     * @throws ExecutionException */
+    /**
+     * Launch the gui version of the application
+     * 
+     * @throws InterruptedException
+     * @throws ExecutionException
+     */
     public static void launch() {
         Properties props = readApplicationProperties();
         String title = props.getProperty("app.name");
@@ -101,7 +108,7 @@ public class App {
             window.setVisible(true);
 
             LoadingProgressBar.getInstance().setValue(LoadingProgressBar.getInstance().getMaximum());
-            
+
             closeLoadingScreen();
 
             latch.countDown();
@@ -121,7 +128,7 @@ public class App {
                 e.printStackTrace();
             }
         }
-            
+
         NetworkLoader.load(file);
         loadCalled = true;
     }
@@ -134,7 +141,7 @@ public class App {
     private static void launchLoadingScreen(String title) {
         SwingUtilities.invokeLater(() -> {
             LoadingScreen screen = new LoadingScreen(title);
-            
+
             addObserver(screen);
 
             screen.setVisible(true);

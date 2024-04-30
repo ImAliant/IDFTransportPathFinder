@@ -1,8 +1,6 @@
 package fr.u_paris.gla.project.idfnetwork;
 
-import fr.u_paris.gla.project.App;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
-import fr.u_paris.gla.project.utils.GPS;
 
 import java.util.*;
 
@@ -14,7 +12,7 @@ public class ItineraryCalculator {
         PriorityQueue<Stop> queue = new PriorityQueue<>(Comparator.comparingDouble(duration::get));
 
         // Initialize distances to infinity for all stops except start
-        for(Stop stop : Network.getInstance().getStops()){
+        for (Stop stop : Network.getInstance().getStops()) {
             duration.put(stop, Double.MAX_VALUE);
             previousStops.put(stop, null);
         }
@@ -22,19 +20,21 @@ public class ItineraryCalculator {
         queue.add(start);
 
         // Run Dijskstra algorithm
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             Stop currentStop = queue.poll();
-            if(currentStop.equals(destination)){
+            if (currentStop.equals(destination)) {
                 break;
             }
-            for(TravelPath path : currentStop.getPaths()){
-                    Stop neighbor = path.getEnd();
-                    double newDistance = duration.get(currentStop) + path.getDuration();
-                    if (newDistance < duration.get(neighbor)){
-                        duration.put(neighbor, newDistance);
-                        previousStops.put(neighbor, currentStop);
-                        queue.add(neighbor);
-                    }
+
+            for (TravelPath path : currentStop.getPaths()) {
+
+                Stop neighbor = path.getEnd();
+                double newDistance = duration.get(currentStop) + path.getDuration();
+                if (newDistance < duration.get(neighbor)) {
+                    duration.put(neighbor, newDistance);
+                    previousStops.put(neighbor, currentStop);
+                    queue.add(neighbor);
+                }
             }
         }
 
@@ -43,10 +43,10 @@ public class ItineraryCalculator {
         List<Line> lines = new ArrayList<>();
         Stop currentStop = destination;
         Stop previous = previousStops.get(currentStop);
-        while(previous != null){
+        while (previous != null) {
             stops.add(currentStop);
             for (TravelPath path : previous.getPaths()) {
-                if (path.getEnd().equals(currentStop)){
+                if (path.getEnd().equals(currentStop)) {
                     lines.add(path.getLine());
                     break;
                 }
@@ -61,32 +61,17 @@ public class ItineraryCalculator {
         // Calculate total distance and duration
         double totalDistance = 0.0;
         double totalDuration = 0.0;
-        for (int i = 0; i < stops.size() - 1; i++){
+        for (int i = 0; i < stops.size() - 1; i++) {
             Stop current = stops.get(i);
-            Stop next = stops.get(i+1);
-            for (TravelPath path : current.getPaths()){
-                if (path.getEnd().equals(next)){
+            Stop next = stops.get(i + 1);
+            for (TravelPath path : current.getPaths()) {
+                if (path.getEnd().equals(next)) {
                     totalDistance += path.getDistance();
                     totalDuration += path.getDuration();
                     break;
                 }
             }
         }
-            return new Itinerary(stops,lines,totalDistance,totalDuration);
+        return new Itinerary(stops, lines, totalDistance, totalDuration);
     }
-
-
-    public static List<Stop> getStopsFromAdress(double latitude, double longitude){
-        App.initNetwork();
-        List<Stop> res= new ArrayList<>();
-        for(Stop s: Network.getInstance().getStops()){
-            //Périmètres défini à 100m
-            if(GPS.distance(latitude,longitude,s.getLatitude(),s.getLongitude())<0.1){
-                res.add(s);
-            }
-        }
-        return res;
-    }
-
 }
-
