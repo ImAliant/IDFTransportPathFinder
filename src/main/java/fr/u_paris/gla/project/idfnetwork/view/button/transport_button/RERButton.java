@@ -15,7 +15,7 @@ public class RERButton extends TransportButton {
     }
 
     @Override
-    protected void onClick() {
+    public void onClick() {
         List<Line> rerLines = Network.getLinesByType(LineType.RER);
         notifyObservers(rerLines);
     }

@@ -15,7 +15,7 @@ public class BusButton extends TransportButton {
     }
 
     @Override
-    protected void onClick() {
+    public void onClick() {
         List<Line> busLines = Network.getLinesByType(LineType.BUS);
         notifyObservers(busLines);
     }

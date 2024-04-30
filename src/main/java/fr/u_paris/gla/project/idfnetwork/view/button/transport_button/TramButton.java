@@ -15,7 +15,7 @@ public class TramButton extends TransportButton {
     }
 
     @Override
-    protected void onClick() {
+    public void onClick() {
         List<Line> tramLines = Network.getLinesByType(LineType.TRAMWAY);
         notifyObservers(tramLines);
     }

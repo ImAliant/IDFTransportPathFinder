@@ -1,6 +1,8 @@
 package fr.u_paris.gla.project.idfnetwork.view.button;
 
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
@@ -24,7 +26,12 @@ public abstract class MiniButton extends JButton {
         
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-        addActionListener(e -> onClick());
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                onClick();
+            }
+        });
     }
 
     /**

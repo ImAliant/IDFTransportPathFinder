@@ -15,7 +15,7 @@ public class MetroButton extends TransportButton {
     }
 
     @Override
-    protected void onClick() {
+    public void onClick() {
         List<Line> metroLines = Network.getLinesByType(LineType.METRO);
         notifyObservers(metroLines);
     }
