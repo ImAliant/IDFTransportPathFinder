@@ -52,6 +52,8 @@ public class LoadingScreen extends JDialog implements LoadingObserver {
         add(progressBar, BorderLayout.CENTER);
 
         init();
+
+        pack();
     }
 
     /**
