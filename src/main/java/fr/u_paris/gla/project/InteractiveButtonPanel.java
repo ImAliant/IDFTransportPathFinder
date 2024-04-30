@@ -1,10 +1,9 @@
 package fr.u_paris.gla.project;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
-
-
 
 import fr.u_paris.gla.project.idfnetwork.view.button.OpenLineDisplayPanelButton;
 import fr.u_paris.gla.project.idfnetwork.view.button.OpenResearchPanelButton;
@@ -12,6 +11,8 @@ import fr.u_paris.gla.project.idfnetwork.view.button.ZoomInButton;
 import fr.u_paris.gla.project.idfnetwork.view.button.ZoomOutButton;
 
 public class InteractiveButtonPanel extends JPanel {
+    private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
+
     private OpenResearchPanelButton openResearchButton;
     private OpenLineDisplayPanelButton openLineButton;
     private ZoomInButton zoomIn;
@@ -21,6 +22,7 @@ public class InteractiveButtonPanel extends JPanel {
         super();
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
+        setBackground(BACKGROUND_COLOR);
 
         openResearchButton = new OpenResearchPanelButton();
         openLineButton = new OpenLineDisplayPanelButton();
@@ -31,8 +33,6 @@ public class InteractiveButtonPanel extends JPanel {
     }
 
     private void init() {
-        setOpaque(false);
-
         add(openResearchButton);
         add(openLineButton);
         add(zoomIn);
