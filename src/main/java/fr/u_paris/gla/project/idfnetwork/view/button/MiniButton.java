@@ -21,7 +21,7 @@ public abstract class MiniButton extends JButton {
      * @param x The x position of the button.
      * @param y The y position of the button.
      */
-    protected MiniButton(/* int x, int y */) {
+    protected MiniButton() {
         super();
         
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
