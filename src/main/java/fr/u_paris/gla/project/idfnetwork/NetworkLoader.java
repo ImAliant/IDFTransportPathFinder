@@ -107,7 +107,7 @@ public class NetworkLoader {
         String longlat = fields[longlatIndex].trim();
         double latitude = Double.parseDouble(longlat.split(",")[0]);
         double longitude = Double.parseDouble(longlat.split(",")[1]);
-        Stop temp = network.findStop(stopname, longitude, latitude);
+        Stop temp = network.findSameStop(stopname, longitude, latitude);
         if (temp == null) {
             temp = new Stop(stopname, longitude, latitude);
             network.addStop(temp);
