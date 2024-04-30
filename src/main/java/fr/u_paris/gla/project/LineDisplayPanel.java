@@ -1,50 +1,94 @@
 package fr.u_paris.gla.project;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.BorderLayout;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import fr.u_paris.gla.project.idfnetwork.view.button.transportButton.BusButton;
-import fr.u_paris.gla.project.idfnetwork.view.button.transportButton.MetroButton;
-import fr.u_paris.gla.project.idfnetwork.view.button.transportButton.PlansButton;
-import fr.u_paris.gla.project.idfnetwork.view.button.transportButton.RERButton;
-import fr.u_paris.gla.project.idfnetwork.view.button.transportButton.TramButton;
+import fr.u_paris.gla.project.idfnetwork.view.button.CleanDisplayButton;
+import fr.u_paris.gla.project.idfnetwork.view.button.transport_button.BusButton;
+import fr.u_paris.gla.project.idfnetwork.view.button.transport_button.MetroButton;
+import fr.u_paris.gla.project.idfnetwork.view.button.transport_button.RERButton;
+import fr.u_paris.gla.project.idfnetwork.view.button.transport_button.TramButton;
 import fr.u_paris.gla.project.observer.LineDisplayPanelObserver;
-import javax.swing.BoxLayout;
 
 public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver {
+    private static final Color BACKGROUND_COLOR = new Color(100, 181, 246);
+
+    private JPanel buttonPanel;
+    private SelectionLineAndValidatePanel comboBoxAndValidate;
+    private JPanel clearPanel;
+
+    private MetroButton metroButton;
+    private BusButton busButton;
+    private RERButton rerButton;
+    private TramButton tramButton;
+
+    private CleanDisplayButton clear;
+
     public LineDisplayPanel() {
         super();
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS)); // Set layout to horizantal
-        setBackground(new Color(100, 181, 246));
+        
+        setLayout(new BorderLayout());
+        setBackground(BACKGROUND_COLOR);
         setVisible(false);
+
+        initializeComponents();
+
+        addComponents();
+
+        addObservers();
+    }
+
+    private void initializeComponents() {
+        initializePanel();
+
         initializeButtons();
-        setPreferredSize(new Dimension(100, 100));
+    }
+
+    private void initializePanel() {
+        buttonPanel = new JPanel();
+        comboBoxAndValidate = new SelectionLineAndValidatePanel();
+        clearPanel = new JPanel();
+
+        buttonPanel.setOpaque(false);
+        comboBoxAndValidate.setOpaque(false);
+        clearPanel.setOpaque(false);
     }
 
     private void initializeButtons() {
-        add(new MetroButton());
-        add(new RERButton());
-        add(new BusButton());
-        add(new TramButton());
-        add(new PlansButton());
+        metroButton = new MetroButton();
+        busButton = new BusButton();
+        rerButton = new RERButton();
+        tramButton = new TramButton();
 
-        this.revalidate();
+        clear = new CleanDisplayButton();
+    }
 
+    private void addComponents() {
+        buttonPanel.add(metroButton);
+        buttonPanel.add(busButton);
+        buttonPanel.add(rerButton);
+        buttonPanel.add(tramButton);
+
+        clearPanel.add(clear);
+        
+        add(buttonPanel, BorderLayout.WEST);
+        add(comboBoxAndValidate, BorderLayout.CENTER);
+        add(clearPanel, BorderLayout.EAST);
+    }
+
+    private void addObservers() {
+        metroButton.addObserver(comboBoxAndValidate.getComboBox());
+        busButton.addObserver(comboBoxAndValidate.getComboBox());
+        rerButton.addObserver(comboBoxAndValidate.getComboBox());
+        tramButton.addObserver(comboBoxAndValidate.getComboBox());
+
+        clear.addObserver(comboBoxAndValidate.getComboBox());
     }
 
     @Override
     public void updateVisibility() {
         setVisible(!isVisible());
     }
-
-    public void setPanelSize(int width, int height) {
-        setPreferredSize(new Dimension(width, height));
-        revalidate(); // This ensures the panel updates its layout after the size change
-        repaint(); // This ensures the panel repaints after the size change
-    }
-
 }

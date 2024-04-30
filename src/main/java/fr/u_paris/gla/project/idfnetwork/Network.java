@@ -3,6 +3,7 @@ package fr.u_paris.gla.project.idfnetwork;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -56,7 +57,11 @@ public class Network {
     }
 
     public static List<Line> getLinesByType(LineType type) {
-        return Network.getInstance().getLines().stream().filter(line -> line.getType() == type).collect(Collectors.toList());  
+        return lines.values()
+            .stream()
+            .filter(line -> line.getType() == type)
+            .sorted(Comparator.comparing(Line::toString))
+            .collect(Collectors.toList()); 
     }
 
     /**
