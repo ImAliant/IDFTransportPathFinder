@@ -8,8 +8,11 @@ import javax.swing.JComboBox;
 import fr.u_paris.gla.project.idfnetwork.Line;
 import fr.u_paris.gla.project.observer.CleanDisplayObserver;
 import fr.u_paris.gla.project.observer.DisplayLineObserver;
+import fr.u_paris.gla.project.observer.LinePaintObserver;
 
 public class DisplayLineComboBox extends JComboBox<String> implements DisplayLineObserver, CleanDisplayObserver {
+    private transient List<LinePaintObserver> observers = new ArrayList<>();
+
     private transient List<Line> lines;
 
     public DisplayLineComboBox() {
@@ -47,5 +50,15 @@ public class DisplayLineComboBox extends JComboBox<String> implements DisplayLin
     @Override
     public void cleanDisplay() {
         clean();
+    }
+
+    public void addObserver(LinePaintObserver observer) {
+        observers.add(observer);
+    }
+
+    public void notifyObservers(Line line) {
+        for (LinePaintObserver observer : observers) {
+            observer.showLine(line);
+        }
     }
 }

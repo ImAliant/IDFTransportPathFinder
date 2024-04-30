@@ -58,6 +58,8 @@ public class AppWindow extends JFrame {
         interactiveButtonPanel.getZoomOut().addObserver(map);
         interactiveButtonPanel.getOpenResearchButton().addObserver(researchPanel);
         interactiveButtonPanel.getOpenLineButton().addObserver(lineDisplayPanel);
+
+        lineDisplayPanel.getComboBoxAndValidate().getComboBox().addObserver(map);
     }
 
     private void addComponentsToContainer() {

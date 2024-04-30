@@ -28,10 +28,11 @@ import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
 import fr.u_paris.gla.project.observer.ItineraryObserver;
+import fr.u_paris.gla.project.observer.LinePaintObserver;
 import fr.u_paris.gla.project.observer.ZoomInObserver;
 import fr.u_paris.gla.project.observer.ZoomOutObserver;
 
-public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver , ItineraryObserver{
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver , ItineraryObserver, LinePaintObserver {
     /**
      *
      */
@@ -185,6 +186,11 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     public Set<StopWaypoint> getWaypoints() {
         return stopWaypoints;
+    }
+
+    @Override
+    public void showLine(Line line) {
+        drawLine(line);
     }
 
     @Override
