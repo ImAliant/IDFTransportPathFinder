@@ -17,7 +17,7 @@ import org.jxmapviewer.painter.Painter;
 
 public class ItineraryPainter implements Painter<JXMapViewer>
 {
-    private Color color = Color.RED;
+
     private boolean antiAlias = true;
 
     private Itinerary path;
@@ -43,7 +43,7 @@ public class ItineraryPainter implements Painter<JXMapViewer>
 
         drawRoute(g, map);
 
-        g.dispose();
+        // g.dispose(); // on ne doit pas libérer les ressources graphiques
     }
 
     private void drawRoute(Graphics2D g, JXMapViewer map)

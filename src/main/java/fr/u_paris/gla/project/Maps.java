@@ -17,6 +17,7 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
+import org.jxmapviewer.painter.CompoundPainter;
 import org.jxmapviewer.painter.Painter;
 
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
@@ -26,10 +27,11 @@ import fr.u_paris.gla.project.idfnetwork.view.ItineraryPainter;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
+import fr.u_paris.gla.project.observer.ItineraryObserver;
 import fr.u_paris.gla.project.observer.ZoomInObserver;
 import fr.u_paris.gla.project.observer.ZoomOutObserver;
 
-public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver , ItineraryObserver{
     /**
      *
      */
@@ -57,6 +59,7 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
     private Painter<JXMapViewer> routePainter;
+    private WaypointPainter<StopWaypoint> wayPointPainter;
 
     /**
      * Constructor of the maps.
@@ -102,14 +105,14 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     }
 
     private void initWaypoint() {
-        WaypointPainter<StopWaypoint> wp = new StopRender();
-        wp.setWaypoints(stopWaypoints);
+        this.wayPointPainter = new StopRender();
+        wayPointPainter.setWaypoints(stopWaypoints);
 
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
 
-        this.setOverlayPainter(wp);
+        this.setOverlayPainter(wayPointPainter);
     }
 
     private void configureMapMouseListeners() {
@@ -180,15 +183,27 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         this.repaint();
     }
 
-    public void printItinerary(Itinerary itinerary){
-        this.removeAll();
+    public void setItineraryPainter(Itinerary itinerary){
         this.routePainter = new ItineraryPainter(itinerary);
-
-        this.setOverlayPainter(routePainter);
-        this.repaint();
     }
 
     public Set<StopWaypoint> getWaypoints() {
         return stopWaypoints;
+    }
+
+    @Override
+    public void showItinerary(Itinerary itinerary) {
+        if (itinerary == null || itinerary.getStops().isEmpty() || itinerary.getLines().isEmpty() ) {
+            this.setOverlayPainter(wayPointPainter);
+            this.repaint();
+            return ;
+        }
+
+        this.setItineraryPainter(itinerary);
+        List <Painter<JXMapViewer>> painters = new java.util.ArrayList<>();
+        painters.add(routePainter);
+        painters.add(wayPointPainter);
+        this.setOverlayPainter(new CompoundPainter<>(painters));
+        this.repaint();
     }
 }

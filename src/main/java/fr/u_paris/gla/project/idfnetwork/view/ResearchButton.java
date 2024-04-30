@@ -68,13 +68,14 @@ public class ResearchButton extends JButton {
         }
 
         if (startStop == null || destinationStop == null) {
+            if (startStop == null) System.out.println("start n'a pas ete trouve.");
+            if (destinationStop == null) System.out.println("destination n'a pas ete trouve.");
+
             System.out.println("Un des arrêts n'est pas trouvé.");
             return;
         }
 
         Itinerary route = launchResearch(startStop, destinationStop);
-
-        System.out.println(route);
 
         notifyObservers(route);
     }
@@ -94,7 +95,7 @@ public class ResearchButton extends JButton {
     }
 
     private boolean isGeoPosition(String position) {
-        String geoPositionPattern = "^\\d+\\.\\d+,\\d+\\.\\d+$";
+        String geoPositionPattern = "^\\d+\\.\\d+, \\d+\\.\\d+$";
 
         return position.matches(geoPositionPattern);
     }

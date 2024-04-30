@@ -60,6 +60,7 @@ public class AppWindow extends JFrame {
 
     private void initializeObservers() {
         researchPanel.getSearchButton().addObserver(showResultPanel);
+        researchPanel.getSearchButton().addObserver(map);
         interactiveButtonPanel.getZoomIn().addObserver(map);
         interactiveButtonPanel.getZoomOut().addObserver(map);
         interactiveButtonPanel.getOpenResearchButton().addObserver(researchPanel);

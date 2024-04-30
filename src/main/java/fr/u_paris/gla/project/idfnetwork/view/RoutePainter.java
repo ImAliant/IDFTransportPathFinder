@@ -9,7 +9,6 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -24,8 +23,7 @@ public class RoutePainter implements Painter<JXMapViewer>
     private boolean antiAlias = true;
 
     private List<TravelPath> track;
-    private List<Stop> itinerary;
- 
+
     public RoutePainter(List<TravelPath> track,Color color)
     {
         this.track = new ArrayList<TravelPath>(track);
@@ -61,7 +59,7 @@ public class RoutePainter implements Painter<JXMapViewer>
 
         drawRoute(g, map);
 
-        g.dispose();
+        //g.dispose(); // on devrait pas disposer le contexte graphique
     }
 
     private void drawRoute(Graphics2D g, JXMapViewer map)
