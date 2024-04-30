@@ -27,11 +27,9 @@ public class AppWindow extends JFrame {
         this.map = new Maps();
         this.researchPanel = new ResearchPanel();
         this.lineDisplayPanel = new LineDisplayPanel();
-<<<<<<< src/main/java/fr/u_paris/gla/project/AppWindow.java
         this.showResultPanel = new ShowResultPanel();
         this.interactiveButtonPanel = new InteractiveButtonPanel();
 
->>>>>>> src/main/java/fr/u_paris/gla/project/AppWindow.java
         init(title);
 
         pack();
@@ -61,13 +59,11 @@ public class AppWindow extends JFrame {
     }
 
     private void initializeObservers() {
-<<<<<<< src/main/java/fr/u_paris/gla/project/AppWindow.java
         researchPanel.getSearchButton().addObserver(showResultPanel);
         interactiveButtonPanel.getZoomIn().addObserver(map);
         interactiveButtonPanel.getZoomOut().addObserver(map);
         interactiveButtonPanel.getOpenResearchButton().addObserver(researchPanel);
         interactiveButtonPanel.getOpenLineButton().addObserver(lineDisplayPanel);
->>>>>>> src/main/java/fr/u_paris/gla/project/AppWindow.java
     }
 
     private void addComponentsToContainer() {
