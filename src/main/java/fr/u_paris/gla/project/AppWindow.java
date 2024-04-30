@@ -40,8 +40,6 @@ public class AppWindow extends JFrame {
 
         setLayoutContainer();
 
-        initializeComponents();
-
         initializeObservers();
 
         addComponentsToContainer();
@@ -51,11 +49,6 @@ public class AppWindow extends JFrame {
 
     private void setLayoutContainer() {
         container.setLayout(new BorderLayout());
-    }
-
-    private void initializeComponents() {
-        setGlassPane(interactiveButtonPanel);
-        interactiveButtonPanel.setVisible(true);
     }
 
     private void initializeObservers() {
@@ -72,6 +65,7 @@ public class AppWindow extends JFrame {
         container.add(researchPanel, BorderLayout.WEST);
         container.add(lineDisplayPanel, BorderLayout.NORTH);
         container.add(showResultPanel, BorderLayout.EAST);
+        container.add(interactiveButtonPanel, BorderLayout.SOUTH);
     }
 
     /**
