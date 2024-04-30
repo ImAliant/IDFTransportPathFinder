@@ -60,8 +60,11 @@ public class AppWindow extends JFrame {
         setLayoutContainer();
 
         researchPanel.getDepartureEnablingMapButton().addObserver(map);
-        map.addObserver(researchPanel.getDepartureTextField());
+        researchPanel.getArrivalEnablingMapButton().addObserver(map);
         
+        map.addDepartureObserver(researchPanel.getDepartureTextField());
+        map.addArrivalObserver(researchPanel.getArrivalTextField());
+
         initializeComponentOfLayeredPane();
         
         initializeObservers();

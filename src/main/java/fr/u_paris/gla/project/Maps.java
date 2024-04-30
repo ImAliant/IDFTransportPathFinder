@@ -33,16 +33,18 @@ import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
 import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
+import fr.u_paris.gla.project.observer.ArrivalMapButtonObserver;
+import fr.u_paris.gla.project.observer.DepartureMapButtonObserver;
 import fr.u_paris.gla.project.observer.GeoPositionObserver;
-import fr.u_paris.gla.project.observer.ItineraryMapButtonObserver;
 import fr.u_paris.gla.project.observer.ZoomInObserver;
 import fr.u_paris.gla.project.observer.ZoomOutObserver;
 
-public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver, ItineraryMapButtonObserver {
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver, DepartureMapButtonObserver, ArrivalMapButtonObserver {
     /**
      * 
      */
-    private List<GeoPositionObserver> observers = new ArrayList<>();
+    private List<GeoPositionObserver> departureObservers = new ArrayList<>();
+    private List<GeoPositionObserver> arrivalObservers = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
     /**
@@ -66,7 +68,8 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
      */
     public static final int MAX_ZOOM = 7;
 
-    private boolean isGeoPositionClickEnabled = false;
+    private boolean isDepGeoPositionClickEnabled = false;
+    private boolean isArrGeoPositionClickEnabled = false;
     private GeoPosition geoPositionClicked;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
@@ -139,14 +142,22 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         this.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent e) {
                 boolean isLeftButtonClicked = e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1;
-                if(isLeftButtonClicked && isGeoPositionClickEnabled){
-                    Point p = e.getPoint();
-                    geoPositionClicked = convertPointToGeoPosition(p);
-
-                    notifyObservers();
+                if (isLeftButtonClicked) {
+                    geoPositionClicked = getGeoPosition(e);
+                    if (isDepGeoPositionClickEnabled) {
+                        notifyDepObservers();
+                    } else if (isArrGeoPositionClickEnabled){
+                        notifyArrObservers();
+                    }
                 }
             }
         });
+    }
+
+    private GeoPosition getGeoPosition(MouseEvent e) {
+        Point p = e.getPoint();
+
+        return convertPointToGeoPosition(p);
     }
 
     private void setDefaultLocation() {
@@ -185,8 +196,13 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     }
 
     @Override
-    public void onChange(boolean value) {
-        isGeoPositionClickEnabled = value;
+    public void onChangeDeparture(boolean value) {
+        isDepGeoPositionClickEnabled = value;
+    }
+
+    @Override
+    public void onChangeArrival(boolean value) {
+        isArrGeoPositionClickEnabled = value;
     }
 
     @Override
@@ -210,34 +226,40 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         }
     }
 
-    public void addObserver(GeoPositionObserver observer){
-        observers.add(observer);
+    public void addDepartureObserver(GeoPositionObserver observer){
+        System.out.println("map: add dep obs");
+        departureObservers.add(observer);
     }
 
-    public void removeObserver(GeoPositionObserver observer){
-        observers.remove(observer);
+    public void addArrivalObserver(GeoPositionObserver observer) {
+        System.out.println("map: add arr obs");
+
+        if (observer == null) System.out.println("observer null");
+
+        arrivalObservers.add(observer);
     }
 
-    public void notifyObservers(){
-        for (GeoPositionObserver observer : observers){
+    public void notifyDepObservers() {
+        System.out.println("map: notify dep obs");
+
+        for (GeoPositionObserver observer : departureObservers) {
             observer.getGeoPosition(geoPositionClicked);
         }
 
-        isGeoPositionClickEnabled = false;
+        isDepGeoPositionClickEnabled = false;
     }
 
+    public void notifyArrObservers(){
+        System.out.println("map: notify arr obs");
 
+        for (GeoPositionObserver observer : arrivalObservers){
+            observer.getGeoPosition(geoPositionClicked);
+        }
+
+        isArrGeoPositionClickEnabled = false;
+    }
 
     public Set<StopWaypoint> getWaypoints() {
         return stopWaypoints;
-    }
-
-
-
-
-
-
-    public List<GeoPositionObserver> getObservers() {
-        return observers;
     }
 }
