@@ -30,7 +30,7 @@ public class TramwayLine extends Line {
 
     @Override
     public String toString() {
-        return "TRAMWAY " + lname;
+        return "T " + lname;
     }
 
     @Override

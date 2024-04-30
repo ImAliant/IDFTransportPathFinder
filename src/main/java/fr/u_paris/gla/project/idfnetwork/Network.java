@@ -1,11 +1,13 @@
 package fr.u_paris.gla.project.idfnetwork;
 
-import fr.u_paris.gla.project.utils.GPS;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
+
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.utils.GPS;
+
 import java.util.HashMap;
 
 /**
@@ -27,11 +29,13 @@ public class Network {
 
     /**
      * Private constructor to prevent instantiation from other classes
-     */ 
-    private Network() {}
+     */
+    private Network() {
+    }
 
     /**
      * Returns the instance of the singleton class
+     * 
      * @return the instance of the singleton class
      */
     public static Network getInstance() {
@@ -40,8 +44,10 @@ public class Network {
         }
         return instance;
     }
+
     /**
      * Returns the line with the given name and route type
+     * 
      * @param lname
      * @param routetype
      * @return
@@ -50,16 +56,20 @@ public class Network {
         String key = generateLineKey(lname, type);
         return lines.get(key);
     }
+
     /**
      * Adds the given line to the network
+     * 
      * @param line
      */
     protected void addLine(Line line) {
         String key = generateLineKey(line.getLineName(), line.getType());
         lines.putIfAbsent(key, line);
     }
+
     /**
      * Returns the stop with the given name, longitude and latitude
+     * 
      * @param name
      * @param longitude
      * @param latitude
@@ -70,12 +80,12 @@ public class Network {
         return stops.get(key);
     }
 
-    public static Stop findSameStop(String name,double longitude, double latitude){
+    public Stop findSameStop(String name,double longitude, double latitude){
         HashMap<String,Stop> stopMap = sameStops.get(name);
         if (stopMap != null) {
             for (Stop stop : stopMap.values()) {
-                double distance = Math.sqrt(Math.pow(latitude - stop.getLatitude(), 2) + Math.pow(longitude - stop.getLongitude(), 2));
-                //double distance = GPS.distance(latitude,longitude,stop.getLatitude(),stop.getLongitude());
+                //double distance = Math.sqrt(Math.pow(latitude - stop.getLatitude(), 2) + Math.pow(longitude - stop.getLongitude(), 2));
+                double distance = GPS.distance(latitude,longitude,stop.getLatitude(),stop.getLongitude());
                 if (distance < 0.5) {
                     return stop;
                 }
@@ -83,23 +93,60 @@ public class Network {
         }
         return null;
     }
+
+    public Stop findStopByName(String name) {
+        List<Stop> nStops = getStops();
+        for (Stop stop : nStops) {
+            if (stop.getStopName().equalsIgnoreCase(name)) {
+                return stop;
+            }
+        }
+        return null; 
+    }
+
+    public static List<Stop> findStopFromGeoPosition(double latitude, double longitude, double distance) {
+        List<Stop> res = new ArrayList<>();
+        List<Stop> stops = Network.getInstance().getStops();
+
+        for (Stop s: stops) {
+            if (GPS.distance(latitude, longitude, s.getLatitude(), s.getLongitude()) < distance) {
+                res.add(s);
+            }
+        }
+
+        return res;
+    }
+
+    public static Stop findClosestStopByGeoPosition(double latitude, double longitude) {
+        double distance = 0.01; // begin with 10m distance
+        List<Stop> closestStops = new ArrayList<>();
+
+        while (closestStops.isEmpty()) {
+            closestStops = findStopFromGeoPosition(latitude, longitude, distance);
+
+            distance += 0.01;
+        }
+
+        return closestStops.get(0);
+    }
+
     /**
      * Adds the given stop to the network
+     * 
      * @param stop
      */ 
-    protected static void addStop(Stop stop) {
+    public void addStop(Stop stop) {
         String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
         stops.putIfAbsent(key, stop);
 
         String namekey = generateStopNameKey(stop.getStopName());
 
-        if (!sameStops.containsKey(namekey)) {
-            sameStops.put(namekey, new HashMap<>());
-        }
+        sameStops.computeIfAbsent(namekey, k -> new HashMap<>());
+
         sameStops.get(namekey).putIfAbsent(key, stop);
     }
 
-    protected static void removeStop(Stop stop) {
+    public static void removeStop(Stop stop) {
         if(stop != null) {
             String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
             stops.remove(key, stop);
@@ -108,8 +155,10 @@ public class Network {
             sameStops.get(namekey).remove(key, stop);
         }
     }
+
     /**
      * Generates a key for a line
+     * 
      * @param lname
      * @param routetype
      * @return
@@ -117,8 +166,10 @@ public class Network {
     private String generateLineKey(String lname, LineType line) {
         return lname + "-" + line;
     }
+
     /**
      * Generates a key for a stop
+     * 
      * @param name
      * @param longitude
      * @param latitude
@@ -145,7 +196,7 @@ public class Network {
     }
 
     //DEBUG function
-    protected void clear() {
+    public void clear() {
         lines.clear();
         stops.clear();
     }

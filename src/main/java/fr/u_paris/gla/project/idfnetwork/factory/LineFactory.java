@@ -2,9 +2,20 @@ package fr.u_paris.gla.project.idfnetwork.factory;
 
 import fr.u_paris.gla.project.idfnetwork.*;
 
+/**
+ * Factory class to create lines.
+ */
 public class LineFactory {
     private LineFactory() {}
 
+    /**
+     * Create a line of the given type.
+     * 
+     * @param type The type of the line.
+     * @param name The name of the line.
+     * @param color The color of the line.
+     * @return The created line.
+     */
     public static Line createLine(LineType type, String name, String color) {
         switch (type) {
             case BUS:

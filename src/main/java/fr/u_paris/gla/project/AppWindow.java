@@ -1,71 +1,76 @@
 package fr.u_paris.gla.project;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.Dimension;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class AppWindow extends JFrame {
-
     private static final long serialVersionUID = 1L;
 
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+
+    private JPanel container;
+
+    private InteractiveButtonPanel interactiveButtonPanel;
     private Maps map;
-
-    private JButton zoomIn;
-
-    private JButton zoomOut;
+    private ResearchPanel researchPanel;
+    private LineDisplayPanel lineDisplayPanel;
+    private ShowResultPanel showResultPanel;
 
     public AppWindow(String title) {
         super();
-        this.map = new Maps(WIDTH, HEIGHT);
+
+        this.container = new JPanel();
+        this.map = new Maps();
+        this.researchPanel = new ResearchPanel();
+        this.lineDisplayPanel = new LineDisplayPanel();
+        this.showResultPanel = new ShowResultPanel();
+        this.interactiveButtonPanel = new InteractiveButtonPanel();
+
         init(title);
+
+        pack();
     }
 
     private void init(String title) {
         initFrame(title);
 
-        JPanel container = new JPanel();
-        addMapAndButtons(container);
+        setLayoutContainer();
 
+        initializeComponents();
+
+        initializeObservers();
+
+        addComponentsToContainer();
+
+        add(container);
     }
 
-    private void addMapAndButtons(JPanel container) {
-        /**
-         * Container of the map and the buttons.
-         */
+    private void setLayoutContainer() {
         container.setLayout(new BorderLayout());
+    }
 
-        // Add the map to the center of the container
+    private void initializeComponents() {
+        setGlassPane(interactiveButtonPanel);
+        interactiveButtonPanel.setVisible(true);
+    }
+
+    private void initializeObservers() {
+        researchPanel.getSearchButton().addObserver(showResultPanel);
+        interactiveButtonPanel.getZoomIn().addObserver(map);
+        interactiveButtonPanel.getZoomOut().addObserver(map);
+        interactiveButtonPanel.getOpenResearchButton().addObserver(researchPanel);
+        interactiveButtonPanel.getOpenLineButton().addObserver(lineDisplayPanel);
+    }
+
+    private void addComponentsToContainer() {
         container.add(map, BorderLayout.CENTER);
-
-        /**
-         * Panel to put the buttons.
-         */
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(1, 2));
-
-        /**
-         * Button to zoom in the map.
-         */
-        zoomIn = new JButton("Zoom In");
-        zoomIn.addActionListener(e -> map.zoomIn());
-        /**
-         * Button to zoom out the map.
-         */
-        zoomOut = new JButton("Zoom Out");
-        zoomOut.addActionListener(e -> map.zoomOut());
-
-        buttonsPanel.add(zoomOut);
-        buttonsPanel.add(zoomIn);
-
-        // Add the buttons to the bottom of the container
-        container.add(buttonsPanel, BorderLayout.SOUTH);
-
-        // Add the container to the frame
-        add(container);
-
+        container.add(researchPanel, BorderLayout.WEST);
+        container.add(lineDisplayPanel, BorderLayout.NORTH);
+        container.add(showResultPanel, BorderLayout.EAST);
     }
 
     /**
@@ -73,11 +78,10 @@ public class AppWindow extends JFrame {
      */
     private void initFrame(String title) {
         setTitle(title);
-        // setSize(WIDTH, HEIGHT);
+        super.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         setLocationRelativeTo(null);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
     }
 
     // TESTABILITY
@@ -86,19 +90,5 @@ public class AppWindow extends JFrame {
      */
     public Maps getMap() {
         return map;
-    }
-
-    /**
-     * @return the zoomInButton
-     */
-    public JButton getZoomInButton() {
-        return zoomIn;
-    }
-
-    /**
-     * @return the zoomOutButton
-     */
-    public JButton getZoomOutButton() {
-        return zoomOut;
     }
 }

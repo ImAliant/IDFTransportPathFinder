@@ -21,4 +21,20 @@ public enum LineType {
                 throw new IllegalArgumentException("Unknown line type: " + type);
         }
     }
+
+    public static LineType fromLine(Line line) {
+        if (line instanceof BusLine) {
+            return BUS;
+        } else if (line instanceof TramwayLine) {
+            return TRAMWAY;
+        } else if (line instanceof RERLine) {
+            return RER;
+        } else if (line instanceof MetroLine) {
+            return METRO;
+        } else if (line instanceof FunicularLine) {
+            return FUNICULAIRE;
+        } else {
+            throw new IllegalArgumentException("Unknown line type: " + line.getClass().getName());
+        }
+    }
 }

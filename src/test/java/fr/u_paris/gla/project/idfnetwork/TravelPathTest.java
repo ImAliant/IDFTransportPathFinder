@@ -3,16 +3,18 @@ package fr.u_paris.gla.project.idfnetwork;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+
 /* import static org.junit.jupiter.api.Assertions.*; */
 
 class TravelPathTest {
 
-    private static Stop a,b;
+    /* private static Stop a,b;
     @BeforeAll
     static void setup(){
         a = new Stop("a",0.0,0.0);
         b= new Stop("b",100.0,0.0);
-    }
+    } */
 
     @Test
     void createTravelPath(){

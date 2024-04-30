@@ -9,23 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class MapsTest {
-    private int WIDTH = 100;
-    private int HEIGHT = 100;
-    private Maps map = new Maps(WIDTH, HEIGHT);
-
-    @Test
-    void testWidth() {
-        assertEquals(WIDTH, map.getWidth(), "The width of the map should be " + WIDTH);
-
-        System.out.println("testSize OK");
-    }
-
-    @Test
-    void testHeight() {
-        assertEquals(HEIGHT, map.getHeight(), "The height of the map should be " + HEIGHT);
-
-        System.out.println("testSize OK");
-    }
+    private Maps map = new Maps();
 
     private void testZoomValue(Runnable action, BiFunction<Integer, Integer, Integer> comparison, String func, String errorMessage) {
         int zoomValue = map.getZoom();

@@ -9,16 +9,24 @@ Il s'agit d'un projet Java. Ce dépôt définit un système de build et une appl
 ## Lancement du programme
 Ce projet utilise [maven](https://maven.apache.org/) de Apache pour la gestion de construction.
 
+Afin de compiler sans lancer les tets unitaires, éxecutez simplement
+```
+mvn install -DskipTests
+
+
+```
+
 Afin de compiler et lancer les tests, éxecutez simplement
 ```
 mvn verify
+
 ```
 
 Dans sa version initiale, le programme fournit est un simple code qui se lance en terminal ou en application graphique.
 
 Une fois le programme compilé, vous trouverez un jar executable dans le dossier target. Au nom de jar près (version changeante), vous pourrez l'exécuter avec:
 ```
-java -jar project-2024.1.0.0-SNAPSHOT.jar --info
+java -jar target/project-2024.1.0.0-SNAPSHOT-jar-with-dependencies.jar 
 ```
 
 L'option de lancement `--info` causera l'affichage dans la console d'informations de l'application.

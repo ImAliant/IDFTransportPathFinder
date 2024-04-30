@@ -1,28 +1,37 @@
 package fr.u_paris.gla.project;
 
+
+import java.awt.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import javax.swing.event.MouseInputListener;
 
+import fr.u_paris.gla.project.idfnetwork.*;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
 import org.jxmapviewer.input.PanMouseInputListener;
-import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
 import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 import org.jxmapviewer.viewer.WaypointPainter;
+import org.jxmapviewer.painter.Painter;
 
-import fr.u_paris.gla.project.idfnetwork.Network;
-import fr.u_paris.gla.project.idfnetwork.Stop;
-import fr.u_paris.gla.project.idfnetwork.view.StopRender;
-import fr.u_paris.gla.project.idfnetwork.view.StopWaypoint;
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 
-public class Maps extends JXMapViewer {
+import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
+import fr.u_paris.gla.project.idfnetwork.view.ItineraryPainter;
+import fr.u_paris.gla.project.idfnetwork.view.RoutePainter;
+import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopRender;
+import fr.u_paris.gla.project.idfnetwork.view.waypoint.StopWaypoint;
+import fr.u_paris.gla.project.observer.ZoomInObserver;
+import fr.u_paris.gla.project.observer.ZoomOutObserver;
+
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     /**
@@ -44,31 +53,26 @@ public class Maps extends JXMapViewer {
     /**
      * Maximum zoom of the map.
      */
-    public static final int MAX_ZOOM = 5;
+    public static final int MAX_ZOOM = 7;
 
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
+    private Painter<JXMapViewer> routePainter;
 
     /**
      * Constructor of the maps.
-     * 
-     * @param width
-     * @param height
      */
-    public Maps(int width, int height) {
+    public Maps() {
         super();
 
-        init(width, height);
+        init();
+
+        LoadingProgressBar.getInstance().incrementProgress(25);
     }
 
     /**
-     * Initialize the map.
-     * 
-     * @param width width of the panel
-     * @param height height of the panel
+     * Initialize the map components.
      */
-    private void init(int width, int height) {
-        setSize(width, height);
-
+    private void init() {
         // Tile factory to get the map
         createTiles();
 
@@ -84,31 +88,34 @@ public class Maps extends JXMapViewer {
         Network network = Network.getInstance();
 
         List<Stop> stops = network.getStops();
-        stops.forEach(this::addStopWaypoint);
+        stops.parallelStream().forEach(this::addStopWaypoint);
 
         initWaypoint();
+
     }
+
 
     private void addStopWaypoint(Stop stop) {
         stopWaypoints.add(
-            new StopWaypoint(stop)
+                new StopWaypoint(stop)
         );
     }
 
     private void initWaypoint() {
         WaypointPainter<StopWaypoint> wp = new StopRender();
         wp.setWaypoints(stopWaypoints);
-        this.setOverlayPainter(wp);
+
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
+
+        this.setOverlayPainter(wp);
     }
 
     private void configureMapMouseListeners() {
         MouseInputListener listener = new PanMouseInputListener(this);
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
-        this.addMouseWheelListener(new ZoomMouseWheelListenerCursor(this));
     }
 
     private void setDefaultLocation() {
@@ -123,16 +130,31 @@ public class Maps extends JXMapViewer {
         setTileFactory(tileFactory);
     }
 
+    @Override
     public void zoomIn() {
+
+
         adjustZoom(-1);
+        //this.remove( routePainter);
     }
 
+    private void updateVisibleStop() {
+        int zoom = getZoom();
+        for (StopWaypoint stopWaypoint : stopWaypoints) {
+            stopWaypoint.getButton().updateVisibility(zoom);
+        }
+    }
+
+    @Override
     public void zoomOut() {
         adjustZoom(1);
+
     }
 
     private void adjustZoom(int factor) {
         setZoom(getZoom() + factor);
+
+        updateVisibleStop();
     }
 
     @Override
@@ -140,7 +162,33 @@ public class Maps extends JXMapViewer {
         if (zoom > MAX_ZOOM) {
             return;
         }
-
         super.setZoom(zoom);
+    }
+
+    public void drawLine(Line line){
+        this.removeAll();
+        // maybe setvisible false for the stops
+        List<TravelPath> paths = line.getPaths();
+        if (line.getColor().length() != 6) {
+            routePainter = new RoutePainter(paths);
+        }
+        else{
+            Color couleur = Color.decode("#" + line.getColor());
+            routePainter = new RoutePainter(paths,couleur);
+        }
+        this.setOverlayPainter(routePainter);
+        this.repaint();
+    }
+
+    public void printItinerary(Itinerary itinerary){
+        this.removeAll();
+        this.routePainter = new ItineraryPainter(itinerary);
+
+        this.setOverlayPainter(routePainter);
+        this.repaint();
+    }
+
+    public Set<StopWaypoint> getWaypoints() {
+        return stopWaypoints;
     }
 }
