@@ -74,8 +74,6 @@ public class ResearchButton extends JButton {
 
         Itinerary route = launchResearch(startStop, destinationStop);
 
-        System.out.println(route);
-
         notifyObservers(route);
     }
 
@@ -94,7 +92,7 @@ public class ResearchButton extends JButton {
     }
 
     private boolean isGeoPosition(String position) {
-        String geoPositionPattern = "^\\d+\\.\\d+,\\d+\\.\\d+$";
+        String geoPositionPattern = "^\\d+\\.\\d+, \\d+\\.\\d+$";
 
         return position.matches(geoPositionPattern);
     }

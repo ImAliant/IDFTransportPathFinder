@@ -52,8 +52,9 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
 
     @Override
     public void showItinerary(Itinerary itinerary) {
-        if (itinerary == null) {
+        if (itinerary == null || itinerary.getStops().isEmpty() || itinerary.getLines().isEmpty() ) {
             resultLabel.setText("Aucun itinéraire trouvé");
+            revalidate();
             setVisible(true);
             return;
         }
@@ -63,7 +64,7 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         builder.append(itineraryString);
         
         resultLabel.setText("<html>"+builder.toString().replace("\n", "<br>")+"</html>");
-
+        revalidate();
         setVisible(true);
     }
 }
