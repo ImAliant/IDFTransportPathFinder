@@ -60,7 +60,9 @@ public class ResearchButton extends JButton {
             return;
         }
 
-        launchResearch(startStop, destinationStop);
+        Itinerary route = launchResearch(startStop, destinationStop);
+
+        notifyObservers(route);
     }
 
     private double[] parseGeoPosition(String position) {
@@ -73,15 +75,8 @@ public class ResearchButton extends JButton {
         return result;
     }
 
-    private void launchResearch(Stop start, Stop destination) {
-        Itinerary route = ItineraryCalculator.CalculateRoad(start, destination);
-
-        if (route == null || route.getStops().isEmpty() || route.getLines().isEmpty()) {
-            System.out.printf("Aucun trajet trouvé entre : %s et %s ou trajet incomplet.%n", start, destination);
-            return;
-        }
-
-        System.out.println(route);
+    private Itinerary launchResearch(Stop start, Stop destination) {
+        return ItineraryCalculator.CalculateRoad(start, destination);
     }
 
     private boolean isGeoPosition(String position) {
