@@ -6,7 +6,6 @@ import java.util.*;
 
 public class ItineraryCalculator {
     public static Itinerary CalculateRoad(Stop start, Stop destination) {
-
         // Initialize Dijskstra algorithm
         Map<Stop, Double> duration = new HashMap<>();
         Map<Stop, Stop> previousStops = new HashMap<>();

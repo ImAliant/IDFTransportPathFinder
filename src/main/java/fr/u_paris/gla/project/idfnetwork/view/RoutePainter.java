@@ -1,8 +1,5 @@
 package fr.u_paris.gla.project.idfnetwork.view;
 
-
-
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,6 +9,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -26,21 +24,17 @@ public class RoutePainter implements Painter<JXMapViewer>
     private boolean antiAlias = true;
 
     private List<TravelPath> track;
-
+    private List<Stop> itinerary;
  
     public RoutePainter(List<TravelPath> track,Color color)
     {
-     
         this.track = new ArrayList<TravelPath>(track);
         this.color = color;
     }
     public RoutePainter(List<TravelPath> track)
     {
-     
         this.track = new ArrayList<TravelPath>(track);
-       
     }
-
 
 
     @Override
@@ -72,8 +66,6 @@ public class RoutePainter implements Painter<JXMapViewer>
 
     private void drawRoute(Graphics2D g, JXMapViewer map)
     {
-       
-
         boolean first = true;
 
         for (TravelPath path : track)
