@@ -74,6 +74,8 @@ public class ResearchButton extends JButton {
 
         Itinerary route = launchResearch(startStop, destinationStop);
 
+        System.out.println(route);
+
         notifyObservers(route);
     }
 
