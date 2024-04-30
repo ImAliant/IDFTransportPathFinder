@@ -17,7 +17,7 @@ import org.jxmapviewer.painter.Painter;
 
 public class ItineraryPainter implements Painter<JXMapViewer>
 {
-    private Color color = Color.RED;
+
     private boolean antiAlias = true;
 
     private Itinerary path;
@@ -42,8 +42,6 @@ public class ItineraryPainter implements Painter<JXMapViewer>
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         drawRoute(g, map);
-
-        g.dispose();
     }
 
     private void drawRoute(Graphics2D g, JXMapViewer map)

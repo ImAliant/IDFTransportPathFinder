@@ -9,7 +9,6 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.u_paris.gla.project.idfnetwork.stop.Stop;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -24,16 +23,15 @@ public class RoutePainter implements Painter<JXMapViewer>
     private boolean antiAlias = true;
 
     private List<TravelPath> track;
-    private List<Stop> itinerary;
- 
+
     public RoutePainter(List<TravelPath> track,Color color)
     {
-        this.track = new ArrayList<TravelPath>(track);
+        this.track = new ArrayList<>(track);
         this.color = color;
     }
     public RoutePainter(List<TravelPath> track)
     {
-        this.track = new ArrayList<TravelPath>(track);
+        this.track = new ArrayList<>(track);
     }
 
 
@@ -60,8 +58,6 @@ public class RoutePainter implements Painter<JXMapViewer>
         g.setStroke(new BasicStroke(2));
 
         drawRoute(g, map);
-
-        g.dispose();
     }
 
     private void drawRoute(Graphics2D g, JXMapViewer map)
@@ -83,8 +79,6 @@ public class RoutePainter implements Painter<JXMapViewer>
             {
                 g.drawLine((int) pt.getX(), (int) pt.getY(), (int )pt2.getX(),(int) pt2.getY());
             }
-
-           
         }
     }
 }

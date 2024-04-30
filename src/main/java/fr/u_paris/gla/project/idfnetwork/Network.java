@@ -127,7 +127,7 @@ public class Network {
 
             distance += 0.01;
         }
-
+        
         return closestStops.get(0);
     }
 
