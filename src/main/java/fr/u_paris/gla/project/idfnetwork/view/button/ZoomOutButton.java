@@ -26,8 +26,8 @@ public class ZoomOutButton extends MiniButton {
      * @param x The x position of the button.
      * @param y The y position of the button.
      */
-    public ZoomOutButton(int x, int y) {
-        super(x, y);
+    public ZoomOutButton(/* int x, int y */) {
+        super(/* x, y */);
 
         Icon icon = IconUtils.createIcon(PATH, WIDTH, HEIGHT);
         setIcon(icon);
