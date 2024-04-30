@@ -1,22 +1,30 @@
 package fr.u_paris.gla.project.idfnetwork.view;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 
 import fr.u_paris.gla.project.idfnetwork.Itinerary;
+<<<<<<< src/main/java/fr/u_paris/gla/project/idfnetwork/view/ResearchButton.java
+import fr.u_paris.gla.project.observer.ItineraryObserver;
 import fr.u_paris.gla.project.idfnetwork.ItineraryCalculator;
 import fr.u_paris.gla.project.idfnetwork.Network;
 import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+>>>>>>> src/main/java/fr/u_paris/gla/project/idfnetwork/view/ResearchButton.java
 
 public class ResearchButton extends JButton {
     private static final Color BUTTON_FOREGROUND = Color.WHITE;
     private static final Color BUTTON_BACKGROUND = new Color(1, 121, 111);
 
+<<<<<<< src/main/java/fr/u_paris/gla/project/idfnetwork/view/ResearchButton.java
+    private List<ItineraryObserver> observers = new ArrayList<>();
     private CustomTextField departureField;
     private CustomTextField arrivalField;
 
     private Network instance = Network.getInstance();
+>>>>>>> src/main/java/fr/u_paris/gla/project/idfnetwork/view/ResearchButton.java
 
     public ResearchButton(String text, CustomTextField departureTF, CustomTextField arrivalTF) {
         super(text);
@@ -30,6 +38,17 @@ public class ResearchButton extends JButton {
         addActionListener(e -> onClick());
     }
 
+<<<<<<< src/main/java/fr/u_paris/gla/project/idfnetwork/view/ResearchButton.java
+    public void addObserver(ItineraryObserver observer) {
+        observers.add(observer);
+    }
+
+    private void notifyObservers(Itinerary itinerary) {
+        observers.forEach(observer -> observer.showItinerary(itinerary));
+    }
+
+    private void addListener(ResearchButtonListener listener) {
+        this.addActionListener(listener);
     private void onClick() {
         String departName = departureField.getText();
         String arriveName = arrivalField.getText();
@@ -83,5 +102,6 @@ public class ResearchButton extends JButton {
         String geoPositionPattern = "^\\d+\\.\\d+,\\d+\\.\\d+$";
 
         return position.matches(geoPositionPattern);
+>>>>>>> src/main/java/fr/u_paris/gla/project/idfnetwork/view/ResearchButton.java
     }
 }
