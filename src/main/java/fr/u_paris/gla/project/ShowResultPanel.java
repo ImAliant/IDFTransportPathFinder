@@ -52,6 +52,12 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
 
     @Override
     public void showItinerary(Itinerary itinerary) {
+        if (itinerary == null) {
+            resultLabel.setText("Aucun itinéraire trouvé");
+            setVisible(true);
+            return;
+        }
+
         StringBuilder builder = new StringBuilder("<html>");
         builder.append("Itinéraire trouvé :<br>")
             .append("Durée : ").append(itinerary.getTotalDuration()).append(" minutes<br>")
