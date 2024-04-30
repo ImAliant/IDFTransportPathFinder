@@ -58,41 +58,11 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
             return;
         }
 
-        StringBuilder builder = new StringBuilder("<html>");
-        builder.append("Itinéraire trouvé :<br>")
-            .append("Durée : ").append(itinerary.getTotalDuration()).append(" minutes<br>")
-            .append("Distance : ").append(itinerary.getTotalDistance()).append(" mètres<br>")
-            .append("Itinéraire :<br>")
-            .append("<ul>")
-            .append("<li>")
-            .append("Prendre la ligne ")
-            .append(itinerary.getLines().get(0))
-            .append(" à l'arrêt ")
-            .append(itinerary.getStops().get(0).getStopName())
-            .append("<br>");
-        for (int i = 1; i < itinerary.getStops().size()-1; i++) {
-            if (i < itinerary.getLines().size()) {
-                if (!itinerary.getLines().get(i).equals(itinerary.getLines().get(i - 1))) {
-                    builder.append(itinerary.getLines().get(i))
-                        .append(" à l'arrêt ")
-                        .append(itinerary.getStops().get(i).getStopName())
-                        .append("<br>");
-                } else {
-                    builder.append("Poursuivre jusqu'à l'arrêt ")
-                        .append(itinerary.getStops().get(i).getStopName())
-                        .append("<br>");
-                }
-            } else {
-                builder.append("Arrivée à destination à l'arrêt ")
-                    .append(itinerary.getStops().get(itinerary.getStops().size()-1).getStopName())
-                    .append("<br>");
-            }
-        }
-
-        builder.append("</ul>")
-            .append("</html>");
+        String itineraryString = itinerary.toString();
+        StringBuilder builder = new StringBuilder();
+        builder.append(itineraryString);
         
-        resultLabel.setText(builder.toString());
+        resultLabel.setText("<html>"+builder.toString().replace("\n", "<br>")+"</html>");
 
         setVisible(true);
     }
