@@ -12,9 +12,11 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingUtilities;
 
 import fr.u_paris.gla.project.idfm.IDFMNetworkExtractor;
-import fr.u_paris.gla.project.idfnetwork.NetworkLoader;
-import fr.u_paris.gla.project.idfnetwork.view.progress_bar.LoadingProgressBar;
+import fr.u_paris.gla.project.idfnetwork.network.loader.NetworkLoader;
 import fr.u_paris.gla.project.observer.LoadingObserver;
+import fr.u_paris.gla.project.view.progress_bar.LoadingProgressBar;
+import fr.u_paris.gla.project.view.window.AppWindow;
+import fr.u_paris.gla.project.view.window.LoadingScreen;
 
 /**
  * Simple application model.
