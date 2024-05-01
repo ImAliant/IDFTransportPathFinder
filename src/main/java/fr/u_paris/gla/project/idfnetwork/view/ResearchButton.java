@@ -78,11 +78,17 @@ public class ResearchButton extends JButton {
     }
 
     private double[] parseGeoPosition(String position) {
-        String[] pos = position.split(",");
+        String[] pos = position.split(", ");
+
+        for (int i = 0; i < pos.length; i++) {
+            pos[i] = pos[i].replace(",", ".");
+        }
+
         double[] result = new double[2];
 
-        result[0] = Double.parseDouble(pos[0]);
-        result[1] = Double.parseDouble(pos[1]);
+        for (int i = 0; i < pos.length; i++) {
+            result[i] = Double.parseDouble(pos[i]);
+        }
 
         return result;
     }
@@ -92,7 +98,7 @@ public class ResearchButton extends JButton {
     }
 
     private boolean isGeoPosition(String position) {
-        String geoPositionPattern = "^\\d+\\.\\d+, \\d+\\.\\d+$";
+        String geoPositionPattern = "^\\d+\\,\\d+, \\d+\\,\\d+$";
 
         return position.matches(geoPositionPattern);
     }
