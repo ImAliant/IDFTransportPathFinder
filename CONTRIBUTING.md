@@ -26,3 +26,7 @@ Le code est écrit en Java, manipulé par l'outils de construction maven et doit
 
 Le package principal du code Java est `fr.u_paris.gla.project`
 Le fichier de properties `application.properties` permet d'accéder depuis le code Java aux diverses informations inscrite dans maven.
+
+## Convention
+
+Nous allons utiliser la convention Oracle `https://www.oracle.com/java/technologies/javase/codeconventions-contents.html`.
