@@ -73,6 +73,13 @@ public class AppWindow extends JFrame {
         showResultPanel.getCloseButton().addActionListener(e -> {
             this.map.deleteLineDisplayed();
         });
+        lineDisplayPanel.getClearButton().addActionListener(e -> {
+            this.map.deleteLineDisplayed();
+        });
+        interactiveButtonPanel.getOpenLineButton().addActionListener(e -> {
+            this.map.deleteLineDisplayed();
+        });
+
     }
 
     private void addComponentsToContainer() {
