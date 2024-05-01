@@ -39,7 +39,7 @@ public class AppWindow extends JFrame {
         initFrame(title);
 
         setLayoutContainer();
-
+        
         initializeObservers();
         initializeListeners();
 
@@ -55,15 +55,21 @@ public class AppWindow extends JFrame {
     private void initializeObservers() {
         researchPanel.getSearchButton().addObserver(showResultPanel);
         researchPanel.getSearchButton().addObserver(map);
+        researchPanel.getDepartureEnablingMapButton().addObserver(map);
+        researchPanel.getArrivalEnablingMapButton().addObserver(map);
+
         interactiveButtonPanel.getZoomIn().addObserver(map);
         interactiveButtonPanel.getZoomOut().addObserver(map);
         interactiveButtonPanel.getOpenResearchButton().addObserver(researchPanel);
         interactiveButtonPanel.getOpenLineButton().addObserver(lineDisplayPanel);
 
+        map.addDepartureObserver(researchPanel.getDepartureTextField());
+        map.addArrivalObserver(researchPanel.getArrivalTextField());
+
         lineDisplayPanel.getComboBoxAndValidate().getComboBox().addObserver(map);
     }
-    private void initializeListeners(){
 
+    private void initializeListeners(){
         showResultPanel.getCloseButton().addActionListener(e -> {
             this.map.deleteLineDisplayed();
         });
