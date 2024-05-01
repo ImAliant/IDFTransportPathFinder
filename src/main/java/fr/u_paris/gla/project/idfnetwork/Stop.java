@@ -153,12 +153,12 @@ public class Stop {
         typePreference.put(LineType.RER, 4);
 
         LineType bestType = null;
-        int bestTypeValue = Integer.MAX_VALUE;
+        int bestTypeValue = Integer.MIN_VALUE;
 
         for (Line line : lines.values()) {
             LineType type = LineType.fromLine(line);
             int value = typePreference.get(type);
-            if (value < bestTypeValue) {
+            if (value > bestTypeValue) {
                 bestType = type;
                 bestTypeValue = value;
             }

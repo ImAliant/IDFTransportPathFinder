@@ -19,7 +19,7 @@ public class WalkingLine extends Line {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MetroLine)) return false;
+        if (!(o instanceof WalkingLine)) return false;
         WalkingLine walk = (WalkingLine) o;
         return Double.compare(walk.speed, speed) == 0 &&
                 lname.equals(walk.lname) &&

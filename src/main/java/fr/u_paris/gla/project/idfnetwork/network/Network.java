@@ -62,7 +62,7 @@ public class Network {
         return lines.get(key);
     }
 
-    public static List<Line> getLinesByType(LineType type) {
+    public List<Line> getLinesByType(LineType type) {
         return lines.values()
             .stream()
             .filter(line -> line.getType() == type)
@@ -94,12 +94,13 @@ public class Network {
     }
 
     public Stop findSameStop(String name,double longitude, double latitude){
+        final double DISTANCE_THRESHOLD = 0.5;
+
         HashMap<String,Stop> stopMap = sameStops.get(name);
         if (stopMap != null) {
             for (Stop stop : stopMap.values()) {
-                //double distance = Math.sqrt(Math.pow(latitude - stop.getLatitude(), 2) + Math.pow(longitude - stop.getLongitude(), 2));
                 double distance = GPS.distance(latitude,longitude,stop.getLatitude(),stop.getLongitude());
-                if (distance < 0.5) {
+                if (distance < DISTANCE_THRESHOLD) {
                     return stop;
                 }
             }
@@ -108,8 +109,7 @@ public class Network {
     }
 
     public Stop findStopByName(String name) {
-        List<Stop> stops = Network.getInstance().getStops();
-        for (Stop stop : stops) {
+        for (Stop stop : getStops()) {
             if (stop.getStopName().equalsIgnoreCase(name)) {
                 return stop;
             }
@@ -119,9 +119,8 @@ public class Network {
 
     public List<Stop> findStopFromGeoPosition(double latitude, double longitude, double distance) {
         List<Stop> res = new ArrayList<>();
-        List<Stop> stops = Network.getInstance().getStops();
-
-        for (Stop s: stops) {
+        
+        for (Stop s: getStops()) {
             if (GPS.distance(latitude, longitude, s.getLatitude(), s.getLongitude()) < distance) {
                 res.add(s);
             }
@@ -159,7 +158,7 @@ public class Network {
         sameStops.get(namekey).putIfAbsent(key, stop);
     }
 
-    public static void removeStop(Stop stop) {
+    public void removeStop(Stop stop) {
         if(stop != null) {
             String key = generateStopKey(stop.getStopName(), stop.getLongitude(), stop.getLatitude());
             stops.remove(key, stop);
