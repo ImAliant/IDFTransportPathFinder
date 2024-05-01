@@ -227,21 +227,14 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     }
 
     public void addDepartureObserver(GeoPositionObserver observer){
-        System.out.println("map: add dep obs");
         departureObservers.add(observer);
     }
 
     public void addArrivalObserver(GeoPositionObserver observer) {
-        System.out.println("map: add arr obs");
-
-        if (observer == null) System.out.println("observer null");
-
         arrivalObservers.add(observer);
     }
 
     public void notifyDepObservers() {
-        System.out.println("map: notify dep obs");
-
         for (GeoPositionObserver observer : departureObservers) {
             observer.getGeoPosition(geoPositionClicked);
         }
@@ -250,8 +243,6 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     }
 
     public void notifyArrObservers(){
-        System.out.println("map: notify arr obs");
-
         for (GeoPositionObserver observer : arrivalObservers){
             observer.getGeoPosition(geoPositionClicked);
         }
