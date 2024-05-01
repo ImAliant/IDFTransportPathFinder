@@ -18,6 +18,9 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
     private static final int WIDTH = 250;
 
     private JLabel resultLabel;
+    private JButton closeButton;
+
+
 
     public ShowResultPanel() {
         init();
@@ -26,7 +29,7 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         // set the position of the text to the top center
         rechercheText.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JButton closeButton = new JButton("Fermer");
+        closeButton = new JButton("Fermer");
         // set the position of the button to the bottom center
         closeButton.setHorizontalAlignment(SwingConstants.CENTER);
         closeButton.addActionListener(e -> {
@@ -48,6 +51,9 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         setLayout(new BorderLayout());
 
         setVisible(false);
+    }
+    public JButton getCloseButton() {
+        return closeButton;
     }
 
     @Override

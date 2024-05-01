@@ -41,6 +41,7 @@ public class AppWindow extends JFrame {
         setLayoutContainer();
 
         initializeObservers();
+        initializeListeners();
 
         addComponentsToContainer();
 
@@ -60,6 +61,12 @@ public class AppWindow extends JFrame {
         interactiveButtonPanel.getOpenLineButton().addObserver(lineDisplayPanel);
 
         lineDisplayPanel.getComboBoxAndValidate().getComboBox().addObserver(map);
+    }
+    private void initializeListeners(){
+
+        showResultPanel.getCloseButton().addActionListener(e -> {
+            this.map.deleteLineDisplayed();
+        });
     }
 
     private void addComponentsToContainer() {
