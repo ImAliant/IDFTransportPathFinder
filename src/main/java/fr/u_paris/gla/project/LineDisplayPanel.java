@@ -91,4 +91,8 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
     public void updateVisibility() {
         setVisible(!isVisible());
     }
+
+    public SelectionLineAndValidatePanel getComboBoxAndValidate() {
+        return comboBoxAndValidate;
+    }
 }

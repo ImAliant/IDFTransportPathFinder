@@ -22,7 +22,7 @@ public class SelectionLineAndValidatePanel extends JPanel {
 
         validate.addActionListener(e -> {
             if (comboBox.getSelectedLine() != null) {
-                System.out.println("Selected line: " + comboBox.getSelectedLine());
+                comboBox.notifyObservers(comboBox.getSelectedLine());
             }
         });
     }
