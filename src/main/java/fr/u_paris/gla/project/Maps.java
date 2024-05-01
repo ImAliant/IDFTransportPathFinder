@@ -219,7 +219,6 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         return stopWaypoints;
     }
 
-
     public void drawLine(Line line){
         List<TravelPath> paths = line.getPaths();
         if (line.getColor().length() != 6) {
@@ -237,9 +236,6 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         this.repaint();
     }
 
-    public void setItineraryPainter(Itinerary itinerary){
-        this.routePainter = new ItineraryPainter(itinerary);
-    }
 
     public void addDepartureObserver(GeoPositionObserver observer){
         departureObservers.add(observer);
@@ -263,10 +259,6 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         }
 
         isArrGeoPositionClickEnabled = false;
-    }
-
-    public Set<StopWaypoint> getWaypoints() {
-        return stopWaypoints;
     }
 
     @Override
