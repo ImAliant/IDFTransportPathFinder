@@ -138,8 +138,10 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     private void configureMapMouseListeners() {
         MouseInputListener listener = new PanMouseInputListener(this);
+        this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
         this.addMouseListener(new MouseAdapter(){
+            @Override
             public void mouseClicked(MouseEvent e) {
                 boolean isLeftButtonClicked = e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1;
                 if (isLeftButtonClicked) {

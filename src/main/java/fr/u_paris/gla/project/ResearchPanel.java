@@ -49,6 +49,7 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
         departureSuggestion.setVisible(false);
         arrivalSuggestion.setVisible(false);
 
+        gbc.insets = new Insets(0, MARGIN, 0, MARGIN);
         addComponent(departureLabel, gbc);
         
         incrementGridY(gbc);
@@ -57,18 +58,22 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
         incrementGridY(gbc);
         addComponent(departureEnablingMapButton, gbc);
         
+        gbc.insets = new Insets(MARGIN, MARGIN, MARGIN, MARGIN);
         incrementGridY(gbc);
         addComponent(departureSuggestion, gbc);
         
+        gbc.insets = new Insets(MARGIN, MARGIN, 0, MARGIN);
         incrementGridY(gbc);
         addComponent(arrivalLabel, gbc);
 
+        gbc.insets = new Insets(0, MARGIN, 0, MARGIN);
         incrementGridY(gbc);
         addComponent(arrivalField, gbc);
 
         incrementGridY(gbc);
         addComponent(arrivalEnablingMapButton, gbc);
         
+        gbc.insets = new Insets(MARGIN, MARGIN, MARGIN, MARGIN);
         incrementGridY(gbc);
         addComponent(arrivalSuggestion, gbc);
 
@@ -82,7 +87,6 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver {
         gbc.gridy = 0; // Ligne initiale
         gbc.anchor = GridBagConstraints.WEST; // Alignement à gauche
         gbc.fill = GridBagConstraints.HORIZONTAL; // Remplissage horizontal
-        gbc.insets = new Insets(MARGIN, MARGIN, MARGIN, MARGIN); // Marge entre les composants
 
         return gbc;
     }
