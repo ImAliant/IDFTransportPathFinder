@@ -41,6 +41,7 @@ public class AppWindow extends JFrame {
         setLayoutContainer();
 
         initializeObservers();
+        initializeListeners();
 
         addComponentsToContainer();
 
@@ -58,6 +59,12 @@ public class AppWindow extends JFrame {
         interactiveButtonPanel.getZoomOut().addObserver(map);
         interactiveButtonPanel.getOpenResearchButton().addObserver(researchPanel);
         interactiveButtonPanel.getOpenLineButton().addObserver(lineDisplayPanel);
+    }
+    private void initializeListeners(){
+
+        showResultPanel.getCloseButton().addActionListener(e -> {
+            this.map.deleteLineDisplayed();
+        });
     }
 
     private void addComponentsToContainer() {

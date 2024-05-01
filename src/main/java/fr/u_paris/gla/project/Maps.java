@@ -202,4 +202,10 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         this.setOverlayPainter(new CompoundPainter<>(painters));
         this.repaint();
     }
+
+    // method to delete the line or itinerary displayed
+    public void deleteLineDisplayed(){
+        this.setOverlayPainter(wayPointPainter);
+        this.repaint();
+    }
 }
