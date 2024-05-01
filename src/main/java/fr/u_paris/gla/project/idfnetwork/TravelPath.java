@@ -1,6 +1,6 @@
 package fr.u_paris.gla.project.idfnetwork;
 
-import fr.u_paris.gla.project.idfnetwork.stop.Stop;
+import fr.u_paris.gla.project.idfnetwork.line.Line;
 
 /**
  * Represents a path between two stops
@@ -24,7 +24,7 @@ public class TravelPath {
      * @param distance
      * @param duration
      */
-    protected TravelPath(Stop start, Stop end, double distance, Integer duration, Line line) {
+    public TravelPath(Stop start, Stop end, double distance, Integer duration, Line line) {
         this.start = start;
         this.end = end;
         this.distance = distance;
