@@ -4,7 +4,6 @@ import java.util.List;
 
 import fr.u_paris.gla.project.idfnetwork.line.Line;
 import fr.u_paris.gla.project.idfnetwork.line.LineType;
-import fr.u_paris.gla.project.idfnetwork.network.Network;
 
 public class BusButton extends TransportButton {
     private static final String ICON_PATH = "src/main/resources/fr/u_paris/gla/project/button_icon/paris_transit_icons/Paris_transit_icons_-_Bus.svg.png";
@@ -16,7 +15,7 @@ public class BusButton extends TransportButton {
 
     @Override
     public void onClick() {
-        List<Line> busLines = Network.getLinesByType(LineType.BUS);
+        List<Line> busLines = network.getLinesByType(LineType.BUS);
         notifyObservers(busLines);
     }
 }

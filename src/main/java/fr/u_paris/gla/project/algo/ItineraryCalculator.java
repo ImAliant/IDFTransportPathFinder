@@ -154,8 +154,8 @@ public class ItineraryCalculator {
             }
         }
         walk.removePaths();
-        Network.removeStop(tmpDest);
-        Network.removeStop(tmpStart);
+        network.removeStop(tmpDest);
+        network.removeStop(tmpStart);
 
         return new Itinerary(stops,lines,totalDistance,totalDuration);
     }
