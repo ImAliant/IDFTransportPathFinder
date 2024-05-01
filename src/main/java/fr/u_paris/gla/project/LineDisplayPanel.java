@@ -87,6 +87,8 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         clear.addObserver(comboBoxAndValidate.getComboBox());
     }
 
+    public CleanDisplayButton getClearButton(){ return clear; }
+
     @Override
     public void updateVisibility() {
         setVisible(!isVisible());

@@ -165,9 +165,16 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         super.setZoom(zoom);
     }
 
+    public void setItineraryPainter(Itinerary itinerary){
+        this.routePainter = new ItineraryPainter(itinerary);
+    }
+
+    public Set<StopWaypoint> getWaypoints() {
+        return stopWaypoints;
+    }
+
+
     public void drawLine(Line line){
-        this.removeAll();
-        // maybe setvisible false for the stops
         List<TravelPath> paths = line.getPaths();
         if (line.getColor().length() != 6) {
             routePainter = new RoutePainter(paths);
@@ -176,16 +183,12 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
             Color couleur = Color.decode("#" + line.getColor());
             routePainter = new RoutePainter(paths,couleur);
         }
-        this.setOverlayPainter(routePainter);
+
+        List <Painter<JXMapViewer>> painters = new java.util.ArrayList<>();
+        painters.add(routePainter);
+        painters.add(wayPointPainter);
+        this.setOverlayPainter(new CompoundPainter<>(painters));
         this.repaint();
-    }
-
-    public void setItineraryPainter(Itinerary itinerary){
-        this.routePainter = new ItineraryPainter(itinerary);
-    }
-
-    public Set<StopWaypoint> getWaypoints() {
-        return stopWaypoints;
     }
 
     @Override
