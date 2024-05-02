@@ -10,10 +10,6 @@ import fr.u_paris.gla.project.observer.CleanDisplayObserver;
 import fr.u_paris.gla.project.observer.DisplayLineObserver;
 import fr.u_paris.gla.project.observer.LinePaintObserver;
 /**
- * The {@code DisplayLineComboBox} class extends {@code JComboBox<String>} to manage a list of transportation lines
- * in a GUI application. It allows users to select a line from the dropdown, handling the display and updates of line information.
- * It implements {@code DisplayLineObserver} and {@code CleanDisplayObserver} to receive updates about line data changes.
- * 
  * @author Diamant Alexandre
  */
 public class DisplayLineComboBox extends JComboBox<String> implements DisplayLineObserver, CleanDisplayObserver {
@@ -40,7 +36,7 @@ public class DisplayLineComboBox extends JComboBox<String> implements DisplayLin
     }
 
     /**
-     * Clears all line information from the combobox and internal storage, resetting the display.
+     * Clears all line information from the combobox lines, resetting the display.
      */
     public void clean() {
         lines.clear();
@@ -48,9 +44,7 @@ public class DisplayLineComboBox extends JComboBox<String> implements DisplayLin
     }
     
     /**
-     * Retrieves the currently selected {@code Line} object based on the selected item in the combobox.
-     *
-     * @return the selected {@code Line}, or {@code null} if no line is selected
+     * @return the selected line, or null if no line is selected
      */
     public Line getSelectedLine() {
         if (getSelectedIndex() == -1) {
@@ -73,9 +67,6 @@ public class DisplayLineComboBox extends JComboBox<String> implements DisplayLin
         }
     }
 
-    /**
-     * Clears the display of the combobox, intended as a response to a 'clean display' command.
-     */
     @Override
     public void cleanDisplay() {
         clean();
