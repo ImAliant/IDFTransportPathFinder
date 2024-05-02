@@ -52,11 +52,11 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
     /**
      * Default latitude of the map. Latitude of Paris.
      */
-    private static final double IDF_LATITUDE = 48.85656189753147;
+    private static final double IDF_LATITUDE = 48.82961436445113;
     /**
      * Default longitude of the map. Longitude of Paris.
      */
-    private static final double IDF_LONGITUDE = 2.4002576758282745;
+    private static final double IDF_LONGITUDE = 2.38175332546234;
     /**
      * Default zoom of the map.
      */
