@@ -9,11 +9,11 @@ import javax.swing.JLabel;
  */
 public class CustomLabel extends JLabel {
     /** Background color of the label. */
-    private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
+    protected static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
     /** Foreground color of the label. */
-    private static final Color LABEL_FOREGROUND = Color.WHITE;
+    protected static final Color LABEL_FOREGROUND = Color.WHITE;
     /** Opaque property of the label. */
-    private static final boolean OPAQUE = true;
+    protected static final boolean OPAQUE = true;
 
     /**
      * Create a new custom label with the given text.

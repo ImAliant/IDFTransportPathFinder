@@ -46,6 +46,8 @@ public class App {
     // debug variable
     protected static boolean extractionCalled;
     protected static boolean loadCalled;
+    protected static boolean infoCalled;
+    protected static boolean guiCalled;
 
     /**
      * Application entry point.
@@ -60,10 +62,12 @@ public class App {
             for (String string : args) {
                 if (INFOCMD.equals(string)) { // $NON-NLS-1$
                     printAppInfos(System.out);
+                    infoCalled = true;
                     return;
                 }
                 if (GUICMD.equals(string)) { // $NON-NLS-1$
                     launch();
+                    guiCalled = true;
                 }
             }
         }
@@ -100,7 +104,7 @@ public class App {
 
         launchLoadingScreen(title);
 
-        initNetwork();
+        initNetwork(IDFMNetworkExtractor.PATH_TO_OUTPUT);
 
         LoadingProgressBar.getInstance().incrementProgress(10);
 
@@ -117,15 +121,15 @@ public class App {
         });
     }
 
-    public static void initNetwork() {
+    public static void initNetwork(String path) {
         // On test si le fichier output.csv dans le répertoire target existe
         // Si oui, on le charge
         // Si non, on appelle la fonction extraction()
 
-        File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
+        File file = new File(path);
         if (!file.exists()) {
             try {
-                extraction();
+                extraction(path);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -135,8 +139,8 @@ public class App {
         loadCalled = true;
     }
 
-    public static void extraction() throws IOException {
-        IDFMNetworkExtractor.extract();
+    public static void extraction(String path) throws IOException {
+        IDFMNetworkExtractor.extract(path);
         extractionCalled = true;
     }
 

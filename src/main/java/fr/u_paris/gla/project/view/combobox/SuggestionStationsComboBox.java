@@ -16,12 +16,6 @@ public class SuggestionStationsComboBox extends JComboBox<String>{
 
     public void clearSuggestion() {
         removeAllItems();
-
-    }
-
-    @Override
-    public void setPreferredSize(Dimension preferredSize) {
-        super.setPreferredSize(new Dimension(WIDTH, HEIGHT));
     }
 }
 

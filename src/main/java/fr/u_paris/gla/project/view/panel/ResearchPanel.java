@@ -7,9 +7,9 @@ import javax.swing.Timer;
 
 import fr.u_paris.gla.project.observer.ResearchPanelObserver;
 import fr.u_paris.gla.project.observer.ResearchButtonObserver;
-import fr.u_paris.gla.project.view.button.ArrivalByMapButton;
-import fr.u_paris.gla.project.view.button.DepartureByMapButton;
-import fr.u_paris.gla.project.view.button.ResearchButton;
+import fr.u_paris.gla.project.view.button.research_panel_button.ArrivalByMapButton;
+import fr.u_paris.gla.project.view.button.research_panel_button.DepartureByMapButton;
+import fr.u_paris.gla.project.view.button.research_panel_button.ResearchButton;
 import fr.u_paris.gla.project.view.combobox.SuggestionStationsComboBox;
 import fr.u_paris.gla.project.view.label.CustomLabel;
 import fr.u_paris.gla.project.view.textfield.CustomTextField;
