@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
 import javax.swing.event.MouseInputListener;
 
 import org.jxmapviewer.JXMapViewer;
@@ -43,9 +42,12 @@ import org.jxmapviewer.painter.Painter;
 
 public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver, DepartureMapButtonObserver, ArrivalMapButtonObserver , ItineraryObserver, LinePaintObserver {
     /**
-     *
+     * List of observers for the departure.
      */
     private transient List<GeoPositionObserver> departureObservers = new ArrayList<>();
+    /**
+     * List of observers for the arrival.
+     */
     private transient List<GeoPositionObserver> arrivalObservers = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
@@ -70,12 +72,30 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
      */
     public static final int MAX_ZOOM = 7;
 
+    /**
+     * Boolean to know if the departure button is clicked.
+     */
     private boolean isDepGeoPositionClickEnabled = false;
+    /**
+     * Boolean to know if the arrival button is clicked.
+     */
     private boolean isArrGeoPositionClickEnabled = false;
+    /**
+     * GeoPosition clicked by the user.
+     */
     private GeoPosition geoPositionClicked;
 
+    /**
+     * Set of stop waypoints.
+     */
     private transient Set<StopWaypoint> stopWaypoints = new HashSet<>();
+    /**
+     * Painter for the route.
+     */
     private transient Painter<JXMapViewer> routePainter;
+    /**
+     * Painter for the waypoints.
+     */
     private transient WaypointPainter<StopWaypoint> wayPointPainter;
 
     /**
@@ -104,6 +124,9 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         displayNetwork();
     }
 
+    /**
+     * Display the network on the map.
+     */
     private void displayNetwork() {
         Network network = Network.getInstance();
 
@@ -114,17 +137,24 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     }
 
-
+    /**
+     * Add a stop waypoint to the map.
+     * @param stop Stop to add.
+     */
     private void addStopWaypoint(Stop stop) {
         stopWaypoints.add(
                 new StopWaypoint(stop)
         );
     }
 
+    /**
+     * Initialize the waypoints.
+     */
     private void initWaypoint() {
         this.wayPointPainter = new StopRender();
         wayPointPainter.setWaypoints(stopWaypoints);
 
+        // Add the button of the waypoints to the map
         for (StopWaypoint stopWaypoint : stopWaypoints) {
             this.add(stopWaypoint.getButton());
         }
@@ -132,10 +162,15 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         this.setOverlayPainter(wayPointPainter);
     }
 
+    /**
+     * Configure the mouse listeners of the map.
+     */
     private void configureMapMouseListeners() {
         MouseInputListener listener = new PanMouseInputListener(this);
         this.addMouseListener(listener);
         this.addMouseMotionListener(listener);
+
+        // Add a mouse listener to get the position of the click
         this.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -152,18 +187,29 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         });
     }
 
+    /**
+     * Convert a point to a GeoPosition.
+     * @param p Point to convert.
+     * @return GeoPosition of the point.
+     */
     private GeoPosition getGeoPosition(MouseEvent e) {
         Point p = e.getPoint();
 
         return convertPointToGeoPosition(p);
     }
 
+    /**
+     * Set the default location of the map.
+     */
     private void setDefaultLocation() {
         GeoPosition idf = new GeoPosition(IDF_LATITUDE, IDF_LONGITUDE);
         setZoom(DEFAULT_ZOOM);
         setCenterPosition(idf);
     }
 
+    /**
+     * Create the tiles of the map.
+     */
     private void createTiles() {
         TileFactoryInfo info = new OSMTileFactoryInfo();
         DefaultTileFactory tileFactory = new DefaultTileFactory(info);
@@ -175,6 +221,9 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         adjustZoom(-1);
     }
 
+    /**
+     * Update the visibility of the stops.
+     */
     private void updateVisibleStop() {
         int zoom = getZoom();
         for (StopWaypoint stopWaypoint : stopWaypoints) {
@@ -187,6 +236,10 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         adjustZoom(1);
     }
 
+    /**
+     * Adjust the zoom of the map.
+     * @param factor Factor to adjust the zoom.
+     */
     private void adjustZoom(int factor) {
         setZoom(getZoom() + factor);
 
@@ -211,14 +264,26 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         super.setZoom(zoom);
     }
 
+    /**
+     * Set the painter of the itinerary.
+     * @param itinerary Itinerary to display.
+     */
     public void setItineraryPainter(Itinerary itinerary){
         this.routePainter = new ItineraryPainter(itinerary);
     }
 
+    /**
+     * Get the waypoints of the map.
+     * @return Set of waypoints.
+     */
     public Set<StopWaypoint> getWaypoints() {
         return stopWaypoints;
     }
 
+    /**
+     * Draw a line on the map.
+     * @param line Line to draw.
+     */
     public void drawLine(Line line){
         List<TravelPath> paths = line.getPaths();
         if (line.getColor().length() != 6) {
@@ -236,15 +301,25 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         this.repaint();
     }
 
-
+    /**
+     * Add an observer for the departure.
+     * @param observer Observer to add.
+     */
     public void addDepartureObserver(GeoPositionObserver observer){
         departureObservers.add(observer);
     }
 
+    /**
+     * Add an observer for the arrival.
+     * @param observer Observer to add.
+     */
     public void addArrivalObserver(GeoPositionObserver observer) {
         arrivalObservers.add(observer);
     }
 
+    /**
+     * Notify the observers for the departure.
+     */
     public void notifyDepObservers() {
         for (GeoPositionObserver observer : departureObservers) {
             observer.getGeoPosition(geoPositionClicked);
@@ -253,6 +328,9 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         isDepGeoPositionClickEnabled = false;
     }
 
+    /**
+     * Notify the observers for the arrival.
+     */
     public void notifyArrObservers(){
         for (GeoPositionObserver observer : arrivalObservers){
             observer.getGeoPosition(geoPositionClicked);
@@ -282,7 +360,9 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         this.repaint();
     }
 
-    // method to delete the line or itinerary displayed
+    /**
+     * Delete the line displayed on the map.
+     */
     public void deleteLineDisplayed(){
         this.setOverlayPainter(wayPointPainter);
         this.repaint();
