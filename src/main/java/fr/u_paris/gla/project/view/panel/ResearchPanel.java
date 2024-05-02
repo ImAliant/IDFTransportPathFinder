@@ -44,44 +44,69 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
     private CustomTextField departureField;
     /** Arrival field. */
     private CustomTextField arrivalField;
-    /** Button to enable the possibility to select the departure coordinate on the map. */
+    /**
+     * Button to enable the possibility to select the departure coordinate on the
+     * map.
+     */
     private DepartureByMapButton departureEnablingMapButton;
-    /** Button to enable the possibility to select the arrival coordinate on the map. */
+    /**
+     * Button to enable the possibility to select the arrival coordinate on the map.
+     */
     private ArrivalByMapButton arrivalEnablingMapButton;
     /** Button to launch the research. */
     private ResearchButton searchButton;
-
+    /** Warning for panel fields errors. */
     private JLabel errorLabel;
 
     /**
      * Constructor of the research panel.
      */
     public ResearchPanel() {
+        setupPanel();
+        initializeComponents();
+    }
+
+    /**
+     * Setup the panel.
+     */
+    private void setupPanel() {
         setLayout(new GridBagLayout());
-        setBackground(BACKGROUND_COLOR); 
+        setBackground(BACKGROUND_COLOR);
         setPreferredSize(new Dimension(WIDTH, getHeight()));
+    }
 
+    /**
+     * Initialize the components of the panel.
+     */
+    private void initializeComponents() {
         GridBagConstraints gbc = initGridBagConstraints();
+        initLabels(gbc);
+        setupErrorLabel(gbc);
+    }
 
-        CustomLabel departureLabel = new CustomLabel("Départ:");
-        CustomLabel arrivalLabel = new CustomLabel("Arrivée:");
-
-        SuggestionStationsComboBox departureSuggestion = new SuggestionStationsComboBox();
-        SuggestionStationsComboBox arrivalSuggestion = new SuggestionStationsComboBox();
-
-        errorLabel = new JLabel("Recherche impossible");
-
-        departureField = new CustomTextField(departureSuggestion);
-        arrivalField = new CustomTextField(arrivalSuggestion);
+    /**
+     * Initialize the labels of the panel.
+     * 
+     * @param gbc GridBagConstraints
+     */
+    private void initLabels(GridBagConstraints gbc) {    
+        initDepartureComponents(gbc);
+        initArrivalComponents(gbc);
         searchButton = new ResearchButton("Recherche", departureField, arrivalField);
+        incrementGridY(gbc);
+        addComponent(searchButton, gbc);
+    }
+    /**
+     * Initialize the departure components.
+     * 
+     * @param gbc GridBagConstraints
+     */
+    private void initDepartureComponents(GridBagConstraints gbc) {
+        CustomLabel departureLabel = new CustomLabel("Départ:");
+        SuggestionStationsComboBox departureSuggestion = new SuggestionStationsComboBox();
+        departureField = new CustomTextField(departureSuggestion);
         departureEnablingMapButton = new DepartureByMapButton();
-        arrivalEnablingMapButton = new ArrivalByMapButton();
-
         departureSuggestion.setVisible(false);
-        arrivalSuggestion.setVisible(false);
-
-        errorLabel.setForeground(Color.RED);
-        errorLabel.setVisible(false);
 
         gbc.insets = new Insets(0, MARGIN, 0, MARGIN);
         addComponent(departureLabel, gbc);
@@ -95,8 +120,21 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         gbc.insets = new Insets(MARGIN, MARGIN, MARGIN, MARGIN);
         incrementGridY(gbc);
         addComponent(departureSuggestion, gbc);
+    }
+    
+    /**
+     * Initialize the arrival components.
+     * 
+     * @param gbc GridBagConstraints
+     */
+    private void initArrivalComponents(GridBagConstraints gbc) {
+        CustomLabel arrivalLabel = new CustomLabel("Arrivée:");
+        SuggestionStationsComboBox arrivalSuggestion = new SuggestionStationsComboBox();
+        arrivalField = new CustomTextField(arrivalSuggestion);
+        arrivalEnablingMapButton = new ArrivalByMapButton();
+        arrivalSuggestion.setVisible(false);
 
-        gbc.insets = new Insets(MARGIN, MARGIN, 0, MARGIN);
+        gbc.insets = new Insets(0, MARGIN, 0, MARGIN);
         incrementGridY(gbc);
         addComponent(arrivalLabel, gbc);
 
@@ -110,13 +148,19 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         gbc.insets = new Insets(MARGIN, MARGIN, MARGIN, MARGIN);
         incrementGridY(gbc);
         addComponent(arrivalSuggestion, gbc);
+    }
 
-        incrementGridY(gbc);
-        addComponent(searchButton, gbc);
-
+    /**
+     * Setup the error label.
+     * 
+     * @param gbc GridBagConstraints
+     */
+    private void setupErrorLabel(GridBagConstraints gbc) {
+        errorLabel = new JLabel("Recherche impossible");
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setVisible(false);
         incrementGridY(gbc);
         addComponent(errorLabel, gbc);
-
         searchButton.addResearchObserver(this);
     }
 
@@ -149,7 +193,7 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
      * Add a component to the panel.
      * 
      * @param component Component
-     * @param gbc GridBagConstraints
+     * @param gbc       GridBagConstraints
      */
     private void addComponent(Component component, GridBagConstraints gbc) {
         this.add(component, gbc);
@@ -168,7 +212,7 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
     public DepartureByMapButton getDepartureEnablingMapButton() {
         return departureEnablingMapButton;
     }
-    
+
     /**
      * Get the arrival enabling map button.
      * 
