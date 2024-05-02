@@ -5,10 +5,10 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
 
-import fr.u_paris.gla.project.view.button.OpenLineDisplayPanelButton;
-import fr.u_paris.gla.project.view.button.OpenResearchPanelButton;
-import fr.u_paris.gla.project.view.button.ZoomInButton;
-import fr.u_paris.gla.project.view.button.ZoomOutButton;
+import fr.u_paris.gla.project.view.button.interactive_panel_button.OpenLineDisplayPanelButton;
+import fr.u_paris.gla.project.view.button.interactive_panel_button.OpenResearchPanelButton;
+import fr.u_paris.gla.project.view.button.interactive_panel_button.ZoomInButton;
+import fr.u_paris.gla.project.view.button.interactive_panel_button.ZoomOutButton;
 
 public class InteractiveButtonPanel extends JPanel {
     private static final Color BACKGROUND_COLOR = new Color(1, 121, 111);

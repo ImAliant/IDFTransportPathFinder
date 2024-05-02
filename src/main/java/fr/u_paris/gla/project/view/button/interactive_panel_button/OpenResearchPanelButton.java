@@ -1,4 +1,4 @@
-package fr.u_paris.gla.project.view.button;
+package fr.u_paris.gla.project.view.button.interactive_panel_button;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import javax.swing.Icon;
 
 import fr.u_paris.gla.project.observer.ResearchPanelObserver;
 import fr.u_paris.gla.project.utils.IconUtils;
+import fr.u_paris.gla.project.view.button.MiniButton;
 
 /**
  * Button to open the research panel.
@@ -27,9 +28,9 @@ public class OpenResearchPanelButton extends MiniButton {
      * @param x The x position of the button.
      * @param y The y position of the button.
      */
-    public OpenResearchPanelButton(/* int x, int y */) {
+    public OpenResearchPanelButton() {
         super("Ouvrir le panneau de recherche");
-
+        
         Icon icon = IconUtils.createIcon(PATH, WIDTH, HEIGHT);
         setIcon(icon);
     }

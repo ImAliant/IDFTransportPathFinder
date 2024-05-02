@@ -1,4 +1,4 @@
-package fr.u_paris.gla.project.view.button;
+package fr.u_paris.gla.project.view.button.research_panel_button;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -66,19 +66,8 @@ public class ResearchButton extends JButton {
         Stop startStop = null;
         Stop destinationStop = null;
 
-        if (isGeoPosition(departName)) {
-            double[] departPos = parseGeoPosition(departName);
-            startStop = instance.findClosestStopByGeoPosition(departPos[0], departPos[1]);
-        } else {
-            startStop = instance.findStopByName(departName);
-        }
-
-        if (isGeoPosition(arriveName)) {
-            double[] arrivePos = parseGeoPosition(arriveName);
-            destinationStop = instance.findClosestStopByGeoPosition(arrivePos[0], arrivePos[1]);
-        } else {
-            destinationStop = instance.findStopByName(arriveName);
-        }
+        startStop = findStopByNameOrGeoPosition(departName);
+        destinationStop = findStopByNameOrGeoPosition(arriveName);
 
         if (startStop == null || destinationStop == null) {
             notifyResearchButtonObservers();
@@ -90,8 +79,21 @@ public class ResearchButton extends JButton {
         notifyObservers(route);
     }
 
-    private double[] parseGeoPosition(String position) {
-        String[] pos = position.split(", ");
+    protected Stop findStopByNameOrGeoPosition(String name) {
+        Stop stop;
+
+        if (isGeoPosition(name)) {
+            double[] pos = parseGeoPosition(name);
+            stop = instance.findClosestStopByGeoPosition(pos[0], pos[1]);
+        } else {
+            stop = instance.findStopByName(name);
+        }
+
+        return stop;
+    }
+
+    protected double[] parseGeoPosition(String position) {
+        String[] pos = position.split(",");
 
         for (int i = 0; i < pos.length; i++) {
             pos[i] = pos[i].replace(",", ".");
@@ -110,9 +112,13 @@ public class ResearchButton extends JButton {
         return ItineraryCalculator.CalculateRoad(start, destination);
     }
 
-    private boolean isGeoPosition(String position) {
-        String geoPositionPattern = "^\\d+\\,\\d+, \\d+\\,\\d+$";
+    protected boolean isGeoPosition(String position) {
+        String geoPositionPattern = "^\\d+\\.\\d+, \\d+\\.\\d+$";
 
         return position.matches(geoPositionPattern);
+    }
+
+    public int countObservers() {
+        return observers.size();
     }
 }

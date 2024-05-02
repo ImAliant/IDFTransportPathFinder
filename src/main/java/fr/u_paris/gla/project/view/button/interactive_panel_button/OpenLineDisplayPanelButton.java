@@ -1,14 +1,14 @@
-package fr.u_paris.gla.project.view.button;
+package fr.u_paris.gla.project.view.button.interactive_panel_button;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 
 import fr.u_paris.gla.project.observer.LineDisplayPanelObserver;
 import fr.u_paris.gla.project.utils.IconUtils;
+import fr.u_paris.gla.project.view.button.MiniButton;
 import fr.u_paris.gla.project.view.panel.LineDisplayPanel;
-
-import java.util.ArrayList;
 
 /**
  * Button to open the line display panel.

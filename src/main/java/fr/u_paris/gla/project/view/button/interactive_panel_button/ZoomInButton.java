@@ -1,4 +1,4 @@
-package fr.u_paris.gla.project.view.button;
+package fr.u_paris.gla.project.view.button.interactive_panel_button;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import javax.swing.Icon;
 
 import fr.u_paris.gla.project.observer.ZoomInObserver;
 import fr.u_paris.gla.project.utils.IconUtils;
+import fr.u_paris.gla.project.view.button.MiniButton;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class ZoomInButton extends MiniButton {
      * @param x The x position of the button.
      * @param y The y position of the button.
      */
-    public ZoomInButton(/* int x, int y */) {
+    public ZoomInButton() {
         super("Zoomer sur la carte");
 
         Icon icon = IconUtils.createIcon(PATH, WIDTH, HEIGHT);

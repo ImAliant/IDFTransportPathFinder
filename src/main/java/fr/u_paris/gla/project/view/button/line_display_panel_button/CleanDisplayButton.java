@@ -1,4 +1,4 @@
-package fr.u_paris.gla.project.view.button;
+package fr.u_paris.gla.project.view.button.line_display_panel_button;
 
 import java.util.List;
 import java.util.ArrayList;

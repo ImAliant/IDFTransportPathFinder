@@ -11,13 +11,15 @@ import org.junit.jupiter.api.Test;
 import fr.u_paris.gla.project.idfnetwork.network.Network;
 
 class NetworkLoaderTest {
+    private static final String TEST_PATH = "src/test/resources/fr/u_paris/gla/project/idfnetwork/test_output.csv";
+
     private Network instance = Network.getInstance();
     private static File file;
 
     @BeforeAll
     static void setupFile() {
         try {
-            file = new File("src/test/resources/idfnetwork/test_output.csv");
+            file = new File(TEST_PATH);
         } catch (Exception e) {
             e.printStackTrace();
         }

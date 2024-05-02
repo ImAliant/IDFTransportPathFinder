@@ -81,7 +81,7 @@ class StopTest {
 
         stop1.addLine(line);
 
-        assertEquals("stop1 [0.0, 0.0]\nLigne(s): \nM line1\n", stop1.toString(),
+        assertEquals("<html>stop1<br>Ligne(s): <br>M line1<br></html>", stop1.toString(),
             "The string representation of stop1 should be 'stop1 [0.0, 0.0]\nLigne(s): \nM line1\n'");
     }
 }

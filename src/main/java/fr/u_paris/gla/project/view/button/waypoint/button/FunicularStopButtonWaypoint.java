@@ -14,7 +14,7 @@ public class FunicularStopButtonWaypoint extends StopButtonWaypoint {
     /** Path to the icon. */
     private static final String FUNICULAR_ICON_PATH = "src/main/resources/fr/u_paris/gla/project/stop_logo/funicular_stop_logo.png";
     /** The maximum zoom level to display the waypoint. */
-    private static final int ZOOM_THRESHOLD = 4;
+    protected static final int ZOOM_THRESHOLD = 4;
 
     /**
      * Create a new funicular stop button at the given position.

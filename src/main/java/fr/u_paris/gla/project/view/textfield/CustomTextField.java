@@ -29,7 +29,14 @@ public class CustomTextField extends JTextField implements GeoPositionObserver {
         double latitude = position.getLatitude();
         double longitude = position.getLongitude();
 
-        String pos = String.format("%.14f, %.14f", latitude, longitude);
+        /* System.out.println("Latitude: " + latitude + ", Longitude: " + longitude);
+        String latString = Double.toString(latitude);
+        String lonString = Double.toString(longitude);
+        System.out.println("Latitude: " + latString + ", Longitude: " + lonString); */
+
+        String pos = String.format("%s, %s", latitude, longitude);
+
+        /* System.out.println("Position: " + pos); */
 
         setText(pos);
     }

@@ -1,4 +1,4 @@
-package fr.u_paris.gla.project.view.button;
+package fr.u_paris.gla.project.view.button.interactive_panel_button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import javax.swing.Icon;
 
 import fr.u_paris.gla.project.observer.ZoomOutObserver;
 import fr.u_paris.gla.project.utils.IconUtils;
+import fr.u_paris.gla.project.view.button.MiniButton;
 
 /**
  * Button to zoom out the map.
@@ -26,7 +27,7 @@ public class ZoomOutButton extends MiniButton {
      * @param x The x position of the button.
      * @param y The y position of the button.
      */
-    public ZoomOutButton(/* int x, int y */) {
+    public ZoomOutButton() {
         super("Dézoomer sur la carte");
 
         Icon icon = IconUtils.createIcon(PATH, WIDTH, HEIGHT);

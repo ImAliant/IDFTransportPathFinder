@@ -1,4 +1,4 @@
-package fr.u_paris.gla.project.view.button;
+package fr.u_paris.gla.project.view.button.research_panel_button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import fr.u_paris.gla.project.observer.DepartureMapButtonObserver;
 
 public class DepartureByMapButton extends ItineraryByMapButton {
-    private transient List<DepartureMapButtonObserver> departureObservers = new ArrayList<>();
+    protected transient List<DepartureMapButtonObserver> departureObservers = new ArrayList<>();
 
     public DepartureByMapButton() {
         super();
@@ -24,14 +24,16 @@ public class DepartureByMapButton extends ItineraryByMapButton {
 
     private void notifyObservers() {
         for (DepartureMapButtonObserver observer: departureObservers) {
-            observer.onChangeDeparture(isEnabled);
+            observer.onChangeDeparture(true);
         }
     }
 
     @Override
     public void onClick() {
-        isEnabled = true;
-
         notifyObservers();
+    }
+
+    public int countObservers() {
+        return departureObservers.size();
     }
 }
