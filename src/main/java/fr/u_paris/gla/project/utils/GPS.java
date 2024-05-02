@@ -38,8 +38,9 @@ public final class GPS {
         double deltaLatitude = degreeToRadian(latitude2 - latitude1);
         double deltaLongitude = degreeToRadian(longitude2 - longitude1);
         double a = Math.pow(Math.sin(deltaLatitude / 2), 2)
-                + Math.pow(Math.sin(deltaLongitude), 2) * Math.cos(latitude1)
-                        * Math.cos(latitude2);
-        return EARTH_RADIUS * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                + Math.cos(degreeToRadian(latitude1)) * Math.cos(degreeToRadian(latitude2))
+                * Math.pow(Math.sin(deltaLongitude / 2), 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return EARTH_RADIUS * c;
     }
 }
