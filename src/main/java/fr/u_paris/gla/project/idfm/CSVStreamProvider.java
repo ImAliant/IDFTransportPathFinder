@@ -152,8 +152,11 @@ public final class CSVStreamProvider {
     /** @param distanceToTime
      * @return */
     private static String formatTime(long time) {
-        return MessageFormat.format("{0}:{1}", //$NON-NLS-1$
-                MINUTES_SECOND_FORMATTER.format(time / SECONDS_IN_MINUTES), MINUTES_SECOND_FORMATTER.format(time % SECONDS_IN_MINUTES));
+        String resultFormat = MessageFormat.format("{0}:{1}", //$NON-NLS-1$
+                MINUTES_SECOND_FORMATTER.format((int)(time / SECONDS_IN_MINUTES)), MINUTES_SECOND_FORMATTER.format(time % SECONDS_IN_MINUTES));
+        // Remove the comma
+        String res = resultFormat.replace(",", "");
+        return res;
     }
 
     /** A tool method to give a delay to go through a certain distance.
