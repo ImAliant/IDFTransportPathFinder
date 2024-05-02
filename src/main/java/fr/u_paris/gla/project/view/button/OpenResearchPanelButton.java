@@ -28,7 +28,7 @@ public class OpenResearchPanelButton extends MiniButton {
      * @param y The y position of the button.
      */
     public OpenResearchPanelButton(/* int x, int y */) {
-        super(/* x, y */);
+        super("Ouvrir le panneau de recherche");
 
         Icon icon = IconUtils.createIcon(PATH, WIDTH, HEIGHT);
         setIcon(icon);

@@ -30,7 +30,7 @@ public class OpenLineDisplayPanelButton extends MiniButton {
      * @param y The y position of the button.
      */
     public OpenLineDisplayPanelButton() {
-        super();
+        super("Afficher les lignes sur le plan");
 
         Icon icon = IconUtils.createIcon(PATH, WIDTH, HEIGHT);
         setIcon(icon);
