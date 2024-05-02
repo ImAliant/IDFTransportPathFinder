@@ -11,7 +11,7 @@ import fr.u_paris.gla.project.view.button.ZoomInButton;
 import fr.u_paris.gla.project.view.button.ZoomOutButton;
 
 public class InteractiveButtonPanel extends JPanel {
-    private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
+    private static final Color BACKGROUND_COLOR = new Color(1, 121, 111);
 
     private OpenResearchPanelButton openResearchButton;
     private OpenLineDisplayPanelButton openLineButton;
