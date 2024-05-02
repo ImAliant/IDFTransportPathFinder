@@ -76,12 +76,13 @@ class ResearchButtonTest {
         assertEquals(stop, researchButton.findStopByNameOrGeoPosition("stop1"),
                 "The stop should be found by its name");
 
-        assertEquals(stop, researchButton.findStopByNameOrGeoPosition("48,8588443, 2,2943506"));
+        assertEquals(stop, researchButton.findStopByNameOrGeoPosition("48.8588443, 2.2943506"),
+                "The stop should be found by its geo position");
     }
 
     @Test
     void parseGeoPositionTest() {
-        String position = "48,8588443, 2,2943506";
+        String position = "48.8588443, 2.2943506";
 
         double[] geoPosition = researchButton.parseGeoPosition(position);
         
@@ -93,12 +94,12 @@ class ResearchButtonTest {
 
     @Test
     void isGeoPositionTest() {
-        String position = "48,8588443, 2,2943506";
+        String position = "48.8588443, 2.2943506";
 
         assertEquals(true, researchButton.isGeoPosition(position),
                 "The string should be a geo position");
 
-        position = "48.8588443, 2.2943506";
+        position = "48,8588443, 2,2943506";
 
         assertEquals(false, researchButton.isGeoPosition(position),
                 "The string should not be a geo position");

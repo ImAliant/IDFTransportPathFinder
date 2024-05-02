@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import fr.u_paris.gla.project.idfnetwork.network.Network;
 
 class AppTest {
-    private static final String TEST_PATH_TO_OUTPUT = "src/test/resources/fr/u_paris/gla/project/idfnetwork/test_output.csv";
+    private static final String TEST_PATH_TO_OUTPUT = "src/test/resources/fr/u_paris/gla/project/idfnetwork/test_output_app.csv";
     private static final String TO_BE_DELETED_PATH_TO_OUTPUT = "src/test/resources/fr/u_paris/gla/project/idfnetwork/to_be_deleted.csv";
     private File file;
 
@@ -31,11 +31,11 @@ class AppTest {
     }
 
     @BeforeEach
-    void setUpEach() {
+    void setUpEach() throws IOException {
         file = new File(TEST_PATH_TO_OUTPUT);
 
         if (!file.exists())
-            fail("The file " + TEST_PATH_TO_OUTPUT + " does not exist");
+            file.createNewFile();
 
         network.clear();
     }
@@ -48,9 +48,15 @@ class AppTest {
     @AfterAll
     static void delete() {
         File file = new File(TO_BE_DELETED_PATH_TO_OUTPUT);
+        File file2 = new File(TEST_PATH_TO_OUTPUT);
 
         if (file.exists())
             file.delete();
+
+        if (file2.exists())
+            file2.delete();
+
+        network.clear();
     }
 
     @Test
