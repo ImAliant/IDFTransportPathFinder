@@ -118,9 +118,11 @@ public class App {
     }
 
     public static void initNetwork() {
-        // On test si le fichier output.csv dans le répertoire target existe
-        // Si oui, on le charge
-        // Si non, on appelle la fonction extraction()
+        /** Check if the file output.csv exists in the target directory
+            If it does, load the file
+            If not, call the extraction() function
+         */
+
 
         File file = new File(IDFMNetworkExtractor.PATH_TO_OUTPUT);
         if (!file.exists()) {

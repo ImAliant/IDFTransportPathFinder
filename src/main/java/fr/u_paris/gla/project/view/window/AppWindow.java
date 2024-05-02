@@ -11,6 +11,10 @@ import fr.u_paris.gla.project.view.panel.LineDisplayPanel;
 import fr.u_paris.gla.project.view.panel.Maps;
 import fr.u_paris.gla.project.view.panel.ResearchPanel;
 import fr.u_paris.gla.project.view.panel.ShowResultPanel;
+/**
+ * This class provides the main application window for a GUI application.
+ * 
+ */
 
 public class AppWindow extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -26,6 +30,10 @@ public class AppWindow extends JFrame {
     private LineDisplayPanel lineDisplayPanel;
     private ShowResultPanel showResultPanel;
 
+    /**
+     * Constructs a new application window with the specified title.
+     * @param title the title to be displayed in the application window's title bar
+     */
     public AppWindow(String title) {
         super();
 
@@ -40,7 +48,10 @@ public class AppWindow extends JFrame {
 
         pack();
     }
-
+    /**
+     * Initializes the frame with a specific title, sets the layout container, registers observers and listeners, 
+     * and adds components to the container.
+     */
     private void init(String title) {
         initFrame(title);
 
@@ -97,7 +108,8 @@ public class AppWindow extends JFrame {
     }
 
     /**
-     * Initialize the frame
+     * Sets up the main frame's properties including title, size, and default close operation.
+     * @param title the title for the frame
      */
     private void initFrame(String title) {
         setTitle(title);
@@ -107,7 +119,6 @@ public class AppWindow extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    // TESTABILITY
     /**
      * @return the map
      */
