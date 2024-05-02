@@ -2,10 +2,10 @@ package fr.u_paris.gla.project.utils;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.jupiter.api.BeforeAll;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
@@ -16,8 +16,10 @@ public class TestCSVTools {
     private static final String TEST_CSV = "src/test/resources/test.csv";
     private static ArrayList<String[]> lines = new ArrayList<>();
 
-    @BeforeAll
-    public static void testReadCSV() {
+
+ 
+    @BeforeEach
+    void testReadCSV() {
         assertDoesNotThrow(
                 () -> {
                     CSVTools.readCSVFromURL(TRACE_FILE_URL, (String[] line) -> {
@@ -26,9 +28,19 @@ public class TestCSVTools {
                 }, "CSV reading throwed an exception");
 
     }
+    @Test
+    void testReadCSVException() {
+        assertThrows(Exception.class,
+                () -> {
+                    CSVTools.readCSVFromURL("TRACE_FILE_URL", (String[] line) -> {
+                        TestCSVTools.lines.add(line);
+                    });
+                }, "CSV reading did not throw an exception as excpected");
+
+    }
 
     @Test
-    public void testLinesFromCSV() {
+    void testLinesFromCSV() {
         // assert that there is something readed from the CSV
         assertNotNull(TestCSVTools.lines, "CSV does not read lines correctly");
         for (String[] line : TestCSVTools.lines) {
@@ -44,7 +56,7 @@ public class TestCSVTools {
     }
 
     @Test
-    public void testWriteCSV() {
+    void testWriteCSV() {
         assertDoesNotThrow(() -> {
             CSVTools.writeCSVToFile(TEST_CSV, TestCSVTools.lines.stream());
         }, "CSV writing throwed an exception");
