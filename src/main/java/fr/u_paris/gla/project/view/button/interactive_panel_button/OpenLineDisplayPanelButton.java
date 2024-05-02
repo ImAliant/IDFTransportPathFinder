@@ -21,7 +21,7 @@ public class OpenLineDisplayPanelButton extends MiniButton {
     /** Observers of the button. */
     private List<LineDisplayPanelObserver> observers = new ArrayList<>();
     /** Path to the icon. */
-    private static final String PATH = "src/main/resources/fr/u_paris/gla/project/button_icnon/paris_transit_icons/plan.png";
+    private static final String PATH = "src/main/resources/fr/u_paris/gla/project/button_icon/paris_transit_icons/plan.png";
 
     /**
      * Create a new button at the given position.
