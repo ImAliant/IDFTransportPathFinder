@@ -48,7 +48,7 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         SuggestionStationsComboBox departureSuggestion = new SuggestionStationsComboBox();
         SuggestionStationsComboBox arrivalSuggestion = new SuggestionStationsComboBox();
 
-        errorLabel = new JLabel("Renseigner les deux champs");
+        errorLabel = new JLabel("Recherche impossible");
 
         departureField = new CustomTextField(departureSuggestion);
         arrivalField = new CustomTextField(arrivalSuggestion);

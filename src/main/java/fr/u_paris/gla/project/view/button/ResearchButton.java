@@ -81,7 +81,7 @@ public class ResearchButton extends JButton {
         }
 
         if (startStop == null || destinationStop == null) {
-            System.out.println("Un des arrêts n'est pas trouvé.");
+            notifyResearchButtonObservers();
             return;
         }
 
