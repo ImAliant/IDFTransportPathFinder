@@ -11,13 +11,26 @@ import fr.u_paris.gla.project.view.combobox.SuggestionStationsComboBox;
 import fr.u_paris.gla.project.view.textfield.CustomTextField;
 import fr.u_paris.gla.project.idfnetwork.Stop;
 
+/**
+ * This class provides methods to implement an autocomplete functionality for station search in a GUI application.
+* @author Aziz Ghizlane
+*/
 
 public class AutoComplete {
 private static Network instance = Network.getInstance();
 
 private AutoComplete() {
+    // Private constructor to prevent instantiation
 }
 
+
+
+/** if input is prefix of stop, then update suggestions with
+ *  all stops starting with prefix ignoring upperCase
+ * @param prefix 
+ *
+ * @param suggestions 
+ */
 public static void showSuggestions(CustomTextField prefix, SuggestionStationsComboBox suggestions) {
     List<Stop> stops = instance.getStops();
 
@@ -37,7 +50,7 @@ public static void showSuggestions(CustomTextField prefix, SuggestionStationsCom
             public void mouseClicked(MouseEvent e) {
                 String selectItem = (String) suggestions.getSelectedItem();
                 if(selectItem != null){
-                String[] parts = selectItem.split("\\["); // on utilise \\[ car [ est un caractère spécial dans les expressions régulières.
+                String[] parts = selectItem.split("\\["); // we use \\[ because [ is a special character in regular expressions.
                 String stopName = parts[0].trim();
 
                 prefix.setText(stopName);
