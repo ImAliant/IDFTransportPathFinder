@@ -122,9 +122,11 @@ public class App {
     }
 
     public static void initNetwork(String path) {
-        // On test si le fichier output.csv dans le répertoire target existe
-        // Si oui, on le charge
-        // Si non, on appelle la fonction extraction()
+        /** Check if the file output.csv exists in the target directory
+            If it does, load the file
+            If not, call the extraction() function
+         */
+
 
         File file = new File(path);
         if (!file.exists()) {

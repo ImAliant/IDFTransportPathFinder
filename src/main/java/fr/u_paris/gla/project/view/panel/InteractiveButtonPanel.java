@@ -10,18 +10,39 @@ import fr.u_paris.gla.project.view.button.interactive_panel_button.OpenResearchP
 import fr.u_paris.gla.project.view.button.interactive_panel_button.ZoomInButton;
 import fr.u_paris.gla.project.view.button.interactive_panel_button.ZoomOutButton;
 
+/**
+ * Panel containing the interactive buttons.
+ * 
+ * @see JPanel
+ * @see OpenResearchPanelButton
+ * @see OpenLineDisplayPanelButton
+ * @see ZoomInButton
+ * @see ZoomOutButton
+ * 
+ * @author Diamant Alexandre
+ */
 public class InteractiveButtonPanel extends JPanel {
+    /** Background color of the panel. */
     private static final Color BACKGROUND_COLOR = new Color(1, 121, 111);
 
+    /** Research panel */
     private OpenResearchPanelButton openResearchButton;
+    /** Line display panel */
     private OpenLineDisplayPanelButton openLineButton;
+    /** Zoom in button */
     private ZoomInButton zoomIn;
+    /** Zoom out button */
     private ZoomOutButton zoomOut;
 
+    /**
+     * Constructor of the interactive panel.    
+     */
     public InteractiveButtonPanel() {
         super();
 
+        // Set the flow layout to left
         setLayout(new FlowLayout(FlowLayout.LEFT));
+        // Set the background color
         setBackground(BACKGROUND_COLOR);
 
         openResearchButton = new OpenResearchPanelButton();
@@ -32,6 +53,9 @@ public class InteractiveButtonPanel extends JPanel {
         init();
     }
 
+    /**
+     * Add components to the panel.
+     */
     private void init() {
         add(openResearchButton);
         add(openLineButton);

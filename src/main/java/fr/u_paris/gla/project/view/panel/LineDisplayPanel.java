@@ -12,20 +12,42 @@ import fr.u_paris.gla.project.view.button.transport_button.MetroButton;
 import fr.u_paris.gla.project.view.button.transport_button.RERButton;
 import fr.u_paris.gla.project.view.button.transport_button.TramButton;
 
+/**
+ * This panel is used to display line on the map.
+ * 
+ * @see JPanel
+ * @see LineDisplayPanelObserver
+ * 
+ * @author VELANGANNI Jean-Paul
+ * @author DIAMANT Alexandre
+ * @author DEDEOGLU Dilara
+ */
 public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver {
+    /** Background color of the panel. */
     private static final Color BACKGROUND_COLOR = new Color(1, 121, 111);
 
+    /** Panel containing the buttons. */
     private JPanel buttonPanel;
+    /** Panel containing the combo box and the validate button. */
     private SelectionLineAndValidatePanel comboBoxAndValidate;
+    /** Panel containing the clear button. */
     private JPanel clearPanel;
 
+    /** Buttons to select the type of transport. */
     private MetroButton metroButton;
+    /** Buttons to select the type of transport. */
     private BusButton busButton;
+    /** Buttons to select the type of transport. */
     private RERButton rerButton;
+    /** Buttons to select the type of transport. */
     private TramButton tramButton;
 
+    /** Button to clear the display. */
     private CleanDisplayButton clear;
 
+    /**
+     * Constructor of the line display panel.
+     */
     public LineDisplayPanel() {
         super();
 
@@ -40,12 +62,18 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         addObservers();
     }
 
+    /**
+     * Initialize the components of the panel.
+     */
     private void initializeComponents() {
         initializePanel();
 
         initializeButtons();
     }
 
+    /**
+     * Initialize the panels of the panel.
+     */
     private void initializePanel() {
         buttonPanel = new JPanel();
         comboBoxAndValidate = new SelectionLineAndValidatePanel();
@@ -56,6 +84,9 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         clearPanel.setOpaque(false);
     }
 
+    /**
+     * Initialize the buttons of the panel.
+     */
     private void initializeButtons() {
         metroButton = new MetroButton();
         busButton = new BusButton();
@@ -65,6 +96,9 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         clear = new CleanDisplayButton();
     }
 
+    /**
+     * Add the components to the panel.
+     */
     private void addComponents() {
         buttonPanel.add(metroButton);
         buttonPanel.add(busButton);
@@ -78,6 +112,9 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         add(clearPanel, BorderLayout.EAST);
     }
 
+    /**
+     * Add the observers to the buttons.
+     */
     private void addObservers() {
         metroButton.addObserver(comboBoxAndValidate.getComboBox());
         busButton.addObserver(comboBoxAndValidate.getComboBox());
@@ -87,8 +124,13 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         clear.addObserver(comboBoxAndValidate.getComboBox());
     }
 
-    public CleanDisplayButton getClearButton() {
-        return clear;
+    /**
+     * Get the metro button.
+     * 
+     * @return the metro button
+     */
+    public CleanDisplayButton getClearButton(){ 
+        return clear; 
     }
 
     @Override
@@ -96,6 +138,11 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         setVisible(!isVisible());
     }
 
+    /**
+     * Get the combo box and the validate button.
+     * 
+     * @return the combo box and the validate button
+     */
     public SelectionLineAndValidatePanel getComboBoxAndValidate() {
         return comboBoxAndValidate;
     }

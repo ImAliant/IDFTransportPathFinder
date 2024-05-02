@@ -14,6 +14,7 @@ import java.util.EnumMap;
 
 /**
  * Represents a stop in the idf network
+ * @author Diamant alexandre
  */
 public class Stop {
     /** Name of the stop */

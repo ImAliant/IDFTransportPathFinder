@@ -16,13 +16,28 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 
+/**
+ * Panel containing the result of the research.
+ * 
+ * @see JPanel
+ * @see ItineraryObserver
+ * 
+ * @author BALEH Youcef
+ * @author DIAMANT Alexandre
+ */
 public class ShowResultPanel extends JPanel implements ItineraryObserver {
+    /** Background color of the panel. */
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
+    /** Width of the panel. */
     private static final int WIDTH = 250;
-
+    /** Label containing the result of the research. */
     private JLabel resultLabel;
+    /** Button to close the panel. */
     private JButton closeButton;
 
+    /**
+     * Constructor of the show result panel.
+     */
     public ShowResultPanel() {
         init();
 
@@ -33,9 +48,9 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         closeButton = new JButton("Fermer");
         // set the position of the button to the bottom center
         closeButton.setHorizontalAlignment(SwingConstants.CENTER);
-        closeButton.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> setVisible(false));
-        });
+        closeButton.addActionListener(e ->
+            SwingUtilities.invokeLater(() -> setVisible(false))
+        );
 
         resultLabel = new JLabel();
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -46,6 +61,9 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         add(closeButton, BorderLayout.SOUTH);
     }
 
+    /**
+     * Initialize the panel.
+     */
     private void init() {
         setBackground(BACKGROUND_COLOR);
         setPreferredSize(new Dimension(WIDTH, getHeight()));
@@ -53,7 +71,11 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
 
         setVisible(false);
     }
-
+    /**
+     * Getter of the close button.
+     * 
+     * @return the close button
+     */
     public JButton getCloseButton() {
         return closeButton;
     }

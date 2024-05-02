@@ -21,23 +21,44 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+/**
+ * Panel containing the research components.
+ * 
+ * @see JPanel
+ * @see ResearchPanelObserver
+ * 
+ * @author DIAMANT Alexandre
+ * @author DEDEOGLU Dilara
+ * @author VELANGANNI Jean-Paul
+ * @author AZIZ Ghizlane
+ */
 public class ResearchPanel extends JPanel implements ResearchPanelObserver, ResearchButtonObserver {
+    /** Background color of the panel. */
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
+    /** Margin between the components. */
     private static final int MARGIN = 18;
+    /** Width of the panel. */
     private static final int WIDTH = 250;
 
+    /** Departure field. */
     private CustomTextField departureField;
+    /** Arrival field. */
     private CustomTextField arrivalField;
+    /** Button to enable the possibility to select the departure coordinate on the map. */
     private DepartureByMapButton departureEnablingMapButton;
+    /** Button to enable the possibility to select the arrival coordinate on the map. */
     private ArrivalByMapButton arrivalEnablingMapButton;
-
+    /** Button to launch the research. */
     private ResearchButton searchButton;
 
     private JLabel errorLabel;
 
+    /**
+     * Constructor of the research panel.
+     */
     public ResearchPanel() {
-        setLayout(new GridBagLayout()); // Utilisation de GridBagLayout
-        setBackground(BACKGROUND_COLOR);
+        setLayout(new GridBagLayout());
+        setBackground(BACKGROUND_COLOR); 
         setPreferredSize(new Dimension(WIDTH, getHeight()));
 
         GridBagConstraints gbc = initGridBagConstraints();
@@ -99,6 +120,11 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         searchButton.addResearchObserver(this);
     }
 
+    /**
+     * Initialize the GridBagConstraints.
+     * 
+     * @return GridBagConstraints
+     */
     private GridBagConstraints initGridBagConstraints() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0; // Toutes les colonnes ont le même index
@@ -109,11 +135,22 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         return gbc;
     }
 
+    /**
+     * Increment the grid Y of the GridBagConstraints.
+     * 
+     * @param gbc GridBagConstraints
+     * @return int
+     */
     private int incrementGridY(GridBagConstraints gbc) {
         return gbc.gridy++;
     }
 
-    // Méthode pour ajouter un composant avec GridBagConstraints
+    /**
+     * Add a component to the panel.
+     * 
+     * @param component Component
+     * @param gbc GridBagConstraints
+     */
     private void addComponent(Component component, GridBagConstraints gbc) {
         this.add(component, gbc);
     }
@@ -123,22 +160,47 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         setVisible(!isVisible());
     }
 
+    /**
+     * Get the departure enabling map button.
+     * 
+     * @return the departure enabling map button
+     */
     public DepartureByMapButton getDepartureEnablingMapButton() {
         return departureEnablingMapButton;
     }
-
+    
+    /**
+     * Get the arrival enabling map button.
+     * 
+     * @return the arrival enabling map button
+     */
     public ArrivalByMapButton getArrivalEnablingMapButton() {
         return arrivalEnablingMapButton;
     }
 
+    /**
+     * Get the departure text field.
+     * 
+     * @return the departure text field
+     */
     public CustomTextField getDepartureTextField() {
         return departureField;
     }
 
+    /**
+     * Get the arrival text field.
+     * 
+     * @return the arrival text field
+     */
     public CustomTextField getArrivalTextField() {
         return arrivalField;
     }
 
+    /**
+     * Get the search button.
+     * 
+     * @return the search button
+     */
     public ResearchButton getSearchButton() {
         return searchButton;
     }
