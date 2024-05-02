@@ -109,7 +109,7 @@ public class ResearchButton extends JButton {
     }
 
     private Itinerary launchResearch(Stop start, Stop destination) {
-        return ItineraryCalculator.CalculateRoad(start, destination);
+        return ItineraryCalculator.calculatePath(start, destination);
     }
 
     protected boolean isGeoPosition(String position) {

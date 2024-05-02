@@ -11,6 +11,7 @@ import java.util.PriorityQueue;
 import fr.u_paris.gla.project.idfnetwork.line.Line;
 import fr.u_paris.gla.project.idfnetwork.line.WalkingLine;
 import fr.u_paris.gla.project.idfnetwork.network.Network;
+import fr.u_paris.gla.project.utils.GPS;
 import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.Stop;
 
@@ -21,76 +22,47 @@ public class ItineraryCalculator {
 
     private static Network network = Network.getInstance();
 
-    public static Itinerary CalculateRoad(Stop start, Stop destination) {
-        Stop tmpStart = null;
-        Stop tmpDest = null;
-        List<Stop> nearDest = new ArrayList<>();
+    private static List<Stop> nearDest = new ArrayList<>();
+    private static Line walk = new WalkingLine("Marche", "Bleu");
+    private static Stop tmpStart;
+    private static Stop tmpDest;
 
-        Line walk = new WalkingLine("Marche", "Bleu");
+    private static double totalDistance = 0;
+    private static double totalDuration = 0;
 
-        if(network.findSameStop(start.getStopName(), start.getLongitude(), start.getLatitude()) == null){
-            tmpStart = start;
-            network.addStop(start);
-            List<Stop> nearStops = network.findStopFromGeoPosition(start.getLatitude(), start.getLongitude(), NEAR_STOP_DISTANCE);
-            if(!nearStops.isEmpty()) {
-                for (Stop stop : nearStops) {
-                    double distance = Math.sqrt(Math.pow(start.getLatitude() - stop.getLatitude(), 2) + Math.pow(start.getLongitude() - stop.getLongitude(), 2));
-                    int duration = (int) ((int) distance/AVERAGE_WALKING_SPEED);
+    private ItineraryCalculator() {}
 
-                    walk.addPath(start, stop, distance, duration);
-                    walk.addStop(start);
-                    start.addLine(walk);
-                }
-            }
-        }
+    public static Itinerary calculatePath(Stop start, Stop destination) {
+        tmpStart = addWalkingPath(start);
+        tmpDest = addWalkingPath(destination);
 
-        if(network.findSameStop(destination.getStopName(), destination.getLongitude(), destination.getLatitude()) == null){
-            tmpDest = destination;
-            network.addStop(destination);
-            nearDest = network.findStopFromGeoPosition(destination.getLatitude(), destination.getLongitude(), NEAR_STOP_DISTANCE);
-            if(!nearDest.isEmpty()) {
-                for (Stop stop : nearDest) {
-                    double distance = Math.sqrt(Math.pow(destination.getLatitude() - stop.getLatitude(), 2) + Math.pow(destination.getLongitude() - stop.getLongitude(), 2));
-                    int duration = (int) ((int) distance/AVERAGE_WALKING_SPEED);
+        return dijsktraAlgorithm(start, destination);
+    }
 
-                    walk.addPath( stop, destination, distance, duration);
-                    walk.addStop(stop);
-                    stop.addLine(walk);
-                }
-            }
-        }
-
-        // Initialize Dijskstra algorithm
+    private static Itinerary dijsktraAlgorithm(Stop start, Stop destination) {
         Map<Stop, Double> duration = new HashMap<>();
         Map<Stop, Stop> previousStops = new HashMap<>();
         PriorityQueue<Stop> queue = new PriorityQueue<>(Comparator.comparingDouble(duration::get));
 
-        // Initialize distances to infinity for all stops except start
-        for (Stop stop : Network.getInstance().getStops()) {
-            duration.put(stop, Double.MAX_VALUE);
-            previousStops.put(stop, null);
-        }
-        duration.put(start, 0.0);
-        queue.add(start);
+        initializeStopDistances(start, duration, previousStops, queue);
 
-        // Run Dijskstra algorithm
+        return runDijsktraAlgorithm(start, destination, duration, previousStops, queue);
+    }
+
+    private static Itinerary runDijsktraAlgorithm(Stop start,
+            Stop destination, Map<Stop, Double> duration,
+            Map<Stop, Stop> previousStops, PriorityQueue<Stop> queue) {
+        
         while (!queue.isEmpty()) {
             Stop currentStop = queue.poll();
-            if (currentStop.equals(destination)) {
+            if (isSameStop(currentStop, destination)) {
                 break;
             }
 
-            for (TravelPath path : currentStop.getPaths()) {
+            for (TravelPath path: currentStop.getPaths()) {
                 Stop neighbor = path.getEnd();
-                double newDistance = duration.get(currentStop) + path.getDuration();
-                if(previousStops.get(currentStop) != null) {
-                    for (TravelPath p : previousStops.get(currentStop).getPaths()) {
-                        if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()))) {
-                            newDistance += DURATION_BETWEEN_TWO_DIFFERENT_STOPS;
+                double newDistance = calculateNewDistance(currentStop, path, previousStops, duration);
 
-                        }
-                    }
-                }
                 if (newDistance < duration.get(neighbor)) {
                     duration.put(neighbor, newDistance);
                     previousStops.put(neighbor, currentStop);
@@ -99,12 +71,18 @@ public class ItineraryCalculator {
             }
         }
 
-        // Construct road from previousStops
+        return constructItinerary(start, destination, previousStops);
+    }
+
+    private static Itinerary constructItinerary(Stop start, Stop destination, 
+        Map<Stop, Stop> previousStops) {
         List<Stop> stops = new ArrayList<>();
         List<Line> lines = new ArrayList<>();
+
         Stop currentStop = destination;
         Stop previous = previousStops.get(currentStop);
-        while (previous != null) {
+
+        while (!isStopNull(previous)) {
             stops.add(currentStop);
             for (TravelPath path : previous.getPaths()) {
                 if (path.getEnd().equals(currentStop)) {
@@ -115,40 +93,31 @@ public class ItineraryCalculator {
             currentStop = previous;
             previous = previousStops.get(currentStop);
         }
+
         stops.add(start);
         Collections.reverse(stops);
         Collections.reverse(lines);
 
-        // Calculate total distance and duration
-        double totalDistance = 0.0;
-        double totalDuration = 0.0;
         Stop current = stops.get(0);
         Stop next = null;
-        for (TravelPath path : current.getPaths()){
-            totalDistance += path.getDistance();
-            totalDuration += path.getDuration();
-            break;
-        }
 
-        for (int i = 1; i < stops.size() - 1; i++){
-            Stop previouss = stops.get(i-1);
+        totalDistance += current.getPaths().get(0).getDistance();
+        totalDuration += current.getPaths().get(0).getDuration();
+
+        for (int i = 1; i < stops.size() - 1; i++) {
+            Stop p = stops.get(i - 1);
             current = stops.get(i);
-            next = stops.get(i+1);
-            for (TravelPath path : current.getPaths()){
-                if (path.getEnd().equals(next)){
-                    for (TravelPath p : previouss.getPaths()) {
-                        if (!path.getLine().equals(p.getLine()) && (path.getStart().equals(p.getEnd()) )) {
-                            totalDuration += DURATION_BETWEEN_TWO_DIFFERENT_STOPS;
-                        }
-                    }
-                    totalDistance += path.getDistance();
-                    totalDuration += path.getDuration();
-                    break;
-
-                }
-            }
+            next = stops.get(i + 1);
+            calculateTotalDistanceAndDuration(p, current, next);
         }
-        if(!nearDest.isEmpty()) {
+
+        cleanUpNetwork();
+
+        return new Itinerary(stops, lines, totalDistance, totalDuration);
+    }
+
+    private static void cleanUpNetwork() {
+        if (!nearDest.isEmpty()) {
             for (Stop stop : nearDest) {
                 stop.removeLine(walk);
             }
@@ -156,7 +125,92 @@ public class ItineraryCalculator {
         walk.removePaths();
         network.removeStop(tmpDest);
         network.removeStop(tmpStart);
+    }
 
-        return new Itinerary(stops,lines,totalDistance,totalDuration);
+    private static void calculateTotalDistanceAndDuration(Stop previous, Stop current, Stop next) {
+        for (TravelPath path : current.getPaths()) {
+            if (path.getEnd().equals(next)) {
+                totalDuration = addFromTravelPath(previous.getPaths(), path, totalDuration);
+                totalDuration += path.getDuration();
+                totalDistance += path.getDistance();
+                break;
+            }
+        }
+    }
+
+    private static double calculateNewDistance(Stop currentStop, TravelPath path, 
+        Map<Stop, Stop> previousStops, Map<Stop, Double> duration) {
+        double newDistance = duration.get(currentStop) + path.getDuration();
+        
+        if (!isStopNull(previousStops.get(currentStop))) {
+            newDistance = addFromTravelPath(currentStop.getPaths(), path, newDistance);
+        }
+
+        return newDistance;
+    }
+
+    private static double addFromTravelPath(List<TravelPath> paths, TravelPath path, double value) {
+        double newValue = value;
+        for (TravelPath p: paths) {
+            if (!isSameLine(path, p) && isSameStop(path.getStart(), p.getEnd())) {
+                newValue += DURATION_BETWEEN_TWO_DIFFERENT_STOPS;
+            }
+        }
+
+        return newValue;
+    }
+
+    private static void initializeStopDistances(
+            Stop start, Map<Stop, Double> duration, 
+            Map<Stop, Stop> previousStops, PriorityQueue<Stop> queue) {
+        for (Stop stop : network.getStops()) {
+            duration.put(stop, Double.MAX_VALUE);
+            previousStops.put(stop, null);
+        }
+        duration.put(start, 0.0);
+        queue.add(start);
+    }
+
+    private static Stop addWalkingPath(Stop stop) {
+        Stop tmpStop = null;
+
+        if (checkIfStopExistsInNetwork(stop)) {
+            tmpStop = stop;
+            network.addStop(stop);
+
+            addWalkingPathToNearDest(stop);
+        }
+
+        return tmpStop;
+    }
+
+    private static void addWalkingPathToNearDest(Stop stop) {
+        nearDest = network.findStopFromGeoPosition(stop.getLatitude(), stop.getLongitude(), NEAR_STOP_DISTANCE);
+        if (!nearDest.isEmpty()) {
+            for (Stop nearStop : nearDest) {
+                double distance = GPS.distance(stop.getLatitude(), stop.getLongitude(), nearStop.getLatitude(), nearStop.getLongitude())/* Math.sqrt(Math.pow(stop.getLatitude() - nearStop.getLatitude(), 2) + Math.pow(stop.getLongitude() - nearStop.getLongitude(), 2)) */;
+                int duration = (int) (distance / AVERAGE_WALKING_SPEED);
+
+                walk.addPath(stop, nearStop, distance, duration);
+                walk.addStop(stop);
+                stop.addLine(walk);
+            }
+        }
+    }
+
+    private static boolean checkIfStopExistsInNetwork(Stop stop) {
+        return network.findSameStop(stop.getStopName(), stop.getLongitude(), stop.getLatitude()) == null;
+    }
+
+    private static boolean isStopNull(Stop stop) {
+        return stop == null;
+    }
+
+    private static boolean isSameLine(TravelPath p1, TravelPath p2) {
+        return p1.getLine().equals(p2.getLine());
+    }
+
+    private static boolean isSameStop(Stop s1, Stop s2) {
+        return s1.equals(s2);
     }
 }
