@@ -43,7 +43,7 @@ public class SuggestionDocumentListener implements DocumentListener {
         updateSuggestion(e);
     }
     /**
-     * Helper method to request suggestions update based on the current document state.
+     * Method to request suggestions update based on the current document state.
      * @param e the document event that triggered the update.
      */
     public void updateSuggestion(DocumentEvent e) {
