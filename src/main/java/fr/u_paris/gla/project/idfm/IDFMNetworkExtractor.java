@@ -82,7 +82,7 @@ public class IDFMNetworkExtractor {
      * @throws IOException 
      * 
      */
-    public static void extract() throws IOException {
+    public static void extract(String path) throws IOException {
         if (LOGGER.isLoggable(Level.INFO)) {
             LOGGER.info("Starting extraction of IDF mobilite data");
         }
@@ -108,7 +108,7 @@ public class IDFMNetworkExtractor {
         CSVStreamProvider provider = new CSVStreamProvider(traces.values().iterator());
 
         try {
-            CSVTools.writeCSVToFile(PATH_TO_OUTPUT, Stream.iterate(provider.next(),
+            CSVTools.writeCSVToFile(path, Stream.iterate(provider.next(),
                     t -> provider.hasNext(), t -> provider.next()));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e,

@@ -12,7 +12,7 @@ import fr.u_paris.gla.project.idfnetwork.Stop;
  */
 public class DefaultStopButtonWaypoint extends StopButtonWaypoint {
     /** The default stop button is always visible. */
-    private static final int ZOOM_THRESHOLD = 0;
+    protected static final int ZOOM_THRESHOLD = 0;
 
     protected DefaultStopButtonWaypoint(Stop stop) {
         super(stop);

@@ -6,7 +6,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
 import fr.u_paris.gla.project.observer.LineDisplayPanelObserver;
-import fr.u_paris.gla.project.view.button.CleanDisplayButton;
+import fr.u_paris.gla.project.view.button.line_display_panel_button.CleanDisplayButton;
 import fr.u_paris.gla.project.view.button.transport_button.BusButton;
 import fr.u_paris.gla.project.view.button.transport_button.MetroButton;
 import fr.u_paris.gla.project.view.button.transport_button.RERButton;

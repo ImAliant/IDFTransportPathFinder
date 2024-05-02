@@ -14,7 +14,7 @@ public class MetroStopButtonWaypoint extends StopButtonWaypoint {
     /** Path to the icon. */
     private static final String METRO_ICON_PATH = "src/main/resources/fr/u_paris/gla/project/stop_logo/metro_stop_logo.png";
     /** The maximum zoom level to display the waypoint. */
-    private static final int ZOOM_THRESHOLD = 6;
+    protected static final int ZOOM_THRESHOLD = 6;
 
     /**
      * Create a new metro stop button at the given position.

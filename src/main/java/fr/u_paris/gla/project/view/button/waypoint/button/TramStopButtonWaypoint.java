@@ -14,7 +14,7 @@ public class TramStopButtonWaypoint extends StopButtonWaypoint {
     /** Path to the icon. */
     private static final String TRAM_ICON_PATH = "src/main/resources/fr/u_paris/gla/project/stop_logo/tram_stop_logo.png";
     /** The maximum zoom level to display the waypoint. */
-    private static final int ZOOM_THRESHOLD = 5;
+    protected static final int ZOOM_THRESHOLD = 5;
 
     /**
      * Create a new tram stop button at the given position.
