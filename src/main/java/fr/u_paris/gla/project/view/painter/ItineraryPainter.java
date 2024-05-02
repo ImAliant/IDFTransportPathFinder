@@ -15,7 +15,13 @@ import fr.u_paris.gla.project.algo.Itinerary;
 
 import org.jxmapviewer.painter.Painter;
 
-
+/**
+ * ItineraryPainter draws a color-coded route on a map based on a series of geographical positions.
+ * Each segment of the route is drawn with a unique color.
+ *
+ * @author Jean Paul
+ * @author Youcef Baleh
+ */
 public class ItineraryPainter implements Painter<JXMapViewer>
 {
 
@@ -23,13 +29,25 @@ public class ItineraryPainter implements Painter<JXMapViewer>
 
     private Itinerary path;
 
-
+    /**
+     * Constructs an ItineraryPainter with a specified itinerary.
+     *
+     * @param track The itinerary to be rendered.
+     */
     public ItineraryPainter(Itinerary track)
     {
         this.path = track;
     }
 
-
+    /**
+     * Performs the painting of the itinerary on the map. This method handles graphical settings and translates
+     * geo-coordinates to pixel coordinates for drawing.
+     *
+     * @param g the Graphics2D object to draw on
+     * @param map the JXMapViewer on which to paint
+     * @param w the width of the area to paint
+     * @param h the height of the area to paint
+     */
     @Override
     public void paint(Graphics2D g, JXMapViewer map, int w, int h)
     {
@@ -44,7 +62,13 @@ public class ItineraryPainter implements Painter<JXMapViewer>
 
         drawRoute(g, map);
     }
-
+     /**
+     * Draws the actual route on the map using the itinerary data. Each segment is drawn twice: once with a thick black
+     * stroke for contrast, and once with a thinner colored stroke corresponding to the route segment's line color.
+     *
+     * @param g the Graphics2D object to draw on
+     * @param map the JXMapViewer on which to paint
+     */
     private void drawRoute(Graphics2D g, JXMapViewer map)
     {
         int lastX = 0;
@@ -70,12 +94,12 @@ public class ItineraryPainter implements Painter<JXMapViewer>
                 first = false;
             }
             else
-            {   // ligne noir pour le contraste
+            {   // Blach color for contrast
                 g.setColor(Color.BLACK);
                 g.setStroke(new BasicStroke(4));
                 g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());
 
-                //ligne colorée
+                // Colored line
                 g.setColor(colors.get(i-1));
                 g.setStroke(new BasicStroke(2));
                 g.drawLine(lastX, lastY, (int) pt.getX(), (int) pt.getY());

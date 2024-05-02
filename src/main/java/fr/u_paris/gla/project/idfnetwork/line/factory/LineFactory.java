@@ -10,6 +10,7 @@ import fr.u_paris.gla.project.idfnetwork.line.TramwayLine;
 
 /**
  * Factory class to create lines.
+ * @author Diamant Alexandre
  */
 public class LineFactory {
     private LineFactory() {}

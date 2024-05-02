@@ -11,6 +11,7 @@ import fr.u_paris.gla.project.idfnetwork.Stop;
 
 /**
  * Represents a transport line in the idf network
+ * @author Diamant Alexandre
  */
 public abstract class Line {
     /** Name of the line */

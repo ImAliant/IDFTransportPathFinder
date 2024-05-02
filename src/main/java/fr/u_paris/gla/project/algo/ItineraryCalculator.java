@@ -13,13 +13,30 @@ import fr.u_paris.gla.project.idfnetwork.line.WalkingLine;
 import fr.u_paris.gla.project.idfnetwork.network.Network;
 import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.Stop;
-
+/**
+ * This class provides methods to calculate the shortest route between two stops in a transportation network. 
+ * It considers multiple factors including walking distances, and transfers between different lines. 
+ * It uses Dijkstra's algorithm to find the shortest path.
+ * 
+ * @author Diamant Alexandre
+ * @author Diamant Yanis
+ */
 public class ItineraryCalculator {
     private static final int DURATION_BETWEEN_TWO_DIFFERENT_STOPS = 300;
     private static final double AVERAGE_WALKING_SPEED = 5.0*3600;
     private static final double NEAR_STOP_DISTANCE = 0.3; // 300m
 
     private static Network network = Network.getInstance();
+
+    /**
+     * Calculates the most efficient road from the start stop to the destination stop.
+     * This method dynamically adds stops if they are not already present in the network, calculates walking paths if necessary,
+     * and applies Dijkstra's algorithm to determine the shortest travel path considering line transfers.
+     * 
+     * @param start The starting stop of the itinerary.
+     * @param destination The destination stop of the itinerary.
+     * @return An Itinerary object containing a list of stops, lines between them, total distance, and total duration of the trip.
+     */
 
     public static Itinerary CalculateRoad(Stop start, Stop destination) {
         Stop tmpStart = null;

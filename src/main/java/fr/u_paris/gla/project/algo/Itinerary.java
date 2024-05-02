@@ -5,7 +5,12 @@ import java.util.List;
 
 import fr.u_paris.gla.project.idfnetwork.line.Line;
 import fr.u_paris.gla.project.idfnetwork.Stop;
-
+/**
+ * Represents an itinerary consisting of multiple stops and transit lines, along with the total distance and duration.
+ * This class encapsulates all relevant details necessary to describe a complete route.
+ * @author Diamant Alexandre
+ * @author Frarma Yanis
+ */
 public class Itinerary {
     private List<Stop> stops;
 
@@ -13,6 +18,13 @@ public class Itinerary {
     private double totalDistance;
     private double totalDuration;
 
+    /**
+     * Constructs an itinerary with specified stops, lines, total distance, and total duration.
+     * @param stops the list of stops along the itinerary
+     * @param lines the list of transit lines used in the itinerary
+     * @param totalDistance the total distance covered by the itinerary in kilometers
+     * @param totalDuration the total duration of the itinerary in minutes
+     */
     public Itinerary(List<Stop> stops, List<Line> lines, double totalDistance, double totalDuration) {
         this.stops = stops;
         this.lines = lines;
@@ -21,22 +33,43 @@ public class Itinerary {
 
     }
 
+     /**
+     * Returns an unmodifiable list of stops in the itinerary.
+     * @return a list of stops
+     */
     public List<Stop> getStops(){
         return Collections.unmodifiableList(stops);
     }
 
+    /**
+     * Returns an unmodifiable list of lines used in the itinerary.
+     * @return a list of lines
+     */
     public List<Line> getLines(){
         return Collections.unmodifiableList(lines);
     }
 
+    /**
+     * Returns the total distance of the itinerary.
+     * @return total distance in kilometers
+     */
     public double getTotalDistance() {
         return totalDistance;
     }
 
+    /**
+     * Returns the total duration of the itinerary.
+     * @return total duration in minutes
+     */
     public double getTotalDuration() {
         return totalDuration;
     }
 
+    /**
+     * Compares this itinerary with another object for equality, based on distance, duration, and stops.
+     * @param o the object to compare with
+     * @return true if the given object represents an itinerary equivalent to this itinerary, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -49,6 +82,10 @@ public class Itinerary {
                 && stops.equals(itinerary.getStops());
     }
 
+    /**
+     * Provides a string representation of the itinerary, detailing each step of the route including stops, lines, distance and duration.
+     * @return a string representation of the itinerary
+     */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
