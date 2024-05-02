@@ -71,6 +71,7 @@ public abstract class StopButtonWaypoint extends JLabel {
      */
     protected StopButtonWaypoint(Stop stop) {
         this.stop = stop;
+        this.setToolTipText(stop.toString());
         setCursor(new Cursor(Cursor.HAND_CURSOR));
         addListener();
     }

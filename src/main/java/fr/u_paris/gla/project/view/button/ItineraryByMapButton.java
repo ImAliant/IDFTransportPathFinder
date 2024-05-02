@@ -11,7 +11,7 @@ public abstract class ItineraryByMapButton extends MiniButton {
     protected boolean isEnabled = false;
 
     protected ItineraryByMapButton() {
-        super();
+        super("clicker sur le plan pour choisir un point");
 
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
     }

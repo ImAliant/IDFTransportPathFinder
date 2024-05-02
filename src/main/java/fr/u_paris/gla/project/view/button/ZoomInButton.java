@@ -28,7 +28,7 @@ public class ZoomInButton extends MiniButton {
      * @param y The y position of the button.
      */
     public ZoomInButton(/* int x, int y */) {
-        super(/* x, y */);
+        super("Zoomer sur la carte");
 
         Icon icon = IconUtils.createIcon(PATH, WIDTH, HEIGHT);
         setIcon(icon);

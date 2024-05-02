@@ -93,11 +93,11 @@ public class Stop {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.lname);
-        sb.append(" [" + this.longitude + ", " + this.latitude + "]\n");
-        sb.append("Ligne(s): \n");
-        lines.forEach((k, line) -> sb.append(line + "\n"));
+        StringBuilder sb = new StringBuilder("<html>");
+        sb.append(this.lname + "<br>");
+        sb.append("Ligne(s): <br>");
+        lines.forEach((k, line) -> sb.append(line + "<br>"));
+        sb.append("</html>");
         return sb.toString();
     }
 

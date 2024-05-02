@@ -12,7 +12,7 @@ import fr.u_paris.gla.project.idfnetwork.Stop;
  */
 public class RERStopButtonWaypoint extends StopButtonWaypoint {
     /** Path to the icon. */
-    private static final String RER_ICON_PATH = "src/main/resources/fr/u_paris/gla/project/stop_logo/rer_stop_logo.png";
+    private static final String RER_ICON_PATH = "src/main/resources/fr/u_paris/gla/project/button_icon/paris_transit_icons/20221022173330!Paris_transit_icons_-_RER.svg.png";
     /** The maximum zoom level to display the waypoint. */
     private static final int ZOOM_THRESHOLD = 7;
 

@@ -10,6 +10,7 @@ import fr.u_paris.gla.project.algo.Itinerary;
 import fr.u_paris.gla.project.algo.ItineraryCalculator;
 import fr.u_paris.gla.project.idfnetwork.network.Network;
 import fr.u_paris.gla.project.observer.ItineraryObserver;
+import fr.u_paris.gla.project.observer.ResearchButtonObserver;
 import fr.u_paris.gla.project.view.textfield.CustomTextField;
 import fr.u_paris.gla.project.idfnetwork.Stop;
 
@@ -18,6 +19,8 @@ public class ResearchButton extends JButton {
     private static final Color BUTTON_BACKGROUND = new Color(1, 121, 111);
 
     private List<ItineraryObserver> observers = new ArrayList<>();
+    private List<ResearchButtonObserver> researchButtonObservers = new ArrayList<>();
+
     private CustomTextField departureField;
     private CustomTextField arrivalField;
 
@@ -39,8 +42,16 @@ public class ResearchButton extends JButton {
         observers.add(observer);
     }
 
+    public void addResearchObserver(ResearchButtonObserver observer) {
+        researchButtonObservers.add(observer);
+    }
+
     private void notifyObservers(Itinerary itinerary) {
         observers.forEach(observer -> observer.showItinerary(itinerary));
+    }
+
+    private void notifyResearchButtonObservers() {
+        researchButtonObservers.forEach(ResearchButtonObserver::errorFields);
     }
 
     private void onClick() {
@@ -48,9 +59,10 @@ public class ResearchButton extends JButton {
         String arriveName = arrivalField.getText();
 
         if (departName.isEmpty() || arriveName.isEmpty()) {
+            notifyResearchButtonObservers();
             return;
         }
-
+    
         Stop startStop = null;
         Stop destinationStop = null;
 
@@ -69,7 +81,7 @@ public class ResearchButton extends JButton {
         }
 
         if (startStop == null || destinationStop == null) {
-            System.out.println("Un des arrêts n'est pas trouvé.");
+            notifyResearchButtonObservers();
             return;
         }
 

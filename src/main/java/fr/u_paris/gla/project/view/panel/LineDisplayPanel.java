@@ -13,7 +13,7 @@ import fr.u_paris.gla.project.view.button.transport_button.RERButton;
 import fr.u_paris.gla.project.view.button.transport_button.TramButton;
 
 public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver {
-    private static final Color BACKGROUND_COLOR = new Color(100, 181, 246);
+    private static final Color BACKGROUND_COLOR = new Color(1, 121, 111);
 
     private JPanel buttonPanel;
     private SelectionLineAndValidatePanel comboBoxAndValidate;
@@ -28,7 +28,7 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
 
     public LineDisplayPanel() {
         super();
-        
+
         setLayout(new BorderLayout());
         setBackground(BACKGROUND_COLOR);
         setVisible(false);
@@ -72,7 +72,7 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         buttonPanel.add(tramButton);
 
         clearPanel.add(clear);
-        
+
         add(buttonPanel, BorderLayout.WEST);
         add(comboBoxAndValidate, BorderLayout.CENTER);
         add(clearPanel, BorderLayout.EAST);
@@ -87,7 +87,9 @@ public class LineDisplayPanel extends JPanel implements LineDisplayPanelObserver
         clear.addObserver(comboBoxAndValidate.getComboBox());
     }
 
-    public CleanDisplayButton getClearButton(){ return clear; }
+    public CleanDisplayButton getClearButton() {
+        return clear;
+    }
 
     @Override
     public void updateVisibility() {
