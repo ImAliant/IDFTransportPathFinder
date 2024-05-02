@@ -15,23 +15,50 @@ import fr.u_paris.gla.project.utils.GPS;
 import fr.u_paris.gla.project.idfnetwork.TravelPath;
 import fr.u_paris.gla.project.idfnetwork.Stop;
 
+/**
+ * ItineraryCalculator class is a class that calculates the best path between two stops.
+ * 
+ * It uses the Dijkstra algorithm to find the best path between two stops.
+ * 
+ * @see Dijkstra's algorithm
+ *
+ * @author DIAMANT Alexadre
+ * @author FRARMA Yanis
+ */
 public class ItineraryCalculator {
+    /** Duration between two different stops, average walking speed and near stop distance */
     private static final int DURATION_BETWEEN_TWO_DIFFERENT_STOPS = 300;
+    /** Average walking speed in km/h */
     private static final double AVERAGE_WALKING_SPEED = 5.0*3600;
+    /** Near stop distance in km */
     private static final double NEAR_STOP_DISTANCE = 0.3; // 300m
 
+    /** Network instance */
     private static Network network = Network.getInstance();
 
+    /** List of stops near the destination */
     private static List<Stop> nearDest = new ArrayList<>();
+    /** Walking line */
     private static Line walk = new WalkingLine("Marche", "Bleu");
+    /** Temporary start */
     private static Stop tmpStart;
+    /** Temporary destination */
     private static Stop tmpDest;
 
+    /** Total distance */
     private static double totalDistance = 0;
+    /** Total duration */
     private static double totalDuration = 0;
 
     private ItineraryCalculator() {}
 
+    /**
+     * Calculate the best path between two stops.
+     * 
+     * @param start the start stop
+     * @param destination the destination stop
+     * @return the best path between the two stops
+     */
     public static Itinerary calculatePath(Stop start, Stop destination) {
         tmpStart = addWalkingPath(start);
         tmpDest = addWalkingPath(destination);
@@ -39,6 +66,14 @@ public class ItineraryCalculator {
         return dijsktraAlgorithm(start, destination);
     }
 
+    /**
+     * Initialize the disjkstra algorithm.
+     * 
+     * @param start the start stop
+     * @param destination the destination stop
+     * 
+     * @return the best path between the two stops
+     */ 
     private static Itinerary dijsktraAlgorithm(Stop start, Stop destination) {
         Map<Stop, Double> duration = new HashMap<>();
         Map<Stop, Stop> previousStops = new HashMap<>();
@@ -49,6 +84,17 @@ public class ItineraryCalculator {
         return runDijsktraAlgorithm(start, destination, duration, previousStops, queue);
     }
 
+    /**
+     * Run the dijsktra algorithm.
+     * 
+     * @param start the start stop
+     * @param destination the destination stop
+     * @param duration the duration map
+     * @param previousStops the previous stops map
+     * @param queue the priority queue
+     * 
+     * @return the best path between the two stops
+     */
     private static Itinerary runDijsktraAlgorithm(Stop start,
             Stop destination, Map<Stop, Double> duration,
             Map<Stop, Stop> previousStops, PriorityQueue<Stop> queue) {
@@ -74,6 +120,15 @@ public class ItineraryCalculator {
         return constructItinerary(start, destination, previousStops);
     }
 
+    /**
+     * Construct the itinerary.
+     * 
+     * @param start the start stop
+     * @param destination the destination stop
+     * @param previousStops the previous stops map
+     * 
+     * @return the best path between the two stops
+     */
     private static Itinerary constructItinerary(Stop start, Stop destination, 
         Map<Stop, Stop> previousStops) {
         List<Stop> stops = new ArrayList<>();
@@ -116,6 +171,9 @@ public class ItineraryCalculator {
         return new Itinerary(stops, lines, totalDistance, totalDuration);
     }
 
+    /**
+     * Clean up the network.
+     */
     private static void cleanUpNetwork() {
         if (!nearDest.isEmpty()) {
             for (Stop stop : nearDest) {
@@ -127,6 +185,13 @@ public class ItineraryCalculator {
         network.removeStop(tmpStart);
     }
 
+    /**
+     * Calculate the total distance and duration.
+     * 
+     * @param previous the previous stop
+     * @param current the current stop
+     * @param next the next stop
+     */
     private static void calculateTotalDistanceAndDuration(Stop previous, Stop current, Stop next) {
         for (TravelPath path : current.getPaths()) {
             if (path.getEnd().equals(next)) {
@@ -138,6 +203,16 @@ public class ItineraryCalculator {
         }
     }
 
+    /**
+     * Calculate the new distance.
+     * 
+     * @param currentStop the current stop
+     * @param path the travel path
+     * @param previousStops the previous stops map
+     * @param duration the duration map
+     * 
+     * @return the new distance
+     */
     private static double calculateNewDistance(Stop currentStop, TravelPath path, 
         Map<Stop, Stop> previousStops, Map<Stop, Double> duration) {
         double newDistance = duration.get(currentStop) + path.getDuration();
@@ -149,6 +224,15 @@ public class ItineraryCalculator {
         return newDistance;
     }
 
+    /**
+     * Add the duration from the travel path.
+     * 
+     * @param paths the list of travel paths
+     * @param path the travel path
+     * @param value the value
+     * 
+     * @return the new value
+     */
     private static double addFromTravelPath(List<TravelPath> paths, TravelPath path, double value) {
         double newValue = value;
         for (TravelPath p: paths) {
@@ -160,6 +244,14 @@ public class ItineraryCalculator {
         return newValue;
     }
 
+    /**
+     * Initialize the stop distances to infinity.
+     * 
+     * @param start the start stop
+     * @param duration the duration map
+     * @param previousStops the previous stops map
+     * @param queue the priority queue
+     */
     private static void initializeStopDistances(
             Stop start, Map<Stop, Double> duration, 
             Map<Stop, Stop> previousStops, PriorityQueue<Stop> queue) {
@@ -171,6 +263,13 @@ public class ItineraryCalculator {
         queue.add(start);
     }
 
+    /**
+     * Add a walking path.
+     * 
+     * @param stop the stop
+     * 
+     * @return the stop
+     */
     private static Stop addWalkingPath(Stop stop) {
         Stop tmpStop = null;
 
@@ -184,6 +283,11 @@ public class ItineraryCalculator {
         return tmpStop;
     }
 
+    /**
+     * Add a walking path to the nearest destination.
+     * 
+     * @param stop the stop
+     */
     private static void addWalkingPathToNearDest(Stop stop) {
         nearDest = network.findStopFromGeoPosition(stop.getLatitude(), stop.getLongitude(), NEAR_STOP_DISTANCE);
         if (!nearDest.isEmpty()) {
@@ -198,18 +302,48 @@ public class ItineraryCalculator {
         }
     }
 
+    /**
+     * Check if a stop exists in the network.
+     * 
+     * @param stop the stop
+     * 
+     * @return true if the stop exists in the network, false otherwise
+     */
     private static boolean checkIfStopExistsInNetwork(Stop stop) {
         return network.findSameStop(stop.getStopName(), stop.getLongitude(), stop.getLatitude()) == null;
     }
 
+    /**
+     * Check if a stop is null.
+     * 
+     * @param stop the stop
+     * 
+     * @return true if the stop is null, false otherwise
+     */
     private static boolean isStopNull(Stop stop) {
         return stop == null;
     }
 
+    /**
+     * Check if two travel paths are on the same line.
+     * 
+     * @param p1 the first travel path
+     * @param p2 the second travel path
+     * 
+     * @return true if the two travel paths are on the same line, false otherwise
+     */
     private static boolean isSameLine(TravelPath p1, TravelPath p2) {
         return p1.getLine().equals(p2.getLine());
     }
 
+    /**
+     * Check if two stops are the same.
+     * 
+     * @param s1 the first stop
+     * @param s2 the second stop
+     * 
+     * @return true if the two stops are the same, false otherwise
+     */
     private static boolean isSameStop(Stop s1, Stop s2) {
         return s1.equals(s2);
     }
