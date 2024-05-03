@@ -48,7 +48,9 @@ public class ZoomOutButton extends MiniButton {
     private void notifyObservers() {
         observers.forEach(ZoomOutObserver::zoomOut);
     }
-
+    /**
+     * Notify all observers when button clicked.
+     */
     @Override
     public void onClick() {
         notifyObservers();

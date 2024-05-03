@@ -47,7 +47,9 @@ public class OpenLineDisplayPanelButton extends MiniButton {
     private void notifyObservers() {
         observers.forEach(LineDisplayPanelObserver::updateVisibility);
     }
-
+    /**
+     * Notify all observers when button clicked
+     */
     @Override
     public void onClick() {
         notifyObservers();
