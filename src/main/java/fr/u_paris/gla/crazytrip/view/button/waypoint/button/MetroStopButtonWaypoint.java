@@ -12,7 +12,7 @@ import fr.u_paris.gla.crazytrip.utils.IconUtils;
  */
 public class MetroStopButtonWaypoint extends StopButtonWaypoint {
     /** Path to the icon. */
-    private static final String METRO_ICON_PATH = "src/main/resources/fr/u_paris/gla/project/button_icon/paris_transit_icons/Paris_transit_icons_-_M%C3%A9tro.svg_002.png";
+    private static final String METRO_ICON_PATH = "src/main/resources/fr/u_paris/gla/crazytrip/button_icon/paris_transit_icons/Paris_transit_icons_-_M%C3%A9tro.svg_002.png";
     /** The maximum zoom level to display the waypoint. */
     protected static final int ZOOM_THRESHOLD = 6;
 

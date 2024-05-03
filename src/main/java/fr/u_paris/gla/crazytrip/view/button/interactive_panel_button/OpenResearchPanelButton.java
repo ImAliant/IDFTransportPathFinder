@@ -18,7 +18,7 @@ import fr.u_paris.gla.crazytrip.view.button.MiniButton;
  */
 public class OpenResearchPanelButton extends MiniButton {
     /** Path to the icon. */
-    private static final String PATH = "src/main/resources/fr/u_paris/gla/project/button_icon/loupe_icon.png";
+    private static final String PATH = "src/main/resources/fr/u_paris/gla/crazytrip/button_icon/loupe_icon.png";
     /** Observers of the button. */
     private transient List<ResearchPanelObserver> observers = new ArrayList<>();
 

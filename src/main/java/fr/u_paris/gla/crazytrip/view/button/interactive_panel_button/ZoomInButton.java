@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class ZoomInButton extends MiniButton {
     /** Path to the icon. */
-    private static final String PATH = "src/main/resources/fr/u_paris/gla/project/button_icon/plus_icon.png";   
+    private static final String PATH = "src/main/resources/fr/u_paris/gla/crazytrip/button_icon/plus_icon.png";   
     /** Observers of the button. */
     private transient List<ZoomInObserver> observers = new ArrayList<>();
 

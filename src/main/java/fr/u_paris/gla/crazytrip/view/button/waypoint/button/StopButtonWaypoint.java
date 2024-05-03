@@ -19,7 +19,7 @@ public abstract class StopButtonWaypoint extends JLabel {
     /** Height of the button. */
     protected static final int HEIGHT = 20;
     /** Default path to the icon. */
-    private static final String DEFAULT_PATH = "src/main/resources/fr/u_paris/gla/project/stop_logo/stop_logo.png";
+    private static final String DEFAULT_PATH = "src/main/resources/fr/u_paris/gla/crazytrip/stop_logo/stop_logo.png";
 
     /** Path to the icon. */
     protected String iconPath = DEFAULT_PATH;
