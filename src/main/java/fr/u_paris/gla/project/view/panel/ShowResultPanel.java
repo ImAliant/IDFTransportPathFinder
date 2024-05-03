@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.JScrollPane;
 
 import fr.u_paris.gla.project.algo.Itinerary;
 import fr.u_paris.gla.project.idfnetwork.Stop;
@@ -58,9 +59,11 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         resultLabel = new JLabel();
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
         resultLabel.setVerticalAlignment(SwingConstants.CENTER);
+        JScrollPane scrollPane = new JScrollPane(resultLabel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         add(rechercheText, BorderLayout.NORTH);
-        add(resultLabel, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
         add(closeButton, BorderLayout.SOUTH);
     }
 
@@ -73,7 +76,6 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         setLayout(new BorderLayout());
         setVisible(false);
     }
-
 
     /**
      * Getter of the close button.
@@ -150,9 +152,9 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
             builder.append("<br>");
         }
         builder.append(String.format(
-                "<span style='color: %s;'>Prenez la ligne %s</span> de <span style='color: black;'>%s</span>",
-                lineColor,
-                line.getLineName(), startStop.getStopName()));
+                "<span style='color: black;'>Prenez la ligne </span><span style='color: %s;'>%s</span> de <span style='color: black;'>%s</span>",
+                line.getColor(), line.getLineName(), startStop.getStopName()));
+
     }
 
     private void appendSegmentEnd(StringBuilder builder, Stop startStop, Stop endStop, String lineColor) {
