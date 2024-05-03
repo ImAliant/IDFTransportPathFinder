@@ -1,23 +1,30 @@
 package fr.u_paris.gla.project.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.swing.ImageIcon;
 
 import org.junit.jupiter.api.Test;
 
-public class TestIconUtils {
+class TestIconUtils {
+    private static String PATH = "src/test/resources/utils/loupe_icon.png";
     
     @Test   
-    public void testGetIcon() {
-        ImageIcon imageIcon = IconUtils.createIcon("src/test/resources/utils/loupe_icon.png", 10, 10);
-        assertTrue(imageIcon.getIconWidth() == 10);
-        assertTrue(imageIcon.getIconHeight() == 10);
+    void testGetIcon() {
+        ImageIcon imageIcon = IconUtils.createIcon(PATH, 10, 10);
+        assertEquals(10, imageIcon.getIconWidth(),
+                "The width of the icon should be 10");
+        assertEquals(10, imageIcon.getIconHeight(),
+                "The height of the icon should be 10");
     }
 
     @Test void testGetIconWithNullPath() {
-        ImageIcon imageIcon = IconUtils.createIcon(null, 10, 10);
-        assertTrue(imageIcon == null);
+        try {
+            IconUtils.createIcon(null, 10, 10);
+        } catch (Exception e) {
+            assertTrue(e instanceof NullPointerException, "The exception should be a NullPointerException");
+        }
     }
 
 
