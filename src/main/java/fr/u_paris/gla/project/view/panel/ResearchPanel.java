@@ -6,6 +6,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import fr.u_paris.gla.project.observer.ResearchPanelObserver;
+import fr.u_paris.gla.project.utils.StyleButton;
 import fr.u_paris.gla.project.observer.ResearchButtonObserver;
 import fr.u_paris.gla.project.view.button.research_panel_button.ArrivalByMapButton;
 import fr.u_paris.gla.project.view.button.research_panel_button.DepartureByMapButton;
@@ -89,13 +90,12 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
      * 
      * @param gbc GridBagConstraints
      */
-    private void initLabels(GridBagConstraints gbc) {    
+    private void initLabels(GridBagConstraints gbc) {
         initDepartureComponents(gbc);
         initArrivalComponents(gbc);
-        searchButton = new ResearchButton("Recherche", departureField, arrivalField);
-        incrementGridY(gbc);
-        addComponent(searchButton, gbc);
+        initSearchButton(gbc);
     }
+
     /**
      * Initialize the departure components.
      * 
@@ -121,7 +121,7 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         incrementGridY(gbc);
         addComponent(departureSuggestion, gbc);
     }
-    
+
     /**
      * Initialize the arrival components.
      * 
@@ -148,6 +148,18 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         gbc.insets = new Insets(MARGIN, MARGIN, MARGIN, MARGIN);
         incrementGridY(gbc);
         addComponent(arrivalSuggestion, gbc);
+    }
+
+    /**
+     * Initialize the search button.
+     * 
+     * @param gbc GridBagConstraints
+     */
+    private void initSearchButton(GridBagConstraints gbc) {
+        searchButton = new ResearchButton("Recherche", departureField, arrivalField);
+        incrementGridY(gbc);
+        addComponent(searchButton, gbc);
+        StyleButton.styleButton(searchButton);
     }
 
     /**
@@ -254,7 +266,7 @@ public class ResearchPanel extends JPanel implements ResearchPanelObserver, Rese
         SwingUtilities.invokeLater(() -> {
             errorLabel.setVisible(true);
             repaint();
-
+            // Error visible for 5 seconds
             Timer timer = new Timer(5000, e -> errorLabel.setVisible(false));
             timer.setRepeats(false);
             timer.start();

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 
 import fr.u_paris.gla.project.observer.CleanDisplayObserver;
+import fr.u_paris.gla.project.utils.StyleButton;
 
 public class CleanDisplayButton extends JButton {
     private transient List<CleanDisplayObserver> observers = new ArrayList<>();
@@ -14,6 +15,7 @@ public class CleanDisplayButton extends JButton {
 
     public CleanDisplayButton() {
         super(TEXT);
+        StyleButton.styleButton(this);
 
         addActionListener(e -> onClick());
     }

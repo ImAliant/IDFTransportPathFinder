@@ -3,6 +3,7 @@ package fr.u_paris.gla.project.view.panel;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import fr.u_paris.gla.project.utils.StyleButton;
 import fr.u_paris.gla.project.view.combobox.DisplayLineComboBox;
 
 /**
@@ -29,6 +30,7 @@ public class SelectionLineAndValidatePanel extends JPanel {
 
         comboBox = new DisplayLineComboBox();
         validate = new JButton(TEXT);
+        StyleButton.styleButton(validate);
 
         add(comboBox);
         add(validate);

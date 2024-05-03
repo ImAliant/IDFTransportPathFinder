@@ -5,18 +5,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.BorderFactory;
 
 import fr.u_paris.gla.project.algo.Itinerary;
 import fr.u_paris.gla.project.idfnetwork.Stop;
 import fr.u_paris.gla.project.idfnetwork.line.Line;
 import fr.u_paris.gla.project.observer.ItineraryObserver;
+import fr.u_paris.gla.project.utils.StyleButton;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 
 import java.util.List;
 
@@ -32,8 +30,6 @@ import java.util.List;
 public class ShowResultPanel extends JPanel implements ItineraryObserver {
     /** Background color of the panel. */
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
-    /** Button color. */
-    private static final Color BUTTON_COLOR = new Color(1, 121, 111);
 
     /** Width of the panel. */
     private static final int WIDTH = 250;
@@ -51,12 +47,12 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         JLabel rechercheText = new JLabel("Résultat de la recherche:");
         // set the position of the text to the top center
         rechercheText.setHorizontalAlignment(SwingConstants.CENTER);
-        rechercheText.setForeground(new Color(255, 255, 255)); // Couleur blanche
+        rechercheText.setForeground(new Color(255, 255, 255));
 
         closeButton = new JButton("Fermer");
         // set the position of the button to the bottom center
         closeButton.setHorizontalAlignment(SwingConstants.CENTER);
-        styleButton(closeButton);
+        StyleButton.styleButton(closeButton);
         closeButton.addActionListener(e -> SwingUtilities.invokeLater(() -> setVisible(false)));
 
         resultLabel = new JLabel();
@@ -78,12 +74,6 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
         setVisible(false);
     }
 
-    private void styleButton(JButton button) {
-        button.setBackground(BUTTON_COLOR);
-        button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 12));
-        button.setBorder(BorderFactory.createRaisedBevelBorder());
-    }
 
     /**
      * Getter of the close button.
@@ -160,7 +150,8 @@ public class ShowResultPanel extends JPanel implements ItineraryObserver {
             builder.append("<br>");
         }
         builder.append(String.format(
-                "<span style='color: %s;'>Prenez la ligne %s</span> de <span style='color: black;'>%s</span>", lineColor,
+                "<span style='color: %s;'>Prenez la ligne %s</span> de <span style='color: black;'>%s</span>",
+                lineColor,
                 line.getLineName(), startStop.getStopName()));
     }
 
