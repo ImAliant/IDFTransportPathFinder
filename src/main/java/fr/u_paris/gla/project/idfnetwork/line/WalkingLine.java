@@ -10,7 +10,7 @@ public class WalkingLine extends Line {
         super(name, color);
         this.speed = AVERAGE_SPEED;
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(lname, color, speed, stops, paths);
