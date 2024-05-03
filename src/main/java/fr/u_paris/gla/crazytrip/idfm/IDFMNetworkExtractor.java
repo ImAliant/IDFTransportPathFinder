@@ -28,7 +28,7 @@ import fr.u_paris.gla.crazytrip.utils.GPS;
  * 
  * @author Emmanuel Bigeon */
 public class IDFMNetworkExtractor {
-    public static final String PATH_TO_OUTPUT = "src/main/resources/fr/u_paris/gla/project/idfnetwork/output.csv";
+    public static final String PATH_TO_OUTPUT = "src/main/resources/fr/u_paris/gla/crazytrip/idfnetwork/output.csv";
 
     /** The logger for information on the process */
     private static final Logger LOGGER = Logger
