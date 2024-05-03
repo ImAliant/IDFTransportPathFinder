@@ -65,6 +65,11 @@ public class Itinerary {
         return totalDuration;
     }
 
+    @Override
+    public int hashCode() {
+        return stops.hashCode() + lines.hashCode() + Double.hashCode(totalDistance) + Double.hashCode(totalDuration);
+    }
+
     /**
      * Compares this itinerary with another object for equality, based on distance, duration, and stops.
      * @param o the object to compare with
@@ -97,7 +102,7 @@ public class Itinerary {
             .append(stops.get(0).getStopName())
             .append("\n");
         for (int i = 1; i < stops.size(); i++) {
-            if (i < lines.size()) {
+            if (i < lines.size()-1) {
                 builder.append("Prendre ")
                     .append(lines.get(i))
                     .append(" à l'arrêt ")
