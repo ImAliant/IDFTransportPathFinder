@@ -31,8 +31,6 @@ public enum LineType {
             return METRO;
         } else if (line instanceof FunicularLine) {
             return FUNICULAIRE;
-        } else if (line instanceof WalkingLine) {
-            return WALKING;
         } else {
             throw new IllegalArgumentException("Unknown line type: " + line.getClass().getName());
         }
