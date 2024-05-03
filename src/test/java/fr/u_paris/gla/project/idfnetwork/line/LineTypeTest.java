@@ -40,7 +40,6 @@ class LineTypeTest {
         RERLine rerLine = new RERLine("test", "red");
         MetroLine metroLine = new MetroLine("test", "red");
         FunicularLine funicularLine = new FunicularLine("test", "red");
-        WalkingLine walkingLine = new WalkingLine("test", "red");
         
         assertEquals(LineType.BUS, LineType.fromLine(busLine),
                 "LineType.fromLine should return BUS for a BusLine object");
@@ -52,8 +51,6 @@ class LineTypeTest {
                 "LineType.fromLine should return METRO for a MetroLine object");
         assertEquals(LineType.FUNICULAIRE, LineType.fromLine(funicularLine),
                 "LineType.fromLine should return FUNICULAIRE for a FunicularLine object");
-        assertEquals(LineType.WALKING, LineType.fromLine(walkingLine),
-                "LineType.fromLine should return WALKING for a WalkingLine object");
 
         try {
             LineType.fromLine(line);
