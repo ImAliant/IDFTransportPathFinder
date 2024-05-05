@@ -13,7 +13,6 @@ Afin de compiler sans lancer les tests unitaires, éxecutez simplement :
 ```
 mvn install -DskipTests
 
-
 ```
 
 Afin de compiler et lancer les tests, éxecutez simplement :
@@ -30,6 +29,4 @@ java -jar target/crazytrip-2024.1.0.0-SNAPSHOT-jar-with-dependencies.jar
 L'option de lancement `--info` causera l'affichage dans la console d'informations de l'application.
 
 L'option de lancement `--gui` causera l'ouverture d'une fenêtre affichant le logo de l'Université de Paris.
-
-L'option de lancement `--extractor` permettra de lancer un extracteur de données.
 
