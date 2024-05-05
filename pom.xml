@@ -6,10 +6,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>fr.u-paris.gla.lesgenies</groupId>
-	<artifactId>project</artifactId>
+	<artifactId>crazytrip</artifactId>
 	<version>2024.1.0.0-SNAPSHOT</version>
 
-	<name>CityMapper</name>
+	<name>CrazyTrip</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,7 +52,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>fr.u_paris.gla.project.App</mainClass>
+							<mainClass>fr.u_paris.gla.crazytrip.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -74,7 +74,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>fr.u_paris.gla.project.App</mainClass>
+							<mainClass>fr.u_paris.gla.crazytrip.App</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
