@@ -19,17 +19,25 @@ public class CleanDisplayButton extends JButton {
 
         addActionListener(e -> onClick());
     }
-
+    /**
+     * Add an observer to the button.
+     *
+     * @param observer The observer to add.
+     */
     public void addObserver(CleanDisplayObserver observer) {
         observers.add(observer);
     }
-
+    /**
+     * Notify all observers.
+     */
     private void notifyObservers() {
         for (CleanDisplayObserver observer : observers) {
             observer.cleanDisplay();
         }
     }
-
+    /**
+     * Notify all observers when button clicked.
+     */
     private void onClick() {
         notifyObservers();
     }
