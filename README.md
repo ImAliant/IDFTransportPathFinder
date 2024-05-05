@@ -2,6 +2,10 @@
 
 Projet de GLA (2024) par le groupe "Les Génies"
 
+## Lien de la vidéo
+
+https://youtu.be/UnNeP4N9B3Y?si=JU3keOK3iJIBh8Fk
+
 ## Description
 
 Ce projet s'agit d'un logiciel de planification d’itinéraire urbain. Implémenté en Java qui permettra de lire une carte des transports, puis, en donnant les coordonnées GPS de départ et d’arrivée, calculera un trajet pour réaliser ce déplacement.
