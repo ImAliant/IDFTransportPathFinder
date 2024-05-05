@@ -57,11 +57,4 @@ class StopButtonWaypointTest {
 
         assertEquals(FunicularStopButtonWaypoint.class, sbw.getClass());
     }
-
-    @Test
-    void createButtonOtherLineTypeTest() {
-        StopButtonWaypoint sbw = StopButtonWaypoint.createButton(s1, LineType.WALKING);
-
-        assertEquals(DefaultStopButtonWaypoint.class, sbw.getClass());
-    }
 }

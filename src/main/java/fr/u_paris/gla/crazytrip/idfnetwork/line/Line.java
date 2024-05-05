@@ -119,14 +119,4 @@ public abstract class Line {
     public List<TravelPath> getPaths() {
         return Collections.unmodifiableList(new ArrayList<>(paths));
     }
-    
-    public void correspondances_of_line() {
-        for (Stop s: stops.values()) {
-            List<Line> stopCorrespondances = s.getLines();
-            for (Line line: stopCorrespondances) {
-                correspondances.putIfAbsent(line.lname, line);
-            }
-        }
-    }
-
 }
