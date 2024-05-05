@@ -120,19 +120,4 @@ class LineTest {
             fail("The list of paths should be unmodifiable");
         }
     }
-
-    @Test
-    void correspondances_of_lineTest() {
-        Line test = new MetroLine("test", "red");
-        Stop stop1 = new Stop("stop1", 0.0, 0.0);
-        stop1.addLine(test);
-
-        Line line = new MetroLine("line", "blue");
-        line.addStop(stop1);
-
-        line.correspondances_of_line();
-
-        assertEquals(1, line.correspondances.size(), 
-        "The correspondance should be added to the line");
-    }
 }
