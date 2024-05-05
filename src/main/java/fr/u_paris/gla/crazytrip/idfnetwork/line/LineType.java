@@ -12,7 +12,7 @@ package fr.u_paris.gla.crazytrip.idfnetwork.line;
  * @author Diamant Alexandre
  */
 public enum LineType {
-    BUS, TRAMWAY, RER, METRO, FUNICULAIRE, WALKING;
+    BUS, TRAMWAY, RER, METRO, FUNICULAIRE;
 
     /**
      * Converts a string representation of a line type into its corresponding {@link LineType} enum constant.

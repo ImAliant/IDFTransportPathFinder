@@ -68,14 +68,4 @@ class LineFactoryTest {
             throw new AssertionError("Line should be an instance of BusLine");
         }
     }
-
-    @Test
-    void createUnknownLineTest() {
-        try {
-            LineFactory.createLine(LineType.WALKING, "test", "red");
-            throw new AssertionError("IllegalArgumentException should have been thrown");
-        } catch (IllegalArgumentException e) {
-            assertEquals("Unknown line type: WALKING", e.getMessage(), "Exception message should be 'Unknown line type: null'");
-        }
-    }
 }
