@@ -10,7 +10,12 @@ public class MetroLine extends Line {
         super(name, color);
         this.speed = AVERAGE_SPEED;
     }
-
+    /**
+     * Returns the hash code value for this metro line.
+     * The hash code is calculated from the line's name, color, speed, stops, and paths.
+     *
+     * @return the hash code value for this metro line
+     */
     @Override
     public int hashCode() {
         return Objects.hash(lname, color, speed, stops, paths);
@@ -28,6 +33,11 @@ public class MetroLine extends Line {
                 paths.equals(busLine.paths);
     }
 
+    /**
+     * Returns a string representation of this metro line, which includes the line's name.
+     *
+     * @return a string representation of this metro line
+     */
     @Override
     public String toString() {
         return "M " + lname;

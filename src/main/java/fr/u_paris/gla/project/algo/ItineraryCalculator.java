@@ -85,7 +85,7 @@ public class ItineraryCalculator {
 
             for (TravelPath path: currentStop.getPaths()) {
                 Stop neighbor = path.getEnd();
-                double newDuration = duration.get(currentStop) + path.getDuration();
+                double newDuration = duration.get(currentStop) + 1;
 
                 if (newDuration < duration.get(neighbor)) {
                     duration.put(neighbor, newDuration);

@@ -49,7 +49,9 @@ public class OpenResearchPanelButton extends MiniButton {
     private void notifyObservers() {
         observers.forEach(ResearchPanelObserver::updateVisibility);
     }
-
+    /**
+     * Notify all observers when button clicked
+     */
     @Override
     public void onClick() {
         notifyObservers();
