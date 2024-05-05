@@ -5,9 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class TestCSVTools {
@@ -17,8 +19,6 @@ public class TestCSVTools {
     private static final String TEST_CSV = "src/test/resources/test.csv";
     private static ArrayList<String[]> lines = new ArrayList<>();
 
-
- 
     @BeforeEach
     void testReadCSV() {
         assertDoesNotThrow(
@@ -29,6 +29,15 @@ public class TestCSVTools {
                 }, "CSV reading throwed an exception");
 
     }
+
+    @AfterAll
+    static void stop() {
+        File file = new File(TEST_CSV);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
     @Test
     void testReadCSVException() {
         assertThrows(Exception.class,
