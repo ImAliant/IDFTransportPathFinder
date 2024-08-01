@@ -16,4 +16,4 @@ dependency-reduced-pom.xml
 .vscode/
 
 # Temporary files
-temp_code/
+old-src/
