@@ -20,7 +20,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import fr.u_paris.gla.crazytrip.model.Network;
 import fr.u_paris.gla.crazytrip.utils.CSVTools;
 import fr.u_paris.gla.crazytrip.utils.GPS;
 
@@ -29,7 +28,7 @@ import fr.u_paris.gla.crazytrip.utils.GPS;
  * 
  * @author Emmanuel Bigeon */
 public class IDFMNetworkExtractor {
-    public static final String PATH_TO_OUTPUT = "src/main/resources/fr/u_paris/gla/crazytrip/idfnetwork/output.csv";
+    public static final String PATH_TO_DATA = "src/main/resources/fr/u_paris/gla/crazytrip/idfnetwork/data.csv";
 
     /** The logger for information on the process */
     private static final Logger LOGGER = Logger
@@ -109,7 +108,7 @@ public class IDFMNetworkExtractor {
         CSVStreamProvider provider = new CSVStreamProvider(traces.values().iterator());
 
         try {
-            CSVTools.writeCSVToFile(PATH_TO_OUTPUT, Stream.iterate(provider.next(),
+            CSVTools.writeCSVToFile(PATH_TO_DATA, Stream.iterate(provider.next(),
                     t -> provider.hasNext(), t -> provider.next()));
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, e,
