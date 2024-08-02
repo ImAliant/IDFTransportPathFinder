@@ -1,13 +1,15 @@
 package fr.u_paris.gla.crazytrip.model;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
-import fr.u_paris.gla.crazytrip.dtos.SegmentLineDTO;
+import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
 import fr.u_paris.gla.crazytrip.idfm.IDFMNetworkExtractor;
 import fr.u_paris.gla.crazytrip.parser.Parser;
 
@@ -41,36 +43,21 @@ public class Network {
         return this.stations.get(name);
     }
 
-    public SegmentLine getSegmentLine(Node start, Node end) {
+    public SegmentTransport getSegmentLine(Node start, Node end) {
         Set<Segment> segments = this.graph.get(start);
         if (segments == null) {
             return null;
         }
         for (Segment segment : segments) {
-            if (segment instanceof SegmentLine && segment.getEndPoint().equals(end)) {
-                return (SegmentLine) segment;
+            if (segment instanceof SegmentTransport && segment.getEndPoint().equals(end)) {
+                return (SegmentTransport) segment;
             }
         }
         return null;
     }
 
-    //
-    public SegmentWalk getSegmentWalk(Node start, Node end) {
-        Set<Segment> segments = this.graph.get(start);
-        if (segments == null) {
-            return null;
-        }
-        for (Segment segment : segments) {
-            if (segment instanceof SegmentWalk && segment.getEndPoint().equals(end)) {
-                return (SegmentWalk) segment;
-            }
-        }
-        return null;
-    }
-    //
-
-    public Set<Segment> getSegments(Node node) {
-        return this.graph.get(node);
+    public Set<Segment> getSegmentsLineOfANode(Node node) {
+        return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
     }
 
     private void initializeFields() {
@@ -85,16 +72,16 @@ public class Network {
         Map<String, String> linesTerminus = Parser.getLines();
         convertStationsDTOtoStations(stationsDTO);
 
-        Set<SegmentLineDTO> segmentsDTO = Parser.getSegments();
+        Set<SegmentTransportDTO> segmentsDTO = Parser.getSegments();
         Map<String, Set<Station>> transportLines = new HashMap<>();
 
         addSegmentToLinesAndGraph(segmentsDTO, transportLines);
         addLines(transportLines, linesTerminus);
-        addAllWalkSegments(getAllStations());
+        //addAllWalkSegments(getAllStations());
     }
 
-    private void addSegmentToLinesAndGraph(Set<SegmentLineDTO> segmentsLineDTO, Map<String, Set<Station>> transportLines) {
-        segmentsLineDTO.forEach(segment -> {
+    private void addSegmentToLinesAndGraph(Set<SegmentTransportDTO> segmentsTransportDTO, Map<String, Set<Station>> transportLines) {
+        segmentsTransportDTO.forEach(segment -> {
             Station start = this.stations.get(segment.getStart().getName());
             Station end = this.stations.get(segment.getEnd().getName());
             
@@ -135,12 +122,20 @@ public class Network {
         return stations;
     }
 
+    public Map<String, Line> getAllLines() {
+        return Collections.unmodifiableMap(lines);
+    }
+
+    public Map<Node, Set<Segment>> getGraph() {
+        return Collections.unmodifiableMap(graph);
+    }
+ 
     public Set<Station> getAllStations() {
         return getStations().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
  
     public void addSegmentLine(Node start, Node end, double distance, double duration, String line) {
-        addSegment(new SegmentLine(start, end, distance, duration, line));
+        addSegment(new SegmentTransport(start, end, distance, duration, line));
     }
 
     public void addSegmentWalk(Node start, Node end, double distance) {

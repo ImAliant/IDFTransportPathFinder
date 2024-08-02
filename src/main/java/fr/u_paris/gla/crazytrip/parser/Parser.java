@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
-import fr.u_paris.gla.crazytrip.dtos.SegmentLineDTO;
+import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
 import fr.u_paris.gla.crazytrip.io.TimeFormat;
 
 public class Parser {
@@ -27,7 +27,7 @@ public class Parser {
     private static final int DISTANCE_INDEX = 9;
 
     private static final Set<NodeDTO> stations = new HashSet<>();
-    private static final Set<SegmentLineDTO> segments = new HashSet<>();
+    private static final Set<SegmentTransportDTO> segments = new HashSet<>();
     private static final Map<String, String> lines = new HashMap<>();
     
     private static Parser instance = null;
@@ -63,14 +63,14 @@ public class Parser {
     }
 
     private void processFields(String[] fields) {
-        String routeType = fields[ROUTETYPE_INDEX].trim();
-        if (!routeType.equals("Subway")) return;
+        String routetype = fields[ROUTETYPE_INDEX].trim();
+        //if (!routeType.equals("Subway")) return;
 
         NodeDTO start;
         NodeDTO end;
 
         String lineName = fields[LNAME_INDEX].trim();
-        //String color = fields[COLOR_INDEX].trim();
+        String color = fields[COLOR_INDEX].trim();
 
         start = processNode(fields, STOP_NAME_INDEX, LONGLAT_INDEX);
         end = processNode(fields, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
@@ -80,15 +80,15 @@ public class Parser {
         stations.add(start);
         stations.add(end);
 
-        SegmentLineDTO segment = new SegmentLineDTO(start, end, duration, distance, lineName);
+        SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, lineName, routetype, color);
         segments.add(segment);
 
         lines.putIfAbsent(lineName, start.getName());
     }
 
-    private NodeDTO processNode(String[] fields, int index_stop, int index_longlat) {
-        String stopName = fields[index_stop].trim();
-        String longLat = fields[index_longlat].trim();
+    private NodeDTO processNode(String[] fields, final int indexStop, final int indexLonglat) {
+        String stopName = fields[indexStop].trim();
+        String longLat = fields[indexLonglat].trim();
         double latitude = Double.parseDouble(longLat.split(",")[0]);
         double longitude = Double.parseDouble(longLat.split(",")[1]);
     
@@ -99,7 +99,7 @@ public class Parser {
         return stations;
     }
 
-    public static Set<SegmentLineDTO> getSegments() {
+    public static Set<SegmentTransportDTO> getSegments() {
         return segments;
     }
 
