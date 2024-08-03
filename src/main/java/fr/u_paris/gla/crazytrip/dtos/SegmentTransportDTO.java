@@ -38,6 +38,14 @@ public class SegmentTransportDTO {
         return distance;
     }
 
+    public String getRouteType() {
+        return routetype;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
     public String getLine() {
         return line;
     }

@@ -4,11 +4,13 @@ public class NodeDTO {
     private final String name;
     private final double latitude;
     private final double longitude;
+    private final String routetype;
 
-    public NodeDTO(String name, double latitude, double longitude) {
+    public NodeDTO(String name, double latitude, double longitude, String routetype) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.routetype = routetype;
     }
 
     public String getName() {
@@ -23,13 +25,17 @@ public class NodeDTO {
         return longitude;
     }
 
+    public String getRouteType() {
+        return routetype;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         NodeDTO nodeDTO = (NodeDTO) obj;
-        // FOR NOW WE CONSIDER ONLY THE SUBWAY NETWORK
-        return name.equalsIgnoreCase(nodeDTO.name);
+
+        return name.equalsIgnoreCase(nodeDTO.name) && routetype.equalsIgnoreCase(routetype);
     }
 
     @Override

@@ -2,7 +2,6 @@ package fr.u_paris.gla.crazytrip.parser;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -63,19 +62,18 @@ public class Parser {
     }
 
     private void processFields(String[] fields) {
-        String routetype = fields[ROUTETYPE_INDEX].trim();
-        //if (!routeType.equals("Subway")) return;
-
         NodeDTO start;
         NodeDTO end;
 
         String lineName = fields[LNAME_INDEX].trim();
-        String color = fields[COLOR_INDEX].trim();
-
-        start = processNode(fields, STOP_NAME_INDEX, LONGLAT_INDEX);
-        end = processNode(fields, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
+        String routetype = fields[ROUTETYPE_INDEX].trim();
+        
+        start = processNode(fields, routetype, STOP_NAME_INDEX, LONGLAT_INDEX);
+        end = processNode(fields, routetype, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
         double duration = TimeFormat.convertToSeconds(fields[DURATION_INDEX]);
         double distance = Double.parseDouble(fields[DISTANCE_INDEX]);
+
+        String color = fields[COLOR_INDEX].trim();
 
         stations.add(start);
         stations.add(end);
@@ -83,16 +81,21 @@ public class Parser {
         SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, lineName, routetype, color);
         segments.add(segment);
 
-        lines.putIfAbsent(lineName, start.getName());
+        String lineKey = generateLineKey(lineName, routetype, color);
+        lines.putIfAbsent(lineKey, start.getName());
     }
 
-    private NodeDTO processNode(String[] fields, final int indexStop, final int indexLonglat) {
+    private NodeDTO processNode(String[] fields, final String routetype, final int indexStop, final int indexLonglat) {
         String stopName = fields[indexStop].trim();
         String longLat = fields[indexLonglat].trim();
         double latitude = Double.parseDouble(longLat.split(",")[0]);
         double longitude = Double.parseDouble(longLat.split(",")[1]);
     
-        return new NodeDTO(stopName, latitude, longitude);
+        return new NodeDTO(stopName, latitude, longitude, routetype);
+    }
+
+    public static String generateLineKey(final String name, final String routetype, final String color) {
+        return String.format("%s@%s@%s", name, routetype, color);
     }
 
     public static Set<NodeDTO> getStations() {
