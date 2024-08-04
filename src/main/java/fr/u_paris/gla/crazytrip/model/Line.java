@@ -3,6 +3,8 @@ package fr.u_paris.gla.crazytrip.model;
 import java.util.Objects;
 import java.util.Set;
 
+import fr.u_paris.gla.crazytrip.model.line.RouteType;
+
 public abstract class Line {
     private final Set<Station> stations;
     private final String name;
@@ -28,7 +30,7 @@ public abstract class Line {
         return terminusStation;
     }
 
-    public abstract String getLineType();
+    public abstract RouteType getLineType();
 
     public String getColor() {
         return color;

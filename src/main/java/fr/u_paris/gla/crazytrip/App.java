@@ -3,6 +3,7 @@ package fr.u_paris.gla.crazytrip;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -14,6 +15,7 @@ import fr.u_paris.gla.crazytrip.model.Segment;
 import fr.u_paris.gla.crazytrip.model.SegmentTransport;
 import fr.u_paris.gla.crazytrip.model.SegmentWalk;
 import fr.u_paris.gla.crazytrip.model.Station;
+import fr.u_paris.gla.crazytrip.model.line.RouteType;
 import fr.u_paris.gla.crazytrip.parser.Parser;
 import fr.u_paris.gla.crazytrip.utils.NetworkBackendHandler;
 
@@ -63,7 +65,7 @@ public class App {
 		String line = System.console().readLine();
 		String[] parts = line.split(" ");
 
-		Line transLine = network.getLine(parts[0], parts[1]);
+		Line transLine = network.getLine(parts[0], RouteType.fromString(parts[1]));
 		if (transLine == null) {
 			System.out.println("This line doesn't exist");
 			return false;

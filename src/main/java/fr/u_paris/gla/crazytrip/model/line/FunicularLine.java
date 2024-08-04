@@ -11,7 +11,7 @@ public class FunicularLine extends Line {
     }
 
     @Override
-    public String getLineType() {
-        return "Funicular";
+    public RouteType getLineType() {
+        return RouteType.FUNICULAR;
     }
 }

@@ -11,7 +11,7 @@ public class BusLine extends Line{
     }
 
     @Override
-    public String getLineType() {
-        return "Bus";
+    public RouteType getLineType() {
+        return RouteType.BUS;
     }
 }

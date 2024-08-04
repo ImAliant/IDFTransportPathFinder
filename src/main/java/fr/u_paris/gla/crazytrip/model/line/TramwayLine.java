@@ -11,7 +11,7 @@ public class TramwayLine extends Line {
     }
 
     @Override
-    public String getLineType() {
-        return "Tram";
+    public RouteType getLineType() {
+        return RouteType.TRAMWAY;
     }
 }

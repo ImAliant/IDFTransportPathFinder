@@ -11,7 +11,7 @@ public class MetroLine extends Line {
     }
 
     @Override
-    public String getLineType() {
-        return "Subway";
+    public RouteType getLineType() {
+        return RouteType.METRO;
     }
 }

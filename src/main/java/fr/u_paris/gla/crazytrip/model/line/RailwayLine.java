@@ -11,7 +11,7 @@ public class RailwayLine extends Line {
     }
 
     @Override
-    public String getLineType() {
-        return "Rail";
+    public RouteType getLineType() {
+        return RouteType.RAIL;
     }
 }

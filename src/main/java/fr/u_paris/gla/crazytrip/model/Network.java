@@ -1,17 +1,20 @@
 package fr.u_paris.gla.crazytrip.model;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
 
 import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
 import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
 import fr.u_paris.gla.crazytrip.idfm.IDFMNetworkExtractor;
 import fr.u_paris.gla.crazytrip.model.factory.LineFactory;
+import fr.u_paris.gla.crazytrip.model.line.RouteType;
 import fr.u_paris.gla.crazytrip.parser.Parser;
 
 public class Network {
@@ -36,7 +39,7 @@ public class Network {
         return instance;
     }
 
-    public Line getLine(String name, String routetype) {
+    public Line getLine(String name, RouteType routetype) {
         String key = generateLineKey(name, routetype);
         return lines.get(key);
     }
@@ -60,6 +63,14 @@ public class Network {
 
     public Set<Segment> getSegmentsLineOfANode(Node node) {
         return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
+    }
+
+    public List<Line> getAllLinesSpecificType(RouteType routeType) {
+        ArrayList<Line> res = new ArrayList<>();
+        lines.forEach((key, value) -> {
+            if (value.getLineType().equals(routeType)) res.add(value);
+        });
+        return res;
     }
 
     private void initializeFields() {
@@ -110,8 +121,6 @@ public class Network {
             String lineName = parts[0];
             String routetype = parts[1];
             String color = parts[2];
-
-            System.out.println(String.format("%s %s %s", lineName, routetype, color));
 
             Line line = LineFactory.createLine(lineName, value, terminus, routetype, color);
 
@@ -177,7 +186,7 @@ public class Network {
         return new Station(stationDTO.getName(), stationDTO.getLatitude(), stationDTO.getLongitude(), stationDTO.getRouteType());
     }
 
-    public String generateLineKey(String name, String routetype) {
+    public String generateLineKey(String name, RouteType routetype) {
         return String.format("%s-%s", name, routetype);
     }
 }
