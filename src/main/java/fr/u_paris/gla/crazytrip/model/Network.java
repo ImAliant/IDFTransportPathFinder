@@ -122,7 +122,7 @@ public class Network {
             String routetype = parts[1];
             String color = parts[2];
 
-            Line line = LineFactory.createLine(lineName, value, terminus, routetype, color);
+            Line line = LineFactory.createLine(lineName, value, terminus, RouteType.fromString(routetype), color);
 
             String newKey = generateLineKey(line.getName(), line.getLineType());
             this.lines.putIfAbsent(newKey, line);
