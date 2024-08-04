@@ -1,16 +1,21 @@
 package fr.u_paris.gla.crazytrip.model;
 
+import java.util.Objects;
 import java.util.Set;
 
-public final class Line {
+import fr.u_paris.gla.crazytrip.model.line.RouteType;
+
+public abstract class Line {
     private final Set<Station> stations;
     private final String name;
     private final Station terminusStation;
+    private final String color;
 
-    public Line(String name, Set<Station> stations, Station terminusStation) {
+    protected Line(String name, Set<Station> stations, Station terminusStation, String color) {
         this.name = name;
         this.stations = Set.copyOf(stations);
         this.terminusStation = terminusStation;
+        this.color = color;
     }
 
     public Set<Station> getStations() {
@@ -25,9 +30,15 @@ public final class Line {
         return terminusStation;
     }
 
+    public abstract RouteType getLineType();
+
+    public String getColor() {
+        return color;
+    }
+
     @Override
     public String toString() {
-        return String.format("Line{%s, %s}", name, terminusStation);
+        return String.format("Line{%s, %s, %s}", name, terminusStation, getLineType());
     }
 
     public void printLine() {
@@ -42,11 +53,11 @@ public final class Line {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Line line = (Line) o;
-        return name.equals(line.name);
+        return name.equals(line.name) && terminusStation.equals(line.terminusStation) && color.equals(line.color);
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Objects.hash(name, terminusStation, color);
     }
 }

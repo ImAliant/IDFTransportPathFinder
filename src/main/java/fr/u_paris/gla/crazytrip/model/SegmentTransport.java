@@ -2,10 +2,10 @@ package fr.u_paris.gla.crazytrip.model;
 
 import java.util.Objects;
 
-public final class SegmentLine extends Segment {
+public final class SegmentTransport extends Segment {
     private final String line;
 
-    public SegmentLine(Node n1, Node n2, double distance, double duration, String line) {
+    public SegmentTransport(Node n1, Node n2, double distance, double duration, String line) {
         super(n1, n2, distance, duration);
         if (line == null || line.isBlank())
             throw new IllegalArgumentException("Line cannot be null or blank");
@@ -27,7 +27,7 @@ public final class SegmentLine extends Segment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        SegmentLine segment = (SegmentLine) o;
+        SegmentTransport segment = (SegmentTransport) o;
         return line.equals(segment.line);
     }
 

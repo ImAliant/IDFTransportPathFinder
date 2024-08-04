@@ -1,6 +1,6 @@
 package fr.u_paris.gla.crazytrip.model;
 
-public abstract sealed class Segment permits SegmentLine, SegmentWalk {
+public abstract sealed class Segment permits SegmentTransport, SegmentWalk {
     protected final Node startPoint;
     protected final Node endPoint;
     protected double duration;
