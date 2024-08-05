@@ -1,5 +1,7 @@
 package fr.u_paris.gla.crazytrip.dtos;
 
+import fr.u_paris.gla.crazytrip.model.Coordinates;
+
 public class NodeDTO {
     private final String name;
     private final double latitude;
@@ -35,7 +37,18 @@ public class NodeDTO {
         if (obj == null || getClass() != obj.getClass()) return false;
         NodeDTO nodeDTO = (NodeDTO) obj;
 
-        return name.equalsIgnoreCase(nodeDTO.name) && routetype.equalsIgnoreCase(routetype);
+        final double DISTANCE_THRESHOLD = 0.3;
+
+        return name.equalsIgnoreCase(nodeDTO.name)
+            && routetype.equalsIgnoreCase(routetype)
+            && distanceTo(nodeDTO) <= DISTANCE_THRESHOLD;
+    }
+
+    private double distanceTo(NodeDTO nodeDTO) {
+        Coordinates current = new Coordinates(latitude, longitude);
+        Coordinates other = new Coordinates(nodeDTO.latitude, nodeDTO.longitude);
+
+        return current.distanceTo(other);
     }
 
     @Override
