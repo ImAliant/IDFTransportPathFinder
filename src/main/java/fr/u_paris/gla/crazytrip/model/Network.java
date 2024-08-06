@@ -81,7 +81,7 @@ public class Network {
             return;
         }
 
-        Set<NodeDTO> stationsDTO = Parser.getStations();
+        Map<String, NodeDTO> stationsDTO = Parser.getStations();
         Map<String, String> linesTerminus = Parser.getLines();
         convertStationsDTOtoStations(stationsDTO);
 
@@ -95,8 +95,12 @@ public class Network {
 
     private void addSegmentToLinesAndGraph(Set<SegmentTransportDTO> segmentsTransportDTO, Map<String, Set<Station>> transportLines) {
         segmentsTransportDTO.forEach(segment -> {
-            Station start = this.stations.get(segment.getStart().getName());
-            Station end = this.stations.get(segment.getEnd().getName());
+            String startKey = segment.getStart().generateKey();
+            String endKey = segment.getEnd().generateKey();
+
+            Station start = this.stations.get(startKey);
+            Station end = this.stations.get(endKey);
+            if (start == null || end == null) throw new NullPointerException("The start or end can't be null");
 
             String key = Parser.generateLineKey(segment.getLine(), segment.getRouteType(), segment.getColor());
             
@@ -175,10 +179,10 @@ public class Network {
         }
     }
 
-    private void convertStationsDTOtoStations(Set<NodeDTO> stationsDTO) {
-        stationsDTO.forEach(stationDTO -> {
+    private void convertStationsDTOtoStations(Map<String, NodeDTO> stationsDTO) {
+        stationsDTO.forEach((key, stationDTO) -> {
             Station station = this.stationDTOtoStation(stationDTO);
-            this.stations.put(station.getName(), station);
+            this.stations.put(key, station);
         });
     }
 

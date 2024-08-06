@@ -25,7 +25,7 @@ public class Parser {
     private static final int DURATION_INDEX = 8;
     private static final int DISTANCE_INDEX = 9;
 
-    private static final Set<NodeDTO> stations = new HashSet<>();
+    private static final Map<String, NodeDTO> stations = new HashMap<>();
     private static final Set<SegmentTransportDTO> segments = new HashSet<>();
     private static final Map<String, String> lines = new HashMap<>();
     
@@ -50,8 +50,6 @@ public class Parser {
             throw new IllegalArgumentException("File does not exist: " + dataFile);
         }
 
-        int compteur = 0;
-
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             String csvDelimiter = ";";
@@ -59,8 +57,6 @@ public class Parser {
                 String[] fields = parseCSVLine(line, csvDelimiter);
 
                 processFields(fields);
-
-                System.out.println(compteur++);
             }
         }
     }
@@ -90,23 +86,19 @@ public class Parser {
         double latitude = Double.parseDouble(longLat.split(",")[0]);
         double longitude = Double.parseDouble(longLat.split(",")[1]);
 
-        NodeDTO node = findNodeInSet(stopName, latitude, longitude, routetype);
-        if (node != null) return node;
-
-        node = new NodeDTO(stopName, latitude, longitude, routetype);
-        stations.add(node);
+        NodeDTO node = findNodeInMap(stopName, latitude, longitude, routetype);
+        String nodeKey = node.generateKey();
+        stations.putIfAbsent(nodeKey, node);
 
         return node;
     }
 
-    private NodeDTO findNodeInSet(final String name, final double latitude, final double longitude, final String routetype) {
-        for (NodeDTO node: stations) {
-            if (node.getName().equals(name) && node.getLatitude() == latitude 
-            && node.getLongitude() == longitude && node.getRouteType().equals(routetype)) {
-                return node;
-            }
-        }
-        return null;
+    private NodeDTO findNodeInMap(final String name, final double latitude, final double longitude, final String routetype) {
+        NodeDTO newNode = new NodeDTO(name, latitude, longitude, routetype);
+        String nodeKey = newNode.generateKey();
+        if (stations.containsKey(nodeKey)) return stations.get(nodeKey);
+
+        return newNode;
     }
 
     private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, 
@@ -119,7 +111,7 @@ public class Parser {
         return String.format("%s@%s@%s", name, routetype, color);
     }
 
-    public static Set<NodeDTO> getStations() {
+    public static Map<String, NodeDTO> getStations() {
         return stations;
     }
 
