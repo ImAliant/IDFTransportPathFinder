@@ -25,7 +25,7 @@ public class Parser {
     private static final int DURATION_INDEX = 8;
     private static final int DISTANCE_INDEX = 9;
 
-    private static final Set<NodeDTO> stations = new HashSet<>();
+    private static final Map<String, NodeDTO> stations = new HashMap<>();
     private static final Set<SegmentTransportDTO> segments = new HashSet<>();
     private static final Map<String, String> lines = new HashMap<>();
     
@@ -67,19 +67,14 @@ public class Parser {
 
         String lineName = fields[LNAME_INDEX].trim();
         String routetype = fields[ROUTETYPE_INDEX].trim();
-        
-        start = processNode(fields, routetype, STOP_NAME_INDEX, LONGLAT_INDEX);
-        end = processNode(fields, routetype, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
         double duration = TimeFormat.convertToSeconds(fields[DURATION_INDEX]);
         double distance = Double.parseDouble(fields[DISTANCE_INDEX]);
-
         String color = fields[COLOR_INDEX].trim();
 
-        stations.add(start);
-        stations.add(end);
+        start = processNode(fields, routetype, STOP_NAME_INDEX, LONGLAT_INDEX);
+        end = processNode(fields, routetype, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
 
-        SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, lineName, routetype, color);
-        segments.add(segment);
+        processSegment(start, end, duration, distance, lineName, routetype, color);
 
         String lineKey = generateLineKey(lineName, routetype, color);
         lines.putIfAbsent(lineKey, start.getName());
@@ -90,15 +85,33 @@ public class Parser {
         String longLat = fields[indexLonglat].trim();
         double latitude = Double.parseDouble(longLat.split(",")[0]);
         double longitude = Double.parseDouble(longLat.split(",")[1]);
-    
-        return new NodeDTO(stopName, latitude, longitude, routetype);
+
+        NodeDTO node = findNodeInMap(stopName, latitude, longitude, routetype);
+        String nodeKey = node.generateKey();
+        stations.putIfAbsent(nodeKey, node);
+
+        return node;
+    }
+
+    private NodeDTO findNodeInMap(final String name, final double latitude, final double longitude, final String routetype) {
+        NodeDTO newNode = new NodeDTO(name, latitude, longitude, routetype);
+        String nodeKey = newNode.generateKey();
+        if (stations.containsKey(nodeKey)) return stations.get(nodeKey);
+
+        return newNode;
+    }
+
+    private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, 
+    final double distance, final String lineName, final String routetype, final String color) {
+        SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, lineName, routetype, color);
+        segments.add(segment);
     }
 
     public static String generateLineKey(final String name, final String routetype, final String color) {
         return String.format("%s@%s@%s", name, routetype, color);
     }
 
-    public static Set<NodeDTO> getStations() {
+    public static Map<String, NodeDTO> getStations() {
         return stations;
     }
 
