@@ -50,6 +50,8 @@ public class Parser {
             throw new IllegalArgumentException("File does not exist: " + dataFile);
         }
 
+        int compteur = 0;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             String csvDelimiter = ";";
@@ -57,6 +59,8 @@ public class Parser {
                 String[] fields = parseCSVLine(line, csvDelimiter);
 
                 processFields(fields);
+
+                System.out.println(compteur++);
             }
         }
     }
@@ -67,19 +71,14 @@ public class Parser {
 
         String lineName = fields[LNAME_INDEX].trim();
         String routetype = fields[ROUTETYPE_INDEX].trim();
-        
-        start = processNode(fields, routetype, STOP_NAME_INDEX, LONGLAT_INDEX);
-        end = processNode(fields, routetype, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
         double duration = TimeFormat.convertToSeconds(fields[DURATION_INDEX]);
         double distance = Double.parseDouble(fields[DISTANCE_INDEX]);
-
         String color = fields[COLOR_INDEX].trim();
 
-        stations.add(start);
-        stations.add(end);
+        start = processNode(fields, routetype, STOP_NAME_INDEX, LONGLAT_INDEX);
+        end = processNode(fields, routetype, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
 
-        SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, lineName, routetype, color);
-        segments.add(segment);
+        processSegment(start, end, duration, distance, lineName, routetype, color);
 
         String lineKey = generateLineKey(lineName, routetype, color);
         lines.putIfAbsent(lineKey, start.getName());
@@ -90,8 +89,30 @@ public class Parser {
         String longLat = fields[indexLonglat].trim();
         double latitude = Double.parseDouble(longLat.split(",")[0]);
         double longitude = Double.parseDouble(longLat.split(",")[1]);
-    
-        return new NodeDTO(stopName, latitude, longitude, routetype);
+
+        NodeDTO node = findNodeInSet(stopName, latitude, longitude, routetype);
+        if (node != null) return node;
+
+        node = new NodeDTO(stopName, latitude, longitude, routetype);
+        stations.add(node);
+
+        return node;
+    }
+
+    private NodeDTO findNodeInSet(final String name, final double latitude, final double longitude, final String routetype) {
+        for (NodeDTO node: stations) {
+            if (node.getName().equals(name) && node.getLatitude() == latitude 
+            && node.getLongitude() == longitude && node.getRouteType().equals(routetype)) {
+                return node;
+            }
+        }
+        return null;
+    }
+
+    private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, 
+    final double distance, final String lineName, final String routetype, final String color) {
+        SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, lineName, routetype, color);
+        segments.add(segment);
     }
 
     public static String generateLineKey(final String name, final String routetype, final String color) {

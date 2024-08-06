@@ -1,5 +1,7 @@
 package fr.u_paris.gla.crazytrip.dtos;
 
+import java.util.Objects;
+
 import fr.u_paris.gla.crazytrip.model.Coordinates;
 
 public class NodeDTO {
@@ -31,6 +33,10 @@ public class NodeDTO {
         return routetype;
     }
 
+    public String generateKey() {
+        return String.format("%s@%,.5f@%,.5f@%s", name, latitude, longitude, routetype);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -53,7 +59,7 @@ public class NodeDTO {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Objects.hash(name, latitude, longitude, routetype);
     }
 
     @Override
