@@ -43,7 +43,7 @@ public class NodeDTO {
         if (obj == null || getClass() != obj.getClass()) return false;
         NodeDTO nodeDTO = (NodeDTO) obj;
 
-        final double DISTANCE_THRESHOLD = 0.3;
+        final double DISTANCE_THRESHOLD = 0.5;
 
         return name.equalsIgnoreCase(nodeDTO.name)
             && routetype.equalsIgnoreCase(routetype)

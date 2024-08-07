@@ -25,7 +25,7 @@ public class Parser {
     private static final int DURATION_INDEX = 8;
     private static final int DISTANCE_INDEX = 9;
 
-    private static final Map<String, NodeDTO> stations = new HashMap<>();
+    private static final Set<NodeDTO> stations = new HashSet<>();
     private static final Set<SegmentTransportDTO> segments = new HashSet<>();
     private static final Map<String, String> lines = new HashMap<>();
     
@@ -77,7 +77,7 @@ public class Parser {
         processSegment(start, end, duration, distance, lineName, routetype, color);
 
         String lineKey = generateLineKey(lineName, routetype, color);
-        lines.putIfAbsent(lineKey, start.getName());
+        lines.putIfAbsent(lineKey, start.generateKey());
     }
 
     private NodeDTO processNode(String[] fields, final String routetype, final int indexStop, final int indexLonglat) {
@@ -86,19 +86,22 @@ public class Parser {
         double latitude = Double.parseDouble(longLat.split(",")[0]);
         double longitude = Double.parseDouble(longLat.split(",")[1]);
 
-        NodeDTO node = findNodeInMap(stopName, latitude, longitude, routetype);
-        String nodeKey = node.generateKey();
-        stations.putIfAbsent(nodeKey, node);
+        NodeDTO node = findNodeInSet(stopName, latitude, longitude, routetype);
+        stations.add(node);
 
         return node;
     }
 
-    private NodeDTO findNodeInMap(final String name, final double latitude, final double longitude, final String routetype) {
-        NodeDTO newNode = new NodeDTO(name, latitude, longitude, routetype);
-        String nodeKey = newNode.generateKey();
-        if (stations.containsKey(nodeKey)) return stations.get(nodeKey);
-
-        return newNode;
+    private NodeDTO findNodeInSet(final String name, final double latitude, final double longitude, final String routetype) {
+        NodeDTO node = new NodeDTO(name, latitude, longitude, routetype);
+        if (stations.contains(node)) {
+            for (NodeDTO station : stations) {
+                if (station.equals(node)) {
+                    return station;
+                }
+            }
+        }
+        return node;
     }
 
     private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, 
@@ -111,7 +114,7 @@ public class Parser {
         return String.format("%s@%s@%s", name, routetype, color);
     }
 
-    public static Map<String, NodeDTO> getStations() {
+    public static Set<NodeDTO> getStations() {
         return stations;
     }
 

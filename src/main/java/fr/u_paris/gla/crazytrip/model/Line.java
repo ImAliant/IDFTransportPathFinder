@@ -18,6 +18,13 @@ public abstract class Line {
         this.color = color;
     }
 
+    public Station getStationByName(String name) {
+        for (Station station: stations) {
+            if (station.getName().equals(name)) return station;
+        }
+        return null;
+    }
+
     public Set<Station> getStations() {
         return stations;
     }

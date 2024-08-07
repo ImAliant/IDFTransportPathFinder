@@ -44,10 +44,6 @@ public class Network {
         return lines.get(key);
     }
 
-    public Station getStationByName(String name) {
-        return this.stations.get(name);
-    }
-
     public SegmentTransport getSegmentLine(Node start, Node end) {
         Set<Segment> segments = this.graph.get(start);
         if (segments == null) {
@@ -81,7 +77,7 @@ public class Network {
             return;
         }
 
-        Map<String, NodeDTO> stationsDTO = Parser.getStations();
+        Set<NodeDTO> stationsDTO = Parser.getStations();
         Map<String, String> linesTerminus = Parser.getLines();
         convertStationsDTOtoStations(stationsDTO);
 
@@ -90,7 +86,6 @@ public class Network {
 
         addSegmentToLinesAndGraph(segmentsDTO, transportLines);
         addLines(transportLines, linesTerminus);
-        //addAllWalkSegments(getAllStations());
     }
 
     private void addSegmentToLinesAndGraph(Set<SegmentTransportDTO> segmentsTransportDTO, Map<String, Set<Station>> transportLines) {
@@ -120,6 +115,7 @@ public class Network {
     private void addLines(Map<String, Set<Station>> lines, Map<String, String> linesTerminus) {
         lines.forEach((key, value) -> {
             Station terminus = this.stations.get(linesTerminus.get(key));
+            if (terminus == null) throw new NullPointerException("The terminus can't be null");
             
             String[] parts = key.split("@");
             String lineName = parts[0];
@@ -133,7 +129,7 @@ public class Network {
         });
     }
 
-    private void addAllWalkSegments(Set<Station> stations) {
+    /* private void addAllWalkSegments(Set<Station> stations) {
         stations.forEach(station -> {
             Station start = this.stations.get(station.getName());
             stations.forEach(station2 -> {
@@ -143,13 +139,13 @@ public class Network {
                 } 
             });
         });
-    }
+    } */
 
     public Map<String, Station> getStations() {
-        return stations;
+        return Collections.unmodifiableMap(stations);
     }
 
-    public Map<String, Line> getAllLines() {
+    public Map<String, Line> getLines() {
         return Collections.unmodifiableMap(lines);
     }
 
@@ -159,6 +155,10 @@ public class Network {
  
     public Set<Station> getAllStations() {
         return getStations().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
+    }
+
+    public Set<Line> getAllLines() {
+        return getLines().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
  
     public void addSegmentLine(Node start, Node end, double distance, double duration, String line) {
@@ -179,9 +179,10 @@ public class Network {
         }
     }
 
-    private void convertStationsDTOtoStations(Map<String, NodeDTO> stationsDTO) {
-        stationsDTO.forEach((key, stationDTO) -> {
+    private void convertStationsDTOtoStations(Set<NodeDTO> stationsDTO) {
+        stationsDTO.forEach(stationDTO -> {
             Station station = this.stationDTOtoStation(stationDTO);
+            String key = stationDTO.generateKey();
             this.stations.put(key, station);
         });
     }
