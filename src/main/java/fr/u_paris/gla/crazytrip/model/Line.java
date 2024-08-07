@@ -45,7 +45,7 @@ public abstract class Line {
 
     @Override
     public String toString() {
-        return String.format("Line{%s, %s, %s}", name, terminusStation, getLineType());
+        return String.format("Line{%s, %s, %s}", name, terminusStation.getName(), getLineType());
     }
 
     public void printLine() {

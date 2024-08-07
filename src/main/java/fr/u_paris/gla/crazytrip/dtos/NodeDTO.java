@@ -3,6 +3,7 @@ package fr.u_paris.gla.crazytrip.dtos;
 import java.util.Objects;
 
 import fr.u_paris.gla.crazytrip.model.Coordinates;
+import fr.u_paris.gla.crazytrip.model.key.NodeKey;
 
 public class NodeDTO {
     private final String name;
@@ -33,8 +34,8 @@ public class NodeDTO {
         return routetype;
     }
 
-    public String generateKey() {
-        return String.format("%s@%,.5f@%,.5f@%s", name, latitude, longitude, routetype);
+    public NodeKey generateKey() {
+        return new NodeKey(name, latitude, longitude, routetype);
     }
 
     @Override

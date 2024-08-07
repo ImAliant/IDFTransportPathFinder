@@ -12,6 +12,9 @@ import java.util.Set;
 import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
 import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
 import fr.u_paris.gla.crazytrip.io.TimeFormat;
+import fr.u_paris.gla.crazytrip.model.key.LineKey;
+import fr.u_paris.gla.crazytrip.model.key.NodeKey;
+import fr.u_paris.gla.crazytrip.model.line.RouteType;
 
 public class Parser {
     // CSV file format
@@ -25,9 +28,9 @@ public class Parser {
     private static final int DURATION_INDEX = 8;
     private static final int DISTANCE_INDEX = 9;
 
-    private static final Set<NodeDTO> stations = new HashSet<>();
+    private static final Map<NodeKey, NodeDTO> stations = new HashMap<>();
     private static final Set<SegmentTransportDTO> segments = new HashSet<>();
-    private static final Map<String, String> lines = new HashMap<>();
+    private static final Map<LineKey, NodeKey> lines = new HashMap<>();
     
     private static Parser instance = null;
 
@@ -76,7 +79,7 @@ public class Parser {
 
         processSegment(start, end, duration, distance, lineName, routetype, color);
 
-        String lineKey = generateLineKey(lineName, routetype, color);
+        LineKey lineKey = new LineKey(lineName, RouteType.fromString(routetype), color);
         lines.putIfAbsent(lineKey, start.generateKey());
     }
 
@@ -86,22 +89,15 @@ public class Parser {
         double latitude = Double.parseDouble(longLat.split(",")[0]);
         double longitude = Double.parseDouble(longLat.split(",")[1]);
 
-        NodeDTO node = findNodeInSet(stopName, latitude, longitude, routetype);
-        stations.add(node);
+        NodeKey key = new NodeKey(stopName, latitude, longitude, routetype);
+        NodeDTO node = findNodeInMap(key, stopName, latitude, longitude, routetype);
+        stations.putIfAbsent(key, node);
 
         return node;
     }
 
-    private NodeDTO findNodeInSet(final String name, final double latitude, final double longitude, final String routetype) {
-        NodeDTO node = new NodeDTO(name, latitude, longitude, routetype);
-        if (stations.contains(node)) {
-            for (NodeDTO station : stations) {
-                if (station.equals(node)) {
-                    return station;
-                }
-            }
-        }
-        return node;
+    private NodeDTO findNodeInMap(final NodeKey nodeKey, final String name, final double latitude, final double longitude, final String routetype) {
+        return stations.getOrDefault(nodeKey, new NodeDTO(name, latitude, longitude, routetype));
     }
 
     private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, 
@@ -110,11 +106,7 @@ public class Parser {
         segments.add(segment);
     }
 
-    public static String generateLineKey(final String name, final String routetype, final String color) {
-        return String.format("%s@%s@%s", name, routetype, color);
-    }
-
-    public static Set<NodeDTO> getStations() {
+    public static Map<NodeKey, NodeDTO> getStations() {
         return stations;
     }
 
@@ -122,7 +114,7 @@ public class Parser {
         return segments;
     }
 
-    public static Map<String, String> getLines() {
+    public static Map<LineKey, NodeKey> getLines() {
         return lines;
     }
 

@@ -14,6 +14,8 @@ import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
 import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
 import fr.u_paris.gla.crazytrip.idfm.IDFMNetworkExtractor;
 import fr.u_paris.gla.crazytrip.model.factory.LineFactory;
+import fr.u_paris.gla.crazytrip.model.key.LineKey;
+import fr.u_paris.gla.crazytrip.model.key.NodeKey;
 import fr.u_paris.gla.crazytrip.model.line.RouteType;
 import fr.u_paris.gla.crazytrip.parser.Parser;
 
@@ -21,8 +23,8 @@ public class Network {
     private static Network instance = null;
     
     private final Map<Node, Set<Segment>> graph;
-    private final Map<String, Line> lines;
-    private final Map<String, Station> stations;
+    private final Map<LineKey, Line> lines;
+    private final Map<NodeKey, Station> stations;
 
     private Network() {
         this.graph = new HashMap<>();
@@ -39,9 +41,8 @@ public class Network {
         return instance;
     }
 
-    public Line getLine(String name, RouteType routetype) {
-        String key = generateLineKey(name, routetype);
-        return lines.get(key);
+    public Line getLine(String name, RouteType routeType, String color) {
+        return lines.get(new LineKey(name, routeType, color));
     }
 
     public SegmentTransport getSegmentLine(Node start, Node end) {
@@ -77,27 +78,27 @@ public class Network {
             return;
         }
 
-        Set<NodeDTO> stationsDTO = Parser.getStations();
-        Map<String, String> linesTerminus = Parser.getLines();
+        Map<NodeKey, NodeDTO> stationsDTO = Parser.getStations();
+        Map<LineKey, NodeKey> linesTerminus = Parser.getLines();
         convertStationsDTOtoStations(stationsDTO);
 
         Set<SegmentTransportDTO> segmentsDTO = Parser.getSegments();
-        Map<String, Set<Station>> transportLines = new HashMap<>();
+        Map<LineKey, Set<Station>> transportLines = new HashMap<>();
 
         addSegmentToLinesAndGraph(segmentsDTO, transportLines);
         addLines(transportLines, linesTerminus);
     }
 
-    private void addSegmentToLinesAndGraph(Set<SegmentTransportDTO> segmentsTransportDTO, Map<String, Set<Station>> transportLines) {
+    private void addSegmentToLinesAndGraph(Set<SegmentTransportDTO> segmentsTransportDTO, Map<LineKey, Set<Station>> transportLines) {
         segmentsTransportDTO.forEach(segment -> {
-            String startKey = segment.getStart().generateKey();
-            String endKey = segment.getEnd().generateKey();
+            NodeKey startKey = segment.getStart().generateKey();
+            NodeKey endKey = segment.getEnd().generateKey();
 
             Station start = this.stations.get(startKey);
             Station end = this.stations.get(endKey);
             if (start == null || end == null) throw new NullPointerException("The start or end can't be null");
 
-            String key = Parser.generateLineKey(segment.getLine(), segment.getRouteType(), segment.getColor());
+            LineKey key = new LineKey(segment.getLine(), RouteType.fromString(segment.getRouteType()), segment.getColor());
             
             if (transportLines.containsKey(key)) {
                 transportLines.get(key).add(start);
@@ -112,20 +113,14 @@ public class Network {
         });
     }
 
-    private void addLines(Map<String, Set<Station>> lines, Map<String, String> linesTerminus) {
+    private void addLines(Map<LineKey, Set<Station>> lines, Map<LineKey, NodeKey> linesTerminus) {
         lines.forEach((key, value) -> {
             Station terminus = this.stations.get(linesTerminus.get(key));
             if (terminus == null) throw new NullPointerException("The terminus can't be null");
             
-            String[] parts = key.split("@");
-            String lineName = parts[0];
-            String routetype = parts[1];
-            String color = parts[2];
+            Line line = LineFactory.createLine(key.getName(), value, terminus, key.getRouteType(), key.getColor());
 
-            Line line = LineFactory.createLine(lineName, value, terminus, RouteType.fromString(routetype), color);
-
-            String newKey = generateLineKey(line.getName(), line.getLineType());
-            this.lines.putIfAbsent(newKey, line);
+            this.lines.putIfAbsent(key, line);
         });
     }
 
@@ -141,11 +136,11 @@ public class Network {
         });
     } */
 
-    public Map<String, Station> getStations() {
+    public Map<NodeKey, Station> getStations() {
         return Collections.unmodifiableMap(stations);
     }
 
-    public Map<String, Line> getLines() {
+    public Map<LineKey, Line> getLines() {
         return Collections.unmodifiableMap(lines);
     }
 
@@ -179,19 +174,14 @@ public class Network {
         }
     }
 
-    private void convertStationsDTOtoStations(Set<NodeDTO> stationsDTO) {
-        stationsDTO.forEach(stationDTO -> {
+    private void convertStationsDTOtoStations(Map<NodeKey, NodeDTO> stationsDTO) {
+        stationsDTO.forEach((key, stationDTO) -> {
             Station station = this.stationDTOtoStation(stationDTO);
-            String key = stationDTO.generateKey();
             this.stations.put(key, station);
         });
     }
 
     private Station stationDTOtoStation(NodeDTO stationDTO) {
         return new Station(stationDTO.getName(), stationDTO.getLatitude(), stationDTO.getLongitude(), stationDTO.getRouteType());
-    }
-
-    public String generateLineKey(String name, RouteType routetype) {
-        return String.format("%s-%s", name, routetype);
     }
 }
