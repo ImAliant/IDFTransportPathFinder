@@ -3,17 +3,47 @@ package fr.u_paris.gla.crazytrip;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
+
+import fr.u_paris.gla.crazytrip.algorithm.DijkstraPathFinder;
+import fr.u_paris.gla.crazytrip.model.Coordinates;
+import fr.u_paris.gla.crazytrip.model.Network;
+import fr.u_paris.gla.crazytrip.model.Segment;
+import fr.u_paris.gla.crazytrip.model.Station;
+import fr.u_paris.gla.crazytrip.utils.NetworkBackendHandler;
 
 public class App {
 	private static final String UNSPECIFIED = "Unspecified"; //$NON-NLS-1$
 	private static final String INFOCMD = "--info";
 	private static final String GUICMD = "--gui";
 
-	public static void main(String[] args) {
-		if (args.length == 0) return;
+	public static void main(String[] args) throws IOException {
+		//NetworkBackendHandler.extraction();
+		Network network = Network.getInstance();
+
+		Station start = network.getNearestStation(new Coordinates(48.857874, 2.399755));
+		Station end = network.getNearestStation(new Coordinates(48.853081, 2.370830));
+
+		System.out.println("Start: " + start);
+		System.out.println("End: " + end);
+
+		Set<Segment> segments1 = network.getSegments(start);
+		Set<Segment> segments2 = network.getSegments(end);
+
+		/* System.out.println("Segments from start:");
+		segments1.forEach(System.out::println);
+		System.out.println("Segments from end:");
+		segments2.forEach(System.out::println); */
+
+		List<Segment> path = DijkstraPathFinder.getSegmentsFromItinerary(start, end);
+
+		path.forEach(System.out::println);
+
+		/* if (args.length == 0) return;
 		
-		processArgs(args);
+		processArgs(args); */
 	}
 
 	private static void processArgs(String[] args) {

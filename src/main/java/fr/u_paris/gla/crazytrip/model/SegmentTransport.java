@@ -2,24 +2,26 @@ package fr.u_paris.gla.crazytrip.model;
 
 import java.util.Objects;
 
-public final class SegmentTransport extends Segment {
-    private final String line;
+import fr.u_paris.gla.crazytrip.model.key.LineKey;
 
-    public SegmentTransport(Node n1, Node n2, double distance, double duration, String line) {
+public final class SegmentTransport extends Segment {
+    private final LineKey lineKey;
+
+    public SegmentTransport(Node n1, Node n2, double distance, double duration, LineKey lineKey) {
         super(n1, n2, distance, duration);
-        if (line == null || line.isBlank())
+        if (lineKey == null)
             throw new IllegalArgumentException("Line cannot be null or blank");
-        this.line = line;
+        this.lineKey = lineKey;
     }
 
-    public String getLine() {
-        return line;
+    public LineKey getLineKey() {
+        return lineKey;
     }
 
     @Override
     public String toString() {
-        return String.format("SegmentLine{%s, %s, %s, %s, %s}", 
-            startPoint, endPoint, distance, duration, line);
+        return String.format("SegmentLine{%s, %s, %s, %s}", 
+            startPoint, endPoint, distance, duration);
     }
 
     @Override
@@ -28,11 +30,11 @@ public final class SegmentTransport extends Segment {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         SegmentTransport segment = (SegmentTransport) o;
-        return line.equals(segment.line);
+        return super.equals(o) && lineKey.equals(segment.lineKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), line);
+        return Objects.hash(super.hashCode(), lineKey);
     }
 }
