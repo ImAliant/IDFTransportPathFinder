@@ -45,21 +45,16 @@ public class Network {
         return lines.get(new LineKey(name, routeType, color));
     }
 
-    public SegmentTransport getSegmentLine(Node start, Node end) {
-        Set<Segment> segments = this.graph.get(start);
-        if (segments == null) {
-            return null;
-        }
-        for (Segment segment : segments) {
-            if (segment instanceof SegmentTransport && segment.getEndPoint().equals(end)) {
-                return (SegmentTransport) segment;
-            }
-        }
-        return null;
+    public Set<Segment> getSegments(Node node) {
+        return graph.getOrDefault(node, Collections.emptySet());
     }
 
     public Set<Segment> getSegmentsLineOfANode(Node node) {
         return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
+    }
+
+    public Segment getSegment(Node start, Node end) {
+        return graph.get(start).stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
     }
 
     public List<Line> getAllLinesSpecificType(RouteType routeType) {
@@ -109,7 +104,7 @@ public class Network {
                 set.add(end);
                 transportLines.put(key, set);
             }
-            this.addSegmentLine(start, end, segment.getDistance(), segment.getDuration(), segment.getLine());
+            this.addSegmentLine(start, end, segment.getDistance(), segment.getDuration(), key);
         });
     }
 
@@ -122,6 +117,14 @@ public class Network {
 
             this.lines.putIfAbsent(key, line);
         });
+    }
+
+    public Station getNearestStation(Coordinates coordinates) {
+        return this.stations.values().stream().min((station1, station2) -> {
+            double distance1 = station1.getCoordinates().distanceTo(coordinates);
+            double distance2 = station2.getCoordinates().distanceTo(coordinates);
+            return Double.compare(distance1, distance2);
+        }).orElse(null);
     }
 
     /* private void addAllWalkSegments(Set<Station> stations) {
@@ -155,9 +158,20 @@ public class Network {
     public Set<Line> getAllLines() {
         return getLines().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
+
+    public Set<Node> getNodes() {
+        return graph.keySet();
+    }
+
+    public Line getLineFromSegment(Segment segment) {
+        if (!(segment instanceof SegmentTransport)) return null;
+
+        LineKey key = ((SegmentTransport) segment).getLineKey();
+        return lines.get(key);
+    }
  
-    public void addSegmentLine(Node start, Node end, double distance, double duration, String line) {
-        addSegment(new SegmentTransport(start, end, distance, duration, line));
+    public void addSegmentLine(Node start, Node end, double distance, double duration, LineKey lineKey) {
+        addSegment(new SegmentTransport(start, end, distance, duration, lineKey));
     }
 
     public void addSegmentWalk(Node start, Node end, double distance) {
