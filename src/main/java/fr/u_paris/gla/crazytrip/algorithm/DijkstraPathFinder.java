@@ -25,8 +25,8 @@ public class DijkstraPathFinder {
         if (end == null) throw new IllegalArgumentException("End node is null");
 
         Map<Node, Boolean> visited = new HashMap<>();
-        PriorityQueue<DijkstraInfo> queue = new PriorityQueue<>(Comparator.comparingDouble(DijkstraInfo::getWeight)
-        .thenComparing(n -> n.getLineChanges()));
+        PriorityQueue<DijkstraInfo> queue = new PriorityQueue<>(Comparator.comparing(DijkstraInfo::getLineChanges)
+            .thenComparingDouble(DijkstraInfo::getWeight));
         
         initialize(start, visited, queue);
 
@@ -53,7 +53,6 @@ public class DijkstraPathFinder {
         itinerary.add(start, new BestWeight(start, 0, null));
 
         while (!queue.isEmpty()) {
-            System.out.println("DEBUG");
             DijkstraInfo current = queue.poll();
             Node currentNode = current.getNode();
             

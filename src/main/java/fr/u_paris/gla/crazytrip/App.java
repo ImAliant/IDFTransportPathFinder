@@ -12,6 +12,7 @@ import fr.u_paris.gla.crazytrip.model.Coordinates;
 import fr.u_paris.gla.crazytrip.model.Network;
 import fr.u_paris.gla.crazytrip.model.Segment;
 import fr.u_paris.gla.crazytrip.model.Station;
+import fr.u_paris.gla.crazytrip.utils.ItineraryPrinter;
 import fr.u_paris.gla.crazytrip.utils.NetworkBackendHandler;
 
 public class App {
@@ -29,17 +30,10 @@ public class App {
 		System.out.println("Start: " + start);
 		System.out.println("End: " + end);
 
-		Set<Segment> segments1 = network.getSegments(start);
-		Set<Segment> segments2 = network.getSegments(end);
-
-		/* System.out.println("Segments from start:");
-		segments1.forEach(System.out::println);
-		System.out.println("Segments from end:");
-		segments2.forEach(System.out::println); */
-
 		List<Segment> path = DijkstraPathFinder.getSegmentsFromItinerary(start, end);
 
-		path.forEach(System.out::println);
+		ItineraryPrinter printer = new ItineraryPrinter(path);
+		printer.print();
 
 		/* if (args.length == 0) return;
 		
