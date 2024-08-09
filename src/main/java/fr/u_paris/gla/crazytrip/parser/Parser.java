@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -82,31 +83,15 @@ public class Parser {
 
         LineKey lineKey = new LineKey(lineName, RouteType.fromString(routetype), color);
 
-        start = processNode(fields, lineKey, routetype, STOP_NAME_INDEX, LONGLAT_INDEX);
-        end = processNode(fields, lineKey, routetype, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
+        start = processNode(fields, lineKey, STOP_NAME_INDEX, LONGLAT_INDEX);
+        end = processNode(fields, lineKey, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
 
-        processSegment(start, end, duration, distance, lineName, routetype, color);
+        processSegment(start, end, duration, distance, lineKey);
 
         lines.putIfAbsent(lineKey, start.generateKey());
     }
 
-    private NodeDTO processNode(String[] fields, final LineKey key, final String routetype, final int indexStop, final int indexLonglat) {
-        // SOLUTION 1
-        /* String stopName = fields[indexStop].trim();
-        NodeKey nodeKey = new NodeKey(stopName, key);
-
-        if (!stations.containsKey(nodeKey)) {
-            String longLat = fields[indexLonglat].trim();
-            double latitude = Double.parseDouble(longLat.split(",")[0]);
-            double longitude = Double.parseDouble(longLat.split(",")[1]);
-
-            NodeDTO node = new NodeDTO(stopName, latitude, longitude, routetype, key);
-            stations.put(nodeKey, node);
-        }
-
-        return stations.get(nodeKey); */
-
-        // SOLUTION 2
+    private NodeDTO processNode(String[] fields, final LineKey key, final int indexStop, final int indexLonglat) {
         String stopName = fields[indexStop].trim();
         String longLat = fields[indexLonglat].trim();
         double latitude = Double.parseDouble(longLat.split(",")[0]);
@@ -114,18 +99,13 @@ public class Parser {
 
         NodeKey nodeKey = new NodeKey(stopName, key);
 
-        stations.putIfAbsent(nodeKey, new NodeDTO(stopName, latitude, longitude, routetype, key));
+        stations.putIfAbsent(nodeKey, new NodeDTO(stopName, latitude, longitude, key));
 
         return stations.get(nodeKey);
     }
 
-    /* private NodeDTO findNodeInMap(final NodeKey nodeKey, final String name, final double latitude, final double longitude, final String routetype) {
-        return stations.getOrDefault(nodeKey, new NodeDTO(name, latitude, longitude, routetype));
-    } */
-
-    private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, 
-    final double distance, final String lineName, final String routetype, final String color) {
-        SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, lineName, routetype, color);
+    private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, final double distance, final LineKey linekey) {
+        SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, linekey);
         segments.add(segment);
     }
 
@@ -151,4 +131,10 @@ public class Parser {
         }
         return fields;
     }
+
+    //
+    public List<NodeDTO> searchNode(String name) {
+        return stations.values().stream().filter(node -> node.getName().contains(name)).toList();
+    }
+    //
 }

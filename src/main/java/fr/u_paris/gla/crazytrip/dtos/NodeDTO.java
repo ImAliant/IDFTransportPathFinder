@@ -2,7 +2,6 @@ package fr.u_paris.gla.crazytrip.dtos;
 
 import java.util.Objects;
 
-import fr.u_paris.gla.crazytrip.model.Coordinates;
 import fr.u_paris.gla.crazytrip.model.key.LineKey;
 import fr.u_paris.gla.crazytrip.model.key.NodeKey;
 
@@ -10,14 +9,12 @@ public class NodeDTO {
     private final String name;
     private final double latitude;
     private final double longitude;
-    private final String routetype;
     private final LineKey lineKey;
 
-    public NodeDTO(String name, double latitude, double longitude, String routetype, LineKey lineKey) {
+    public NodeDTO(String name, double latitude, double longitude, LineKey lineKey) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.routetype = routetype;
         this.lineKey = lineKey;
     }
 
@@ -33,8 +30,8 @@ public class NodeDTO {
         return longitude;
     }
 
-    public String getRouteType() {
-        return routetype;
+    public LineKey getLineKey() {
+        return lineKey;
     }
 
     public NodeKey generateKey() {
@@ -47,23 +44,15 @@ public class NodeDTO {
         if (obj == null || getClass() != obj.getClass()) return false;
         NodeDTO nodeDTO = (NodeDTO) obj;
 
-        final double DISTANCE_THRESHOLD = 0.5;
-
         return name.equalsIgnoreCase(nodeDTO.name)
-            && routetype.equalsIgnoreCase(nodeDTO.routetype)
-            && distanceTo(nodeDTO) <= DISTANCE_THRESHOLD;
-    }
-
-    private double distanceTo(NodeDTO nodeDTO) {
-        Coordinates current = new Coordinates(latitude, longitude);
-        Coordinates other = new Coordinates(nodeDTO.latitude, nodeDTO.longitude);
-
-        return current.distanceTo(other);
+            && Double.compare(latitude, nodeDTO.latitude) == 0
+            && Double.compare(longitude, nodeDTO.longitude) == 0
+            && lineKey.equals(nodeDTO.lineKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, latitude, longitude, routetype);
+        return Objects.hash(name, latitude, longitude, lineKey);
     }
 
     @Override
@@ -72,6 +61,6 @@ public class NodeDTO {
                 "name='" + name + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                '}';
-    }
+                '}' + " " + lineKey.getName() + " " + lineKey.getRouteType();
+    } 
 }

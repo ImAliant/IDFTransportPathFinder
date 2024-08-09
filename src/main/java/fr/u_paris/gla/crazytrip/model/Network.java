@@ -69,7 +69,7 @@ public class Network {
             Station end = this.stations.get(endKey);
             if (start == null || end == null) throw new NullPointerException("The start or end can't be null");
 
-            LineKey key = new LineKey(segment.getLine(), RouteType.fromString(segment.getRouteType()), segment.getColor());
+            LineKey key = segment.getLineKey();
             
             if (transportLines.containsKey(key)) {
                 transportLines.get(key).add(start);
@@ -127,17 +127,13 @@ public class Network {
 
     private void convertStationsDTOtoStations(Map<NodeKey, NodeDTO> stationsDTO) {
         stationsDTO.forEach((key, stationDTO) -> {
-            if (stationDTO.getName().equals("Nation")) {
-                System.out.println(stationDTO);
-            }
-            
             Station station = this.stationDTOtoStation(stationDTO);
             this.stations.put(key, station);
         });
     }
 
     private Station stationDTOtoStation(NodeDTO stationDTO) {
-        return new Station(stationDTO.getName(), stationDTO.getLatitude(), stationDTO.getLongitude(), stationDTO.getRouteType());
+        return new Station(stationDTO.getName(), stationDTO.getLatitude(), stationDTO.getLongitude(), stationDTO.getLineKey()/* stationDTO.getRouteType() */);
     }
 
     public Station getNearestStation(Coordinates coordinates) {

@@ -2,25 +2,22 @@ package fr.u_paris.gla.crazytrip.dtos;
 
 import java.util.Objects;
 
+import fr.u_paris.gla.crazytrip.model.key.LineKey;
+
 public class SegmentTransportDTO {
     private final NodeDTO start;
     private final NodeDTO end;
     private final double duration;
     private final double distance;
     
-    // TODO: Change to LineKey
-    private final String line;
-    private final String routetype;
-    private final String color;
+    private final LineKey linekey;
 
-    public SegmentTransportDTO(NodeDTO start, NodeDTO end, double duration, double distance, String line, String routetype, String color) {
+    public SegmentTransportDTO(NodeDTO start, NodeDTO end, double duration, double distance, LineKey linekey) {
         this.start = start;
         this.end = end;
         this.duration = duration;
         this.distance = distance;
-        this.line = line;
-        this.routetype = routetype;
-        this.color = color;
+        this.linekey = linekey;
     }
 
     public NodeDTO getStart() {
@@ -39,29 +36,13 @@ public class SegmentTransportDTO {
         return distance;
     }
 
-    public String getRouteType() {
-        return routetype;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public String getLine() {
-        return line;
+    public LineKey getLineKey() {
+        return linekey;
     }
 
     @Override
     public String toString() {
-        return "SegmentTransportDTO{" +
-                "start=" + start +
-                ", end=" + end +
-                ", duration=" + duration +
-                ", distance=" + distance +
-                ", line='" + line + '\'' +
-                ", routetype='" + routetype + '\'' +
-                ", color='" + color + '\'' +
-                '}';
+        return String.format("SegmentTransportDTO{start=%s, end=%s, duration=%f, distance=%f, line=%s}", start, end, duration, distance, linekey);
     }
 
     @Override
@@ -69,11 +50,11 @@ public class SegmentTransportDTO {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         SegmentTransportDTO that = (SegmentTransportDTO) obj;
-        return start.equals(that.start) && end.equals(that.end) && line.equals(that.line);
+        return start.equals(that.start) && end.equals(that.end) && linekey.equals(that.linekey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(start, end, line);
+        return Objects.hash(start, end, linekey);
     }
 }
