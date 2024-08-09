@@ -3,6 +3,7 @@ package fr.u_paris.gla.crazytrip.dtos;
 import java.util.Objects;
 
 import fr.u_paris.gla.crazytrip.model.Coordinates;
+import fr.u_paris.gla.crazytrip.model.key.LineKey;
 import fr.u_paris.gla.crazytrip.model.key.NodeKey;
 
 public class NodeDTO {
@@ -10,12 +11,14 @@ public class NodeDTO {
     private final double latitude;
     private final double longitude;
     private final String routetype;
+    private final LineKey lineKey;
 
-    public NodeDTO(String name, double latitude, double longitude, String routetype) {
+    public NodeDTO(String name, double latitude, double longitude, String routetype, LineKey lineKey) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.routetype = routetype;
+        this.lineKey = lineKey;
     }
 
     public String getName() {
@@ -35,7 +38,7 @@ public class NodeDTO {
     }
 
     public NodeKey generateKey() {
-        return new NodeKey(name, latitude, longitude, routetype);
+        return new NodeKey(name, lineKey);
     }
 
     @Override
@@ -47,7 +50,7 @@ public class NodeDTO {
         final double DISTANCE_THRESHOLD = 0.5;
 
         return name.equalsIgnoreCase(nodeDTO.name)
-            && routetype.equalsIgnoreCase(routetype)
+            && routetype.equalsIgnoreCase(nodeDTO.routetype)
             && distanceTo(nodeDTO) <= DISTANCE_THRESHOLD;
     }
 

@@ -41,30 +41,6 @@ public class Network {
         return instance;
     }
 
-    public Line getLine(String name, RouteType routeType, String color) {
-        return lines.get(new LineKey(name, routeType, color));
-    }
-
-    public Set<Segment> getSegments(Node node) {
-        return graph.getOrDefault(node, Collections.emptySet());
-    }
-
-    public Set<Segment> getSegmentsLineOfANode(Node node) {
-        return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
-    }
-
-    public Segment getSegment(Node start, Node end) {
-        return graph.get(start).stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
-    }
-
-    public List<Line> getAllLinesSpecificType(RouteType routeType) {
-        ArrayList<Line> res = new ArrayList<>();
-        lines.forEach((key, value) -> {
-            if (value.getLineType().equals(routeType)) res.add(value);
-        });
-        return res;
-    }
-
     private void initializeFields() {
         try {
             Parser.getInstance().parse(IDFMNetworkExtractor.PATH_TO_DATA);
@@ -119,14 +95,6 @@ public class Network {
         });
     }
 
-    public Station getNearestStation(Coordinates coordinates) {
-        return this.stations.values().stream().min((station1, station2) -> {
-            double distance1 = station1.getCoordinates().distanceTo(coordinates);
-            double distance2 = station2.getCoordinates().distanceTo(coordinates);
-            return Double.compare(distance1, distance2);
-        }).orElse(null);
-    }
-
     /* private void addAllWalkSegments(Set<Station> stations) {
         stations.forEach(station -> {
             Station start = this.stations.get(station.getName());
@@ -138,6 +106,79 @@ public class Network {
             });
         });
     } */
+
+    public void addSegmentLine(Node start, Node end, double distance, double duration, LineKey lineKey) {
+        addSegment(new SegmentTransport(start, end, distance, duration, lineKey));
+    }
+
+    public void addSegmentWalk(Node start, Node end, double distance) {
+        addSegment(new SegmentWalk(start, end, distance));
+    }
+
+    private void addSegment(Segment segment) {
+        if (graph.containsKey(segment.getStartPoint())) {
+            graph.get(segment.getStartPoint()).add(segment);
+        } else {
+            Set<Segment> set = new HashSet<>();
+            set.add(segment);
+            graph.put(segment.getStartPoint(), set);
+        }
+    }
+
+    private void convertStationsDTOtoStations(Map<NodeKey, NodeDTO> stationsDTO) {
+        stationsDTO.forEach((key, stationDTO) -> {
+            if (stationDTO.getName().equals("Nation")) {
+                System.out.println(stationDTO);
+            }
+            
+            Station station = this.stationDTOtoStation(stationDTO);
+            this.stations.put(key, station);
+        });
+    }
+
+    private Station stationDTOtoStation(NodeDTO stationDTO) {
+        return new Station(stationDTO.getName(), stationDTO.getLatitude(), stationDTO.getLongitude(), stationDTO.getRouteType());
+    }
+
+    public Station getNearestStation(Coordinates coordinates) {
+        return this.stations.values().stream().min((station1, station2) -> {
+            double distance1 = station1.getCoordinates().distanceTo(coordinates);
+            double distance2 = station2.getCoordinates().distanceTo(coordinates);
+            return Double.compare(distance1, distance2);
+        }).orElse(null);
+    }
+
+    public Line getLine(String name, RouteType routeType, String color) {
+        return lines.get(new LineKey(name, routeType, color));
+    }
+
+    public Set<Segment> getSegments(Node node) {
+        return graph.getOrDefault(node, Collections.emptySet());
+    }
+
+    public Set<Segment> getSegmentsLineOfANode(Node node) {
+        return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
+    }
+
+    public Segment getSegment(Node start, Node end) {
+        return graph.get(start).stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
+    }
+
+    public List<Line> getAllLinesSpecificType(RouteType routeType) {
+        ArrayList<Line> res = new ArrayList<>();
+        lines.forEach((key, value) -> {
+            if (value.getLineType().equals(routeType)) res.add(value);
+        });
+        return res;
+    }
+
+    public List<Station> getStationsByName(String name) {
+        return stations.values().stream().filter(station -> station.getName().contains(name)).collect(Collectors.toList());
+    }
+
+    public List<Line> getLinesFromStation(Station station) {
+        return lines.values().stream().filter(line -> line.getStations().contains(station)).collect(Collectors.toList());   
+    }
 
     public Map<NodeKey, Station> getStations() {
         return Collections.unmodifiableMap(stations);
@@ -168,34 +209,5 @@ public class Network {
 
         LineKey key = ((SegmentTransport) segment).getLineKey();
         return lines.get(key);
-    }
- 
-    public void addSegmentLine(Node start, Node end, double distance, double duration, LineKey lineKey) {
-        addSegment(new SegmentTransport(start, end, distance, duration, lineKey));
-    }
-
-    public void addSegmentWalk(Node start, Node end, double distance) {
-        addSegment(new SegmentWalk(start, end, distance));
-    }
-
-    private void addSegment(Segment segment) {
-        if (graph.containsKey(segment.getStartPoint())) {
-            graph.get(segment.getStartPoint()).add(segment);
-        } else {
-            Set<Segment> set = new HashSet<>();
-            set.add(segment);
-            graph.put(segment.getStartPoint(), set);
-        }
-    }
-
-    private void convertStationsDTOtoStations(Map<NodeKey, NodeDTO> stationsDTO) {
-        stationsDTO.forEach((key, stationDTO) -> {
-            Station station = this.stationDTOtoStation(stationDTO);
-            this.stations.put(key, station);
-        });
-    }
-
-    private Station stationDTOtoStation(NodeDTO stationDTO) {
-        return new Station(stationDTO.getName(), stationDTO.getLatitude(), stationDTO.getLongitude(), stationDTO.getRouteType());
     }
 }

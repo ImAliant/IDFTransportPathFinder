@@ -28,6 +28,8 @@ public class Parser {
     private static final int DURATION_INDEX = 8;
     private static final int DISTANCE_INDEX = 9;
 
+    private static final int FIELDS_SIZE = 10;
+
     private static final Map<NodeKey, NodeDTO> stations = new HashMap<>();
     private static final Set<SegmentTransportDTO> segments = new HashSet<>();
     private static final Map<LineKey, NodeKey> lines = new HashMap<>();
@@ -64,7 +66,11 @@ public class Parser {
         }
     }
 
-    private void processFields(String[] fields) {
+    public void processFields(String[] fields) {
+        if (fields.length != FIELDS_SIZE) {
+            throw new IllegalArgumentException("Invalid number of fields: " + fields.length);
+        }
+
         NodeDTO start;
         NodeDTO end;
 
@@ -74,31 +80,48 @@ public class Parser {
         double distance = Double.parseDouble(fields[DISTANCE_INDEX]);
         String color = fields[COLOR_INDEX].trim();
 
-        start = processNode(fields, routetype, STOP_NAME_INDEX, LONGLAT_INDEX);
-        end = processNode(fields, routetype, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
+        LineKey lineKey = new LineKey(lineName, RouteType.fromString(routetype), color);
+
+        start = processNode(fields, lineKey, routetype, STOP_NAME_INDEX, LONGLAT_INDEX);
+        end = processNode(fields, lineKey, routetype, NEXT_STOP_NAME_INDEX, NEXT_LONGLAT_INDEX);
 
         processSegment(start, end, duration, distance, lineName, routetype, color);
 
-        LineKey lineKey = new LineKey(lineName, RouteType.fromString(routetype), color);
         lines.putIfAbsent(lineKey, start.generateKey());
     }
 
-    private NodeDTO processNode(String[] fields, final String routetype, final int indexStop, final int indexLonglat) {
+    private NodeDTO processNode(String[] fields, final LineKey key, final String routetype, final int indexStop, final int indexLonglat) {
+        // SOLUTION 1
+        /* String stopName = fields[indexStop].trim();
+        NodeKey nodeKey = new NodeKey(stopName, key);
+
+        if (!stations.containsKey(nodeKey)) {
+            String longLat = fields[indexLonglat].trim();
+            double latitude = Double.parseDouble(longLat.split(",")[0]);
+            double longitude = Double.parseDouble(longLat.split(",")[1]);
+
+            NodeDTO node = new NodeDTO(stopName, latitude, longitude, routetype, key);
+            stations.put(nodeKey, node);
+        }
+
+        return stations.get(nodeKey); */
+
+        // SOLUTION 2
         String stopName = fields[indexStop].trim();
         String longLat = fields[indexLonglat].trim();
         double latitude = Double.parseDouble(longLat.split(",")[0]);
         double longitude = Double.parseDouble(longLat.split(",")[1]);
 
-        NodeKey key = new NodeKey(stopName, latitude, longitude, routetype);
-        NodeDTO node = findNodeInMap(key, stopName, latitude, longitude, routetype);
-        stations.putIfAbsent(key, node);
+        NodeKey nodeKey = new NodeKey(stopName, key);
 
-        return node;
+        stations.putIfAbsent(nodeKey, new NodeDTO(stopName, latitude, longitude, routetype, key));
+
+        return stations.get(nodeKey);
     }
 
-    private NodeDTO findNodeInMap(final NodeKey nodeKey, final String name, final double latitude, final double longitude, final String routetype) {
+    /* private NodeDTO findNodeInMap(final NodeKey nodeKey, final String name, final double latitude, final double longitude, final String routetype) {
         return stations.getOrDefault(nodeKey, new NodeDTO(name, latitude, longitude, routetype));
-    }
+    } */
 
     private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, 
     final double distance, final String lineName, final String routetype, final String color) {

@@ -7,8 +7,9 @@ public class SegmentTransportDTO {
     private final NodeDTO end;
     private final double duration;
     private final double distance;
+    
+    // TODO: Change to LineKey
     private final String line;
-
     private final String routetype;
     private final String color;
 
@@ -48,6 +49,19 @@ public class SegmentTransportDTO {
 
     public String getLine() {
         return line;
+    }
+
+    @Override
+    public String toString() {
+        return "SegmentTransportDTO{" +
+                "start=" + start +
+                ", end=" + end +
+                ", duration=" + duration +
+                ", distance=" + distance +
+                ", line='" + line + '\'' +
+                ", routetype='" + routetype + '\'' +
+                ", color='" + color + '\'' +
+                '}';
     }
 
     @Override
