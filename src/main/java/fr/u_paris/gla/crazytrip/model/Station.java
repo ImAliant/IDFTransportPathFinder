@@ -1,20 +1,22 @@
 package fr.u_paris.gla.crazytrip.model;
 
-public final class Station extends Node{
-    private String routetype;
+import fr.u_paris.gla.crazytrip.model.key.LineKey;
 
-    public Station(String name, double latitude, double longitude, String routetype) {
+public final class Station extends Node{
+    private final LineKey linekey;
+
+    public Station(String name, double latitude, double longitude, LineKey linekey) {
         super(name, latitude, longitude);
-        this.routetype = routetype;
+        this.linekey = linekey;
     }
 
-    public String getRouteType() {
-        return routetype;
+    public LineKey getLineKey() {
+        return linekey;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " " + routetype;
+        return super.toString() + " " + String.format("Line: %s %s", linekey.getName(), linekey.getRouteType());
     }
 
     @Override
@@ -22,11 +24,12 @@ public final class Station extends Node{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Station node = (Station) o;
-        return super.equals(o) && routetype.equals(node.routetype);
+
+        return super.equals(o) && linekey.equals(node.linekey);
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode() + routetype.hashCode();
+        return super.hashCode() + linekey.hashCode();
     }
 }

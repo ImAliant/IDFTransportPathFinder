@@ -42,4 +42,9 @@ public class LineKey {
     public int hashCode() {
         return Objects.hash(name, routetype, color);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s)", name, routetype);
+    }
 }

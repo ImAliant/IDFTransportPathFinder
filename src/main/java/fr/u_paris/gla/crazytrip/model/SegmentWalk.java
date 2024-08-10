@@ -11,4 +11,10 @@ public final class SegmentWalk extends Segment {
     public SegmentWalk(Node n1, Node n2) {
         this(n1, n2, n1.distanceTo(n2));
     }
+
+    @Override
+    public String toString() {
+        return String.format("SegmentWalk{%s, %s, %s, %s}", 
+            startPoint, endPoint, distance, duration);
+    }
 }

@@ -20,7 +20,7 @@ public final class SegmentTransport extends Segment {
 
     @Override
     public String toString() {
-        return String.format("SegmentLine{%s, %s, %s, %s}", 
+        return String.format("SegmentTransport{%s, %s, %s, %s}", 
             startPoint, endPoint, distance, duration);
     }
 

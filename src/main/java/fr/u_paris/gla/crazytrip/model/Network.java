@@ -21,7 +21,7 @@ import fr.u_paris.gla.crazytrip.parser.Parser;
 
 public class Network {
     private static Network instance = null;
-    
+
     private final Map<Node, Set<Segment>> graph;
     private final Map<LineKey, Line> lines;
     private final Map<NodeKey, Station> stations;
@@ -39,30 +39,6 @@ public class Network {
             instance = new Network();
         }
         return instance;
-    }
-
-    public Line getLine(String name, RouteType routeType, String color) {
-        return lines.get(new LineKey(name, routeType, color));
-    }
-
-    public Set<Segment> getSegments(Node node) {
-        return graph.getOrDefault(node, Collections.emptySet());
-    }
-
-    public Set<Segment> getSegmentsLineOfANode(Node node) {
-        return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
-    }
-
-    public Segment getSegment(Node start, Node end) {
-        return graph.get(start).stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
-    }
-
-    public List<Line> getAllLinesSpecificType(RouteType routeType) {
-        ArrayList<Line> res = new ArrayList<>();
-        lines.forEach((key, value) -> {
-            if (value.getLineType().equals(routeType)) res.add(value);
-        });
-        return res;
     }
 
     private void initializeFields() {
@@ -84,17 +60,19 @@ public class Network {
         addLines(transportLines, linesTerminus);
     }
 
-    private void addSegmentToLinesAndGraph(Set<SegmentTransportDTO> segmentsTransportDTO, Map<LineKey, Set<Station>> transportLines) {
+    private void addSegmentToLinesAndGraph(Set<SegmentTransportDTO> segmentsTransportDTO,
+            Map<LineKey, Set<Station>> transportLines) {
         segmentsTransportDTO.forEach(segment -> {
             NodeKey startKey = segment.getStart().generateKey();
             NodeKey endKey = segment.getEnd().generateKey();
 
             Station start = this.stations.get(startKey);
             Station end = this.stations.get(endKey);
-            if (start == null || end == null) throw new NullPointerException("The start or end can't be null");
+            if (start == null || end == null)
+                throw new NullPointerException("The start or end can't be null");
 
-            LineKey key = new LineKey(segment.getLine(), RouteType.fromString(segment.getRouteType()), segment.getColor());
-            
+            LineKey key = segment.getLineKey();
+
             if (transportLines.containsKey(key)) {
                 transportLines.get(key).add(start);
                 transportLines.get(key).add(end);
@@ -111,65 +89,15 @@ public class Network {
     private void addLines(Map<LineKey, Set<Station>> lines, Map<LineKey, NodeKey> linesTerminus) {
         lines.forEach((key, value) -> {
             Station terminus = this.stations.get(linesTerminus.get(key));
-            if (terminus == null) throw new NullPointerException("The terminus can't be null");
-            
+            if (terminus == null)
+                throw new NullPointerException("The terminus can't be null");
+
             Line line = LineFactory.createLine(key.getName(), value, terminus, key.getRouteType(), key.getColor());
 
             this.lines.putIfAbsent(key, line);
         });
     }
 
-    public Station getNearestStation(Coordinates coordinates) {
-        return this.stations.values().stream().min((station1, station2) -> {
-            double distance1 = station1.getCoordinates().distanceTo(coordinates);
-            double distance2 = station2.getCoordinates().distanceTo(coordinates);
-            return Double.compare(distance1, distance2);
-        }).orElse(null);
-    }
-
-    /* private void addAllWalkSegments(Set<Station> stations) {
-        stations.forEach(station -> {
-            Station start = this.stations.get(station.getName());
-            stations.forEach(station2 -> {
-                Station end = this.stations.get(station2.getName());
-                if (start != end) {
-                    this.addSegmentWalk(start, end, start.distanceTo(end));
-                } 
-            });
-        });
-    } */
-
-    public Map<NodeKey, Station> getStations() {
-        return Collections.unmodifiableMap(stations);
-    }
-
-    public Map<LineKey, Line> getLines() {
-        return Collections.unmodifiableMap(lines);
-    }
-
-    public Map<Node, Set<Segment>> getGraph() {
-        return Collections.unmodifiableMap(graph);
-    }
- 
-    public Set<Station> getAllStations() {
-        return getStations().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
-    }
-
-    public Set<Line> getAllLines() {
-        return getLines().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
-    }
-
-    public Set<Node> getNodes() {
-        return graph.keySet();
-    }
-
-    public Line getLineFromSegment(Segment segment) {
-        if (!(segment instanceof SegmentTransport)) return null;
-
-        LineKey key = ((SegmentTransport) segment).getLineKey();
-        return lines.get(key);
-    }
- 
     public void addSegmentLine(Node start, Node end, double distance, double duration, LineKey lineKey) {
         addSegment(new SegmentTransport(start, end, distance, duration, lineKey));
     }
@@ -196,6 +124,91 @@ public class Network {
     }
 
     private Station stationDTOtoStation(NodeDTO stationDTO) {
-        return new Station(stationDTO.getName(), stationDTO.getLatitude(), stationDTO.getLongitude(), stationDTO.getRouteType());
+        return new Station(stationDTO.getName(), stationDTO.getLatitude(), stationDTO.getLongitude(),
+                stationDTO.getLineKey());
+    }
+
+    public Set<Station> findCloseStations(Node node) {
+        final double distance = 0.5;
+        return this.stations.values()
+            .stream()
+            .filter(station -> station.distanceTo(node) <= distance
+                && !station.equals(node))
+            .collect(Collectors.toSet());
+    }
+
+    public Station getNearestStation(Coordinates coordinates) {
+        return this.stations.values().stream().min((station1, station2) -> {
+            double distance1 = station1.getCoordinates().distanceTo(coordinates);
+            double distance2 = station2.getCoordinates().distanceTo(coordinates);
+            return Double.compare(distance1, distance2);
+        }).orElse(null);
+    }
+
+    public Line getLine(String name, RouteType routeType, String color) {
+        return lines.get(new LineKey(name, routeType, color));
+    }
+
+    public Set<Segment> getSegments(Node node) {
+        return graph.getOrDefault(node, Collections.emptySet());
+    }
+
+    public Set<Segment> getSegmentsLineOfANode(Node node) {
+        return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
+    }
+
+    public Segment getSegment(Node start, Node end) {
+        return graph.get(start).stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
+    }
+
+    public List<Line> getAllLinesSpecificType(RouteType routeType) {
+        ArrayList<Line> res = new ArrayList<>();
+        lines.forEach((key, value) -> {
+            if (value.getLineType().equals(routeType))
+                res.add(value);
+        });
+        return res;
+    }
+
+    public List<Station> getStationsByName(String name) {
+        return stations.values().stream().filter(station -> station.getName().contains(name))
+                .collect(Collectors.toList());
+    }
+
+    public List<Line> getLinesFromStation(Station station) {
+        return lines.values().stream().filter(line -> line.getStations().contains(station))
+                .collect(Collectors.toList());
+    }
+
+    public Map<NodeKey, Station> getStations() {
+        return Collections.unmodifiableMap(stations);
+    }
+
+    public Map<LineKey, Line> getLines() {
+        return Collections.unmodifiableMap(lines);
+    }
+
+    public Map<Node, Set<Segment>> getGraph() {
+        return Collections.unmodifiableMap(graph);
+    }
+
+    public Set<Station> getAllStations() {
+        return getStations().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
+    }
+
+    public Set<Line> getAllLines() {
+        return getLines().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
+    }
+
+    public Set<Node> getNodes() {
+        return graph.keySet();
+    }
+
+    public Line getLineFromSegment(Segment segment) {
+        if (!(segment instanceof SegmentTransport))
+            return null;
+
+        LineKey key = ((SegmentTransport) segment).getLineKey();
+        return lines.get(key);
     }
 }
