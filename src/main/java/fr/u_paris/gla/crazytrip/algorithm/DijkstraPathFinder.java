@@ -21,35 +21,23 @@ import fr.u_paris.gla.crazytrip.model.Network;
 public class DijkstraPathFinder {
     private static final Network network = Network.getInstance();
 
-    private DijkstraPathFinder() {}
+    private DijkstraPathFinder() {
+    }
 
     public static Itinerary dijkstra(Node start, Node end) {
-        if (start == null) throw new IllegalArgumentException("Start node is null");
-        if (end == null) throw new IllegalArgumentException("End node is null");
+        if (start == null)
+            throw new IllegalArgumentException("Start node is null");
+        if (end == null)
+            throw new IllegalArgumentException("End node is null");
 
         Map<Node, Boolean> visited = new HashMap<>();
         PriorityQueue<DijkstraInfo> queue = new PriorityQueue<>(Comparator.comparing(DijkstraInfo::getLineChanges)
-            .thenComparingDouble(DijkstraInfo::getWeight));
-        
+                .thenComparingDouble(DijkstraInfo::getWeight));
+
         initialize(start, visited, queue);
 
         return runDijkstra(start, end, visited, queue);
     }
-
-    /* public static List<Segment> getSegmentsFromItinerary(Node start, Node end) {
-        Itinerary itinerary = dijkstra(start, end);
-
-        LinkedList<Segment> segments = new LinkedList<>();
-        Node current = end;
-
-        while (!current.equals(start) && itinerary.contains(current)) {
-            Node next = itinerary.get(current).getNode();
-            segments.addFirst(network.getSegment(next, current));
-            current = next;
-        }
-
-        return segments;
-    } */
 
     public static List<DijkstraPath> getPath(Node start, Node end) {
         Itinerary itinerary = dijkstra(start, end);
@@ -59,12 +47,11 @@ public class DijkstraPathFinder {
 
         while (!current.equals(start) && itinerary.contains(current)) {
             Node next = itinerary.get(current).getNode();
-            
+
             Segment segment = network.getSegment(next, current);
             if (segment == null) {
                 paths.addFirst(new DijkstraPath(next, current, itinerary.get(current).getWeight()));
-            }
-            else {
+            } else {
                 SegmentTransport st = (SegmentTransport) segment;
                 paths.addFirst(new DijkstraPath(next, current, itinerary.get(current).getWeight(), st.getLineKey()));
             }
@@ -75,7 +62,8 @@ public class DijkstraPathFinder {
         return paths;
     }
 
-    private static Itinerary runDijkstra(Node start, Node end, Map<Node, Boolean> visited, PriorityQueue<DijkstraInfo> queue) {
+    private static Itinerary runDijkstra(Node start, Node end, Map<Node, Boolean> visited,
+            PriorityQueue<DijkstraInfo> queue) {
         Itinerary itinerary = new Itinerary();
         itinerary.add(start, new BestWeight(start, 0, null));
 
@@ -84,53 +72,61 @@ public class DijkstraPathFinder {
         while (!queue.isEmpty()) {
             DijkstraInfo current = queue.poll();
             Node currentNode = current.getNode();
-            
+
             if (Boolean.TRUE.equals(visited.get(currentNode))) {
                 continue;
             }
 
             visited.replace(currentNode, true);
 
-            if (currentNode.equals(end)) return itinerary;
+            if (currentNode.equals(end))
+                return itinerary;
 
             Set<Segment> neighbors = new HashSet<>(network.getSegments(currentNode));
 
-            // add walk segments to close stations
-            if (!first) {
-                Set<Station> closeStations = network.findCloseStations(currentNode);
-                createWalkSegments(currentNode, closeStations, neighbors);
-            } else {
-                first = false;
-            }
-        
-            for (Segment segment: neighbors) {
-                Node neighbor = segment.getEndPoint();
-                if (segment instanceof SegmentWalk) {
-                    double weight = current.getWeight() + segment.getDuration();
-                    int changes = current.getLineChanges() + 1;
-                    addInfoInQueue(itinerary, currentNode, neighbor, null, weight, changes, queue);
-                } else {
-                    Line neighborLine = network.getLineFromSegment(segment);
-                    double weight = current.getWeight() + segment.getDuration();
-                    int changes = current.getLineChanges() + (neighborLine.equals(current.getLine()) ? 0 : 1);
+            if (!first) createWalkSegmentsToCloseStation(currentNode, neighbors);
 
-                    addInfoInQueue(itinerary, currentNode, neighbor, neighborLine, weight, changes, queue);
-                }
-            }
+            processNeighbors(queue, itinerary, current, currentNode, neighbors);
+
+            if (first) first = false;
         }
 
         return null;
     }
 
+    private static void processNeighbors(PriorityQueue<DijkstraInfo> queue, Itinerary itinerary, DijkstraInfo current,
+            Node currentNode, Set<Segment> neighbors) {
+        for (Segment segment : neighbors) {
+            Node neighbor = segment.getEndPoint();
+            double weight = current.getWeight() + segment.getDuration();
+            int changes;
+            Line neighborLine = null;
+
+            if (segment instanceof SegmentWalk) {
+                changes = current.getLineChanges() + 1;
+            } else {
+                neighborLine = network.getLineFromSegment(segment);
+                changes = current.getLineChanges() + (neighborLine.equals(current.getLine()) ? 0 : 1);
+            }
+
+            addInfoInQueue(itinerary, currentNode, neighbor, neighborLine, weight, changes, queue);
+        }
+    }
+
+    private static void createWalkSegmentsToCloseStation(Node currentNode, Set<Segment> neighbors) {
+        Set<Station> closeStations = network.findCloseStations(currentNode);
+        createWalkSegments(currentNode, closeStations, neighbors);
+    }
+
     private static void createWalkSegments(Node currentNode, Set<Station> closeStations, Set<Segment> neighbors) {
-        for (Station station: closeStations) {
+        for (Station station : closeStations) {
             SegmentWalk walkSegment = new SegmentWalk(currentNode, station);
             neighbors.add(walkSegment);
         }
     }
 
-    private static void addInfoInQueue(Itinerary itinerary, Node currentNode, Node neighborNode, Line neighborLine, 
-        double weight, int lineChanges, PriorityQueue<DijkstraInfo> queue) {
+    private static void addInfoInQueue(Itinerary itinerary, Node currentNode, Node neighborNode, Line neighborLine,
+            double weight, int lineChanges, PriorityQueue<DijkstraInfo> queue) {
         BestWeight neighborWeight = itinerary.get(neighborNode);
         if (neighborWeight == null || weight < neighborWeight.getWeight()) {
             itinerary.add(neighborNode, new BestWeight(currentNode, weight, neighborLine));
