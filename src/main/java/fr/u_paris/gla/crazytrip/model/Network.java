@@ -128,6 +128,15 @@ public class Network {
                 stationDTO.getLineKey());
     }
 
+    public Set<Station> findCloseStations(Node node) {
+        final double distance = 0.5;
+        return this.stations.values()
+            .stream()
+            .filter(station -> station.distanceTo(node) <= distance
+                && !station.equals(node))
+            .collect(Collectors.toSet());
+    }
+
     public Station getNearestStation(Coordinates coordinates) {
         return this.stations.values().stream().min((station1, station2) -> {
             double distance1 = station1.getCoordinates().distanceTo(coordinates);

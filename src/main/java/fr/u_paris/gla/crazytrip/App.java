@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import fr.u_paris.gla.crazytrip.algorithm.DijkstraPath;
 import fr.u_paris.gla.crazytrip.algorithm.DijkstraPathFinder;
+import fr.u_paris.gla.crazytrip.algorithm.Itinerary;
 import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
 import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
 import fr.u_paris.gla.crazytrip.model.Coordinates;
@@ -28,10 +30,31 @@ public class App {
 	private static final String INFOCMD = "--info";
 	private static final String GUICMD = "--gui";
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		/* if (args.length == 0) return;
 		
 		processArgs(args); */
+
+		Network network = Network.getInstance();
+
+		while (true) {
+			System.out.println("Enter the name of the station: ");
+			String name = System.console().readLine();
+
+			List<Station> stations = stationFinder(network, name);
+			Station station = stationSelection(network, stations);
+
+			System.out.println("Enter the name of the destination station: ");
+			String destinationName = System.console().readLine();
+
+			List<Station> destinationStations = stationFinder(network, destinationName);
+			Station destinationStation = stationSelection(network, destinationStations);
+
+			List<DijkstraPath> paths = DijkstraPathFinder.getPath(station, destinationStation);
+			ItineraryPrinter printer = new ItineraryPrinter(paths);
+
+			printer.print();
+		}
 	}
 
 	// TODO: Need to be moved to a dedicated class
