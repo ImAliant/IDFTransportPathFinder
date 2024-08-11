@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import fr.u_paris.gla.crazytrip.algorithm.DijkstraPath;
-import fr.u_paris.gla.crazytrip.algorithm.DijkstraPathFinder;
+import fr.u_paris.gla.crazytrip.algorithm.AstarPathFinder;
 import fr.u_paris.gla.crazytrip.algorithm.Itinerary;
+import fr.u_paris.gla.crazytrip.algorithm.Path;
 import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
 import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
 import fr.u_paris.gla.crazytrip.model.Coordinates;
@@ -38,7 +38,7 @@ public class App {
 		Network network = Network.getInstance();
 
 		while (true) {
-			System.out.println("Enter the name of the station: ");
+			/* System.out.println("Enter the name of the station: ");
 			String name = System.console().readLine();
 
 			List<Station> stations = stationFinder(network, name);
@@ -48,9 +48,21 @@ public class App {
 			String destinationName = System.console().readLine();
 
 			List<Station> destinationStations = stationFinder(network, destinationName);
-			Station destinationStation = stationSelection(network, destinationStations);
+			Station destinationStation = stationSelection(network, destinationStations); */
+			System.out.println("Enter the start coordinates: ");
+			Coordinates startCoordinates = coordinatesChooser();
+			if (startCoordinates == null) continue;
 
-			List<DijkstraPath> paths = DijkstraPathFinder.getPath(station, destinationStation);
+			Station start = network.getNearestStation(startCoordinates);
+			
+			System.out.println("Enter the destination coordinates: ");
+			Coordinates destinationCoordinates = coordinatesChooser();
+			if (destinationCoordinates == null) continue;
+
+			Station destination = network.getNearestStation(destinationCoordinates);
+
+			AstarPathFinder finder = new AstarPathFinder(start, destination);
+			List<Path> paths = finder.findPath();
 			ItineraryPrinter printer = new ItineraryPrinter(paths);
 
 			printer.print();
@@ -82,6 +94,46 @@ public class App {
 		String choice = System.console().readLine();
 
 		return stations.get(Integer.parseInt(choice));
+	}
+
+	public static Coordinates coordinatesChooser() {
+		double latitude;
+		double longitude;
+
+		latitude = positionChooser("Enter the latitude: ");
+		if (latitude == -1) {
+			return null;
+		}
+		longitude = positionChooser("Enter the longitude: ");
+		if (longitude == -1) {
+			return null;
+		}
+
+		return new Coordinates(latitude, longitude);
+	}
+
+	public static double positionChooser(String message) {
+		String line;
+		double position;
+
+		System.out.println(message);
+		line = System.console().readLine();
+		if (!validPositionChoice(line)) {
+			System.out.println("Invalid choice");
+			return -1;
+		}
+		position = Double.parseDouble(line);
+
+		return position;
+	}
+
+	public static boolean validPositionChoice(String choice) {
+		try {
+			Double.parseDouble(choice);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		return true;
 	}
 	//
 

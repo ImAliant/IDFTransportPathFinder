@@ -2,12 +2,12 @@ package fr.u_paris.gla.crazytrip.utils;
 
 import java.util.List;
 
-import fr.u_paris.gla.crazytrip.algorithm.DijkstraPath;
+import fr.u_paris.gla.crazytrip.algorithm.Path;
 
 public class ItineraryPrinter {
-    private final List<DijkstraPath> paths;
+    private final List<Path> paths;
 
-    public ItineraryPrinter(List<DijkstraPath> paths) {
+    public ItineraryPrinter(List<Path> paths) {
         this.paths = paths;
     }
 
