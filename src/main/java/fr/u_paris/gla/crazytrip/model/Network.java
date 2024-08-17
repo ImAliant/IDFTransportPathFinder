@@ -149,10 +149,6 @@ public class Network {
         return Collections.unmodifiableMap(graph);
     }
 
-    public Set<Station> getAllStations() {
-        return getStations().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
-    }
-
     public Set<Line> getAllLines() {
         return getLines().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
     }

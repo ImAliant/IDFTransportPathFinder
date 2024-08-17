@@ -1,5 +1,6 @@
 package fr.u_paris.gla.crazytrip.dao;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,5 +36,9 @@ public class StationDAO {
             double distance2 = station2.getCoordinates().distanceTo(coordinates);
             return Double.compare(distance1, distance2);
         }).orElse(null);
+    }
+
+    public static Set<Station> getAllStations() {
+        return network.getStations().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
 }

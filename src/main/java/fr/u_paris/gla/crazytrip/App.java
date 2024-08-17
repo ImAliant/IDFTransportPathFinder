@@ -25,33 +25,7 @@ public class App {
 	}
 
 	// TODO: Need to be moved to a dedicated class
-	/* public static List<Station> stationFinder(Network network, String name) {
-		return network.getStationsByName(name);
-	}
-
-	public static Station stationSelection(Network network, List<Station> stations) {
-		for (int i = 0; i < stations.size(); i++) {
-			Station station = stations.get(i);
-			List<Line> line = network.getLinesFromStation(station);
-
-			String lineFormat;
-			if (line.size() == 1) {
-				lineFormat = line.get(0).getName();
-			} else {
-				lineFormat = line.stream().map(Line::getName).reduce((a, b) -> a + ", " + b).get();
-			}
-
-			String format = String.format("%d: %s %s", i, station, lineFormat);
-			System.out.println(format);
-		}
-
-		System.out.println("Choose a station: ");
-		String choice = System.console().readLine();
-
-		return stations.get(Integer.parseInt(choice));
-	}
-
-	public static Coordinates coordinatesChooser() {
+	/* public static Coordinates coordinatesChooser() {
 		double latitude;
 		double longitude;
 
@@ -98,7 +72,7 @@ public class App {
 				processInfoCmd();
 			}
 			if (GUICMD.equals(string)) {
-				processGuiCmd();
+				processGuiCmd(args);
 			}
 		}
 	}
@@ -107,8 +81,8 @@ public class App {
 		printAppInfos(System.out);
 	}
 
-	private static void processGuiCmd() {
-		/* Properties props = readApplicationProperties();
+	private static void processGuiCmd(String[] args) {
+		Properties props = readApplicationProperties();
 		String title = props.getProperty("app.name");
 
 		try {
@@ -119,11 +93,14 @@ public class App {
 
 		Network.getInstance();
 
-		SwingUtilities.invokeLater(() -> {
-			// TODO start interface
-		}); */
+		String type = "ONLINE";
+		for (String arg: args) {
+			if (arg.equals("--console")) {
+				type = "CONSOLE";
+			}
+		}
 
-		UserInterface userInterface = UserInterface.create("CONSOLE", "");
+		UserInterface userInterface = UserInterface.create(type, title);
 		userInterface.start();
 	}
 
