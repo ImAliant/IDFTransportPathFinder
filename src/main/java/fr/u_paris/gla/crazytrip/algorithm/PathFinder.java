@@ -16,7 +16,7 @@ public abstract class PathFinder {
         this.end = end;
     }
 
-    public abstract List<Path> findPath();
+    public abstract ItineraryResult findPath();
 
     public Node getStart() {
         return start;

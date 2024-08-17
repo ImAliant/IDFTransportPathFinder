@@ -3,26 +3,14 @@ package fr.u_paris.gla.crazytrip;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
-import fr.u_paris.gla.crazytrip.algorithm.AstarPathFinder;
-import fr.u_paris.gla.crazytrip.algorithm.Itinerary;
-import fr.u_paris.gla.crazytrip.algorithm.Path;
-import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
-import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
-import fr.u_paris.gla.crazytrip.model.Coordinates;
-import fr.u_paris.gla.crazytrip.model.Line;
+import javax.swing.SwingUtilities;
+
+import fr.u_paris.gla.crazytrip.controller.ConsoleController;
+import fr.u_paris.gla.crazytrip.gui.UserInterface;
+import fr.u_paris.gla.crazytrip.gui.view.ConsoleView;
 import fr.u_paris.gla.crazytrip.model.Network;
-import fr.u_paris.gla.crazytrip.model.Node;
-import fr.u_paris.gla.crazytrip.model.Segment;
-import fr.u_paris.gla.crazytrip.model.Station;
-import fr.u_paris.gla.crazytrip.model.key.LineKey;
-import fr.u_paris.gla.crazytrip.model.key.NodeKey;
-import fr.u_paris.gla.crazytrip.parser.Parser;
-import fr.u_paris.gla.crazytrip.utils.ItineraryPrinter;
 import fr.u_paris.gla.crazytrip.utils.NetworkBackendHandler;
 
 public class App {
@@ -31,46 +19,13 @@ public class App {
 	private static final String GUICMD = "--gui";
 
 	public static void main(String[] args) {
-		/* if (args.length == 0) return;
+		if (args.length == 0) return;
 		
-		processArgs(args); */
-
-		Network network = Network.getInstance();
-
-		while (true) {
-			/* System.out.println("Enter the name of the station: ");
-			String name = System.console().readLine();
-
-			List<Station> stations = stationFinder(network, name);
-			Station station = stationSelection(network, stations);
-
-			System.out.println("Enter the name of the destination station: ");
-			String destinationName = System.console().readLine();
-
-			List<Station> destinationStations = stationFinder(network, destinationName);
-			Station destinationStation = stationSelection(network, destinationStations); */
-			System.out.println("Enter the start coordinates: ");
-			Coordinates startCoordinates = coordinatesChooser();
-			if (startCoordinates == null) continue;
-
-			Station start = network.getNearestStation(startCoordinates);
-			
-			System.out.println("Enter the destination coordinates: ");
-			Coordinates destinationCoordinates = coordinatesChooser();
-			if (destinationCoordinates == null) continue;
-
-			Station destination = network.getNearestStation(destinationCoordinates);
-
-			AstarPathFinder finder = new AstarPathFinder(start, destination);
-			List<Path> paths = finder.findPath();
-			ItineraryPrinter printer = new ItineraryPrinter(paths);
-
-			printer.print();
-		}
+		processArgs(args);
 	}
 
 	// TODO: Need to be moved to a dedicated class
-	public static List<Station> stationFinder(Network network, String name) {
+	/* public static List<Station> stationFinder(Network network, String name) {
 		return network.getStationsByName(name);
 	}
 
@@ -134,7 +89,7 @@ public class App {
 			return false;
 		}
 		return true;
-	}
+	} */
 	//
 
 	private static void processArgs(String[] args) {
@@ -153,8 +108,23 @@ public class App {
 	}
 
 	private static void processGuiCmd() {
-		Properties props = readApplicationProperties();
-		System.out.println("Launching GUI for " + props.getProperty("app.name", UNSPECIFIED)); //$NON-NLS-1$ //$NON-NLS-2$
+		/* Properties props = readApplicationProperties();
+		String title = props.getProperty("app.name");
+
+		try {
+			NetworkBackendHandler.extraction();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Network.getInstance();
+
+		SwingUtilities.invokeLater(() -> {
+			// TODO start interface
+		}); */
+
+		UserInterface userInterface = UserInterface.create("CONSOLE", "");
+		userInterface.start();
 	}
 
 	private static void printAppInfos(PrintStream out) {

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import fr.u_paris.gla.crazytrip.dao.StationDAO;
 import fr.u_paris.gla.crazytrip.model.Line;
 
 public class AstarPathFinder extends PathFinder {
@@ -22,7 +23,7 @@ public class AstarPathFinder extends PathFinder {
         super(start, end);
     }
 
-    public Itinerary astar() {
+    private Itinerary astar() {
         Map<Node, Boolean> visited = new HashMap<>();
         PriorityQueue<AstarInfo> queue = new PriorityQueue<>(Comparator.comparing(AstarInfo::getLineChanges)
                 .thenComparingDouble(AstarInfo::getWeight));
@@ -33,10 +34,11 @@ public class AstarPathFinder extends PathFinder {
     }
 
     @Override
-    public List<Path> findPath() {
+    public ItineraryResult findPath() {
         Itinerary itinerary = astar();
 
         LinkedList<Path> paths = new LinkedList<>();
+        double duration = itinerary.get(end).getWeight();
         Node current = end;
 
         while (!current.equals(start) && itinerary.contains(current)) {
@@ -49,11 +51,12 @@ public class AstarPathFinder extends PathFinder {
                 SegmentTransport st = (SegmentTransport) segment;
                 paths.addFirst(new Path(next, current, itinerary.get(current).getWeight(), st.getLineKey()));
             }
+            duration += segment.getDuration();
 
             current = next;
         }
 
-        return paths;
+        return new ItineraryResult(paths, duration);
     }
 
     private Itinerary run(Map<Node, Boolean> visited, PriorityQueue<AstarInfo> queue) {
@@ -109,7 +112,7 @@ public class AstarPathFinder extends PathFinder {
     }
 
     private void createWalkSegmentsToCloseStation(Node currentNode, Set<Segment> neighbors) {
-        Set<Station> closeStations = network.findCloseStations(currentNode);
+        Set<Station> closeStations = StationDAO.findCloseStations(currentNode);
         createWalkSegments(currentNode, closeStations, neighbors);
     }
 
