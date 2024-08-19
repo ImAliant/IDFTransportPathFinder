@@ -1,4 +1,4 @@
-package fr.u_paris.gla.crazytrip.gui.maps;
+package fr.u_paris.gla.crazytrip.gui.maps.waypoint;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

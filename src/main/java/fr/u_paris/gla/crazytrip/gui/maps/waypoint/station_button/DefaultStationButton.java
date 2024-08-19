@@ -1,22 +1,15 @@
-package fr.u_paris.gla.crazytrip.gui.maps;
-
-import javax.swing.Icon;
+package fr.u_paris.gla.crazytrip.gui.maps.waypoint.station_button;
 
 import fr.u_paris.gla.crazytrip.model.Station;
-import fr.u_paris.gla.crazytrip.utils.IconUtils;
 
 public class DefaultStationButton extends StationButton {
+    /** Default path to the icon. */
+    private static final String DEFAULT_PATH = "src/main/resources/stop_logo/stop_logo.png";
+
     private static final int ZOOM_THRESHOLD = 0;
 
     public DefaultStationButton(Station station) {
-        super(station);
-
-        try {
-            Icon icon = IconUtils.createIcon(path, WIDTH, HEIGHT);
-            setIcon(icon);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        super(station, DEFAULT_PATH);
     }
     
     @Override

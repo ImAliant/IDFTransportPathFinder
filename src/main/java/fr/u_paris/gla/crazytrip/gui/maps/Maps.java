@@ -12,6 +12,8 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
+import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationRender;
+import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationWaypoint;
 import fr.u_paris.gla.crazytrip.model.Station;
 
 public class Maps extends JXMapViewer {
@@ -28,8 +30,8 @@ public class Maps extends JXMapViewer {
      */
     private static final double IDF_LONGITUDE = 2.342877;
 
-    private StationRender wayPointPainter;
-    private Set<StationWaypoint> stopWaypoints = new HashSet<>();
+    private transient StationRender wayPointPainter;
+    private transient Set<StationWaypoint> stopWaypoints = new HashSet<>();
 
     public Maps() {
         super();
@@ -75,5 +77,33 @@ public class Maps extends JXMapViewer {
         StationWaypoint waypoint = new StationWaypoint(station);
         stopWaypoints.add(waypoint);
         this.add(waypoint.getButton());
+    }
+
+    private void adjustZoom(int factor) {
+        setZoom(getZoom() + factor);
+
+        updateStationsVisibility();
+    }
+
+    private void updateStationsVisibility() {
+        int zoom = getZoom();
+
+        stopWaypoints.parallelStream().forEach(waypoint -> waypoint.getButton().updateVisibility(zoom));
+    }
+
+    public void zoomIn() {
+        adjustZoom(-1);
+    }
+
+    public void zoomOut() {
+        adjustZoom(1);
+    }
+
+    public StationRender getWayPointPainter() {
+        return wayPointPainter;
+    }
+
+    public Set<StationWaypoint> getStopWaypoints() {
+        return stopWaypoints;
     }
 }

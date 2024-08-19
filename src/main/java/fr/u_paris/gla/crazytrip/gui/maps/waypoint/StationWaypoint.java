@@ -1,8 +1,9 @@
-package fr.u_paris.gla.crazytrip.gui.maps;
+package fr.u_paris.gla.crazytrip.gui.maps.waypoint;
 
 import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 
+import fr.u_paris.gla.crazytrip.gui.maps.waypoint.station_button.StationButton;
 import fr.u_paris.gla.crazytrip.model.Station;
 
 public class StationWaypoint extends DefaultWaypoint {
@@ -13,7 +14,7 @@ public class StationWaypoint extends DefaultWaypoint {
         super(new GeoPosition(station.getCoordinates().getLatitude(), station.getCoordinates().getLongitude()));
         
         this.station = station;
-        this.button = StationButton.create(station);
+        this.button = StationButton.create(station, station.getLineKey().getRouteType());
     }
 
     public Station getStation() {
