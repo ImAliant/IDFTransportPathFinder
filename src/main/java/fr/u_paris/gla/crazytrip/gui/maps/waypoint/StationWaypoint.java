@@ -17,6 +17,14 @@ public class StationWaypoint extends DefaultWaypoint {
         this.button = StationButton.create(station, station.getLineKey().getRouteType());
     }
 
+    public void updateVisibility(int zoom) {
+        button.updateVisibility(zoom);
+    }
+
+    public void updateVisibility(boolean visible) {
+        button.setVisible(visible);
+    }
+
     public Station getStation() {
         return station;
     }

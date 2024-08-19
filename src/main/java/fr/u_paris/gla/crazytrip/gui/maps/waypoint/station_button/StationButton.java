@@ -47,5 +47,6 @@ public abstract class StationButton extends JLabel {
         }
     }
 
+    public abstract boolean isVisible(int zoom);
     public abstract void updateVisibility(int zoom);
 }

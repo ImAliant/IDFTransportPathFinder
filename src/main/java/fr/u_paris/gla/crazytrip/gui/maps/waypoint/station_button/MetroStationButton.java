@@ -11,7 +11,12 @@ public class MetroStationButton extends StationButton {
     }
 
     @Override
+    public boolean isVisible(int zoom) {
+        return zoom <= ZOOM_THRESHOLD;
+    }
+
+    @Override
     public void updateVisibility(int zoom) {
-        setVisible(zoom <= ZOOM_THRESHOLD);
+        setVisible(isVisible(zoom));
     }
 }

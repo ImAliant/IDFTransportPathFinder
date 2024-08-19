@@ -11,9 +11,14 @@ public class DefaultStationButton extends StationButton {
     public DefaultStationButton(Station station) {
         super(station, DEFAULT_PATH);
     }
+
+    @Override
+    public boolean isVisible(int zoom) {
+        return zoom >= ZOOM_THRESHOLD;
+    }
     
     @Override
     public void updateVisibility(int zoom) {
-        setVisible(zoom >= ZOOM_THRESHOLD);
+        setVisible(isVisible(zoom));
     }
 }
