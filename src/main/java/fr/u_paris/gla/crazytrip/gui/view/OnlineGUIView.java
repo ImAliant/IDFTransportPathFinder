@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import fr.u_paris.gla.crazytrip.gui.listener.ZoomInListener;
 import fr.u_paris.gla.crazytrip.gui.listener.ZoomOutListener;
 import fr.u_paris.gla.crazytrip.gui.maps.Maps;
+import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LineSelectionPanelObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomInObserver;
@@ -84,6 +85,10 @@ public class OnlineGUIView extends JFrame implements View {
 
     public void addTransportButtonsObservers(DisplayLineObserver observer) {
         lineSelectionPanel.addTransportButtonsObservers(observer);
+    }
+
+    public void addClearButtonObserver(ClearLineObserver observer) {
+        lineSelectionPanel.addClearButtonObserver(observer);
     }
 
     public Maps getMap() {

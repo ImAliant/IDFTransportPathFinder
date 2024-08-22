@@ -5,6 +5,7 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
+import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LineSelectionPanelObserver;
 
@@ -14,7 +15,7 @@ public class LineSelectionPanel extends JPanel implements LineSelectionPanelObse
 
     private TransportSelectionPanel transportSelectionPanel;
     private SelectionPanel selectionPanel;
-    /* private ClearPanel clearPanel; */
+    private ClearPanel clearPanel;
 
     public LineSelectionPanel() {
         super();
@@ -30,13 +31,13 @@ public class LineSelectionPanel extends JPanel implements LineSelectionPanelObse
     private void initComponents() {
         transportSelectionPanel = new TransportSelectionPanel();
         selectionPanel = new SelectionPanel();
-        /* clearPanel = new ClearPanel(); */
+        clearPanel = new ClearPanel();
     }
 
     private void addComponents() {
-        add(transportSelectionPanel, BorderLayout.NORTH);
+        add(transportSelectionPanel, BorderLayout.WEST);
         add(selectionPanel, BorderLayout.CENTER);
-        /* add(clearPanel, BorderLayout.SOUTH); */
+        add(clearPanel, BorderLayout.EAST);
     }
 
     @Override
@@ -48,11 +49,19 @@ public class LineSelectionPanel extends JPanel implements LineSelectionPanelObse
         transportSelectionPanel.addObservers(observer);
     }
 
+    public void addClearButtonObserver(ClearLineObserver observer) {
+        clearPanel.addObserver(observer);
+    }
+
     public SelectionPanel getSelectionPanel() {
         return selectionPanel;
     }
 
     public TransportSelectionPanel getTransportSelectionPanel() {
         return transportSelectionPanel;
+    }
+
+    public ClearPanel getClearPanel() {
+        return clearPanel;
     }
 }

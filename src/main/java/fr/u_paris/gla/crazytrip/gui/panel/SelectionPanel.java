@@ -14,6 +14,8 @@ public class SelectionPanel extends JPanel {
 
         initComponents();
         addComponents();
+
+        setOpaque(false);
     }
 
     private void initComponents() {

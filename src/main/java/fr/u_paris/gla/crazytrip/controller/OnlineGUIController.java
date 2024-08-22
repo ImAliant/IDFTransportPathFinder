@@ -36,6 +36,7 @@ public class OnlineGUIController implements Controller {
         view.addZoomOutObserver(view.getMap());
         view.addOpenLineButtonObserver(view.getLineSelectionPanel());
         view.addTransportButtonsObservers(view.getLineSelectionPanel().getSelectionPanel().getCombobox());
+        view.addClearButtonObserver(view.getLineSelectionPanel().getSelectionPanel().getCombobox());
     }
 
     private void addStationMarkers() {

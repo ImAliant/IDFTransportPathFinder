@@ -5,10 +5,11 @@ import java.util.List;
 
 import javax.swing.JComboBox;
 
+import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
 import fr.u_paris.gla.crazytrip.model.Line;
 
-public class SelectionLineComboBox extends JComboBox<String> implements DisplayLineObserver {
+public class SelectionLineComboBox extends JComboBox<String> implements DisplayLineObserver, ClearLineObserver {
     private transient List<Line> lines;
 
     public SelectionLineComboBox() {
@@ -24,6 +25,7 @@ public class SelectionLineComboBox extends JComboBox<String> implements DisplayL
 
     }
 
+    @Override
     public void clear() {
         removeAllItems();
         lines.clear();

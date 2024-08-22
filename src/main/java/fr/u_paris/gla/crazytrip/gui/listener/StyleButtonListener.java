@@ -18,6 +18,11 @@ public class StyleButtonListener extends MouseAdapter {
     }
 
     @Override
+    public void mouseClicked(MouseEvent e) {
+        button.action();
+    }
+
+    @Override
     public void mouseEntered(MouseEvent e) {
         button.setBackground(hoverColor);
     }
