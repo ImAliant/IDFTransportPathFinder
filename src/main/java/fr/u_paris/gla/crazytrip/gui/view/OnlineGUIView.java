@@ -10,36 +10,41 @@ import javax.swing.JPanel;
 import fr.u_paris.gla.crazytrip.gui.listener.ZoomInListener;
 import fr.u_paris.gla.crazytrip.gui.listener.ZoomOutListener;
 import fr.u_paris.gla.crazytrip.gui.maps.Maps;
+import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.LineSelectionPanelObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.ZoomInObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.ZoomOutObserver;
+import fr.u_paris.gla.crazytrip.gui.panel.InteractiveButtonPanel;
+import fr.u_paris.gla.crazytrip.gui.panel.ItineraryResultPanel;
+import fr.u_paris.gla.crazytrip.gui.panel.LineSelectionPanel;
+import fr.u_paris.gla.crazytrip.gui.panel.ResearchPanel;
 
 public class OnlineGUIView extends JFrame implements View {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
 
     private JPanel container;
-    private JPanel buttonContainer;
+    
+    private InteractiveButtonPanel interactiveButtonPanel;
+    /* private ResearchPanel researchPanel; */
+    private LineSelectionPanel lineSelectionPanel;
+    /* private ItineraryResultPanel itineraryResultPanel; */
     private Maps map;
-    private JButton zoomIn;
-    private JButton zoomOut;
 
     public OnlineGUIView(String title) {
         super(title);
 
         this.container = new JPanel();
-        this.buttonContainer = new JPanel();
+        this.interactiveButtonPanel = new InteractiveButtonPanel();
+        /* this.researchPanel = new ResearchPanel(); */
+        this.lineSelectionPanel = new LineSelectionPanel();
+        /* this.itineraryResultPanel = new ItineraryResultPanel(); */
         this.map = new Maps();
-        this.zoomIn = new JButton("Zoom In");
-        this.zoomOut = new JButton("Zoom Out");
     }
 
     @Override
     public void start() {
         init();
-
-        container.add(map, BorderLayout.CENTER);
-        buttonContainer.add(zoomIn, BorderLayout.WEST);
-        buttonContainer.add(zoomOut, BorderLayout.EAST);    
-        add(container, BorderLayout.CENTER);
-        add(buttonContainer, BorderLayout.SOUTH);
 
         pack();
     }
@@ -51,18 +56,41 @@ public class OnlineGUIView extends JFrame implements View {
         setExtendedState(MAXIMIZED_BOTH);
 
         container.setLayout(new BorderLayout());
-        buttonContainer.setLayout(new BorderLayout());
+
+        addComponentToContainer();
     }
 
-    public void addZoomInListener(ZoomInListener listener) {
-        zoomIn.addActionListener(listener);
+    private void addComponentToContainer() {
+        container.add(interactiveButtonPanel, BorderLayout.SOUTH);
+        /* container.add(researchPanel, BorderLayout.WEST); */
+        container.add(lineSelectionPanel, BorderLayout.NORTH);
+        /* container.add(itineraryResultPanel, BorderLayout.EAST); */
+        container.add(map, BorderLayout.CENTER);
+
+        add(container);
     }
 
-    public void addZoomOutListener(ZoomOutListener listener) {
-        zoomOut.addActionListener(listener);
+    public void addZoomInObserver(ZoomInObserver observer) {
+        interactiveButtonPanel.getZoomIn().addObserver(observer);
+    }
+
+    public void addZoomOutObserver(ZoomOutObserver observer) {
+        interactiveButtonPanel.getZoomOut().addObserver(observer);
+    }
+
+    public void addOpenLineButtonObserver(LineSelectionPanelObserver observer) {
+        interactiveButtonPanel.getOpenLineButton().addObserver(observer);
+    }
+
+    public void addTransportButtonsObservers(DisplayLineObserver observer) {
+        lineSelectionPanel.addTransportButtonsObservers(observer);
     }
 
     public Maps getMap() {
         return map;
+    }
+
+    public LineSelectionPanel getLineSelectionPanel() {
+        return lineSelectionPanel;
     }
 }

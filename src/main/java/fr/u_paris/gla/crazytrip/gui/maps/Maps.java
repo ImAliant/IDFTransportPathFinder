@@ -14,9 +14,11 @@ import org.jxmapviewer.viewer.TileFactoryInfo;
 
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationRender;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationWaypoint;
+import fr.u_paris.gla.crazytrip.gui.observer.ZoomInObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.ZoomOutObserver;
 import fr.u_paris.gla.crazytrip.model.Station;
 
-public class Maps extends JXMapViewer {
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver{
     /**
      * Default zoom of the map.
      */
@@ -95,10 +97,12 @@ public class Maps extends JXMapViewer {
         allStationWaypoints.parallelStream().forEach(waypoint -> waypoint.updateVisibility(zoom));
     }
 
+    @Override
     public void zoomIn() {
         adjustZoom(-1);
     }
 
+    @Override
     public void zoomOut() {
         adjustZoom(1);
     }
