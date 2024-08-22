@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import fr.u_paris.gla.crazytrip.gui.button.ValidateButton;
 import fr.u_paris.gla.crazytrip.gui.combobox.SelectionLineComboBox;
+import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
 
 public class SelectionPanel extends JPanel {
     private SelectionLineComboBox combobox;
@@ -20,12 +21,16 @@ public class SelectionPanel extends JPanel {
 
     private void initComponents() {
         combobox = new SelectionLineComboBox();
-        button = new ValidateButton();
+        button = new ValidateButton(combobox);
     }
 
     private void addComponents() {
         add(combobox);
         add(button);
+    }
+
+    public void addLinePainterObserver(LinePainterObserver observer) {
+        combobox.addObserver(observer);
     }
 
     public SelectionLineComboBox getCombobox() {

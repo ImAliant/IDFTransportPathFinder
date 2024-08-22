@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LineSelectionPanelObserver;
 
 public class LineSelectionPanel extends JPanel implements LineSelectionPanelObserver {
@@ -51,6 +52,10 @@ public class LineSelectionPanel extends JPanel implements LineSelectionPanelObse
 
     public void addClearButtonObserver(ClearLineObserver observer) {
         clearPanel.addObserver(observer);
+    }
+
+    public void addLinePainterObserver(LinePainterObserver observer) {
+        selectionPanel.addLinePainterObserver(observer);
     }
 
     public SelectionPanel getSelectionPanel() {

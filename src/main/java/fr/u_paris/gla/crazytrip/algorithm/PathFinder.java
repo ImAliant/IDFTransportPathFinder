@@ -3,8 +3,6 @@ package fr.u_paris.gla.crazytrip.algorithm;
 import fr.u_paris.gla.crazytrip.model.Network;
 import fr.u_paris.gla.crazytrip.model.Node;
 
-import java.util.List;
-
 public abstract class PathFinder {
     protected final Network network = Network.getInstance();
 

@@ -20,6 +20,6 @@ public class ClearLineButton extends StyleButton {
 
     @Override
     public void action() {
-        observers.forEach(ClearLineObserver::clear);
+        observers.forEach(ClearLineObserver::clearLine);
     }
 }

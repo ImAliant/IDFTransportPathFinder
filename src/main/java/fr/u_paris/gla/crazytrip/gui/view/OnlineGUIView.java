@@ -3,15 +3,13 @@ package fr.u_paris.gla.crazytrip.gui.view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import fr.u_paris.gla.crazytrip.gui.listener.ZoomInListener;
-import fr.u_paris.gla.crazytrip.gui.listener.ZoomOutListener;
 import fr.u_paris.gla.crazytrip.gui.maps.Maps;
 import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LineSelectionPanelObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomInObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomOutObserver;
@@ -89,6 +87,10 @@ public class OnlineGUIView extends JFrame implements View {
 
     public void addClearButtonObserver(ClearLineObserver observer) {
         lineSelectionPanel.addClearButtonObserver(observer);
+    }
+
+    public void addLinePainterObserver(LinePainterObserver observer) {
+        lineSelectionPanel.addLinePainterObserver(observer);
     }
 
     public Maps getMap() {

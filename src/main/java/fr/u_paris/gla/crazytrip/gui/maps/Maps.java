@@ -12,13 +12,14 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
+import fr.u_paris.gla.crazytrip.gui.maps.painter.PathPainter;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationRender;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationWaypoint;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomInObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomOutObserver;
 import fr.u_paris.gla.crazytrip.model.Station;
 
-public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver{
+public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
     /**
      * Default zoom of the map.
      */
@@ -38,6 +39,7 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     private transient StationRender wayPointPainter;
     private transient Set<StationWaypoint> allStationWaypoints = new HashSet<>();
+    private transient PathPainter pathPainter;
 
     public Maps() {
         super();
@@ -53,6 +55,8 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         setDefaultLocation();
 
         configureMapMouseListeners();
+
+        this.pathPainter = new PathPainter(this);
     }
 
     private void createTiles() {
@@ -120,5 +124,9 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     public Set<StationWaypoint> getAllStationWaypoints() {
         return allStationWaypoints;
+    }
+
+    public PathPainter getPathPaiter() {
+        return pathPainter;
     }
 }
