@@ -59,7 +59,13 @@ public class ConsoleController implements Controller {
 
     private void searchTrip() {
         Station startStation = selectStation("Enter the name of the start station: ", "Start station: ");
+        if (startStation == null) {
+            return;
+        }
         Station endStation = selectStation("Enter the name of the end station: ", "End station: ");
+        if (endStation == null) {
+            return;
+        }
 
         AstarPathFinder finder = new AstarPathFinder(startStation, endStation);
         ItineraryResult result = finder.findPath();
@@ -73,6 +79,10 @@ public class ConsoleController implements Controller {
         String name = view.getInput(inputMessage);
 
         List<Station> stations = StationDAO.findStation(name);
+        if (stations.isEmpty()) {
+            view.displayMessage("No station found");
+            return null;
+        }
 
         view.displayMessage("Stations found: ");
         for (int i = 0; i < stations.size(); i++) {

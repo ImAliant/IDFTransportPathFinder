@@ -26,7 +26,6 @@ public class AstarPathFinder extends PathFinder {
         Map<Node, Boolean> visited = new HashMap<>();
         PriorityQueue<AstarInfo> queue = new PriorityQueue<>(Comparator.comparing(AstarInfo::getLineChanges)
                 .thenComparingDouble(AstarInfo::getWeight));
-
         initialize(visited, queue);
 
         return run(visited, queue);
@@ -44,13 +43,15 @@ public class AstarPathFinder extends PathFinder {
             Node next = itinerary.get(current).getNode();
 
             Segment segment = network.getSegment(next, current);
+            Path path;
             if (segment == null) {
-                paths.addFirst(new Path(next, current, itinerary.get(current).getWeight()));
+                path = new Path(next, current, itinerary.get(current).getWeight());
             } else {
                 SegmentTransport st = (SegmentTransport) segment;
-                paths.addFirst(new Path(next, current, itinerary.get(current).getWeight(), st.getLineKey()));
+                path = new Path(next, current, itinerary.get(current).getWeight(), st.getLineKey());
             }
-            duration += segment.getDuration();
+            paths.addFirst(path);
+            duration += path.getWeight();
 
             current = next;
         }

@@ -129,12 +129,15 @@ public class Network {
         return graph.getOrDefault(node, Collections.emptySet());
     }
 
-    public Set<Segment> getSegmentsLineOfANode(Node node) {
+    public Set<Segment> getSegmentsTransportOfANode(Node node) {
         return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
     }
 
     public Segment getSegment(Node start, Node end) {
-        return graph.get(start).stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
+        Set<Segment> segments = graph.get(start);
+        if (segments == null) return null;
+        
+        return segments.stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
     }
 
     public Map<NodeKey, Station> getStations() {
