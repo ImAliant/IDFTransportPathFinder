@@ -1,4 +1,4 @@
-package fr.u_paris.gla.crazytrip.gui.maps.painter;
+package fr.u_paris.gla.crazytrip.gui.maps;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -11,18 +11,19 @@ import org.jxmapviewer.painter.Painter;
 import org.jxmapviewer.viewer.GeoPosition;
 
 import fr.u_paris.gla.crazytrip.dao.LineDAO;
-import fr.u_paris.gla.crazytrip.gui.maps.Maps;
+import fr.u_paris.gla.crazytrip.gui.maps.painter.RoutePainter;
 import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
 import fr.u_paris.gla.crazytrip.model.Coordinates;
 import fr.u_paris.gla.crazytrip.model.Line;
 import fr.u_paris.gla.crazytrip.model.Node;
+import fr.u_paris.gla.crazytrip.model.Route;
 import fr.u_paris.gla.crazytrip.model.SegmentTransport;
 
-public class PathPainter implements LinePainterObserver, ClearLineObserver {
+public class PathDrawer implements LinePainterObserver, ClearLineObserver {
     private Maps map;
 
-    public PathPainter(Maps map) {
+    public PathDrawer(Maps map) {
         this.map = map;
     }
 

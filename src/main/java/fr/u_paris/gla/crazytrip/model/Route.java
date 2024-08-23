@@ -1,4 +1,4 @@
-package fr.u_paris.gla.crazytrip.gui.maps.painter;
+package fr.u_paris.gla.crazytrip.model;
 
 import java.awt.Color;
 

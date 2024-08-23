@@ -12,22 +12,11 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
-import fr.u_paris.gla.crazytrip.gui.maps.painter.PathPainter;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationRender;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationWaypoint;
-import fr.u_paris.gla.crazytrip.gui.observer.ZoomInObserver;
-import fr.u_paris.gla.crazytrip.gui.observer.ZoomOutObserver;
 import fr.u_paris.gla.crazytrip.model.Station;
 
-public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver {
-    /**
-     * Default zoom of the map.
-     */
-    private static final int DEFAULT_ZOOM = 2;
-    /**
-     * Maximum zoom of the map.
-     */
-    public static final int MAX_ZOOM = 7;
+public class Maps extends JXMapViewer {
     /**
      * Default latitude of the map. Latitude of Paris.
      */
@@ -39,7 +28,8 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     private transient StationRender wayPointPainter;
     private transient Set<StationWaypoint> allStationWaypoints = new HashSet<>();
-    private transient PathPainter pathPainter;
+    private transient PathDrawer drawer;
+    private transient ZoomHandler zoomHandler;
 
     public Maps() {
         super();
@@ -56,7 +46,8 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
         configureMapMouseListeners();
 
-        this.pathPainter = new PathPainter(this);
+        this.drawer = new PathDrawer(this);
+        this.zoomHandler = new ZoomHandler(this);
     }
 
     private void createTiles() {
@@ -67,7 +58,6 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
 
     private void setDefaultLocation() {
         GeoPosition idf = new GeoPosition(IDF_LATITUDE, IDF_LONGITUDE);
-        setZoom(DEFAULT_ZOOM);
         setCenterPosition(idf);
     }
 
@@ -89,33 +79,10 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         this.add(waypoint.getButton());
     }
 
-    private void adjustZoom(int factor) {
-        setZoom(getZoom() + factor);
-
-        updateStationsVisibility();
-    }
-
-    private void updateStationsVisibility() {
+    public void updateStationsVisibility() {
         int zoom = getZoom();
 
         allStationWaypoints.parallelStream().forEach(waypoint -> waypoint.updateVisibility(zoom));
-    }
-
-    @Override
-    public void zoomIn() {
-        adjustZoom(-1);
-    }
-
-    @Override
-    public void zoomOut() {
-        adjustZoom(1);
-    }
-
-    @Override
-    public void setZoom(int zoom) {
-        if (zoom > MAX_ZOOM) return;
-
-        super.setZoom(zoom);
     }
 
     public StationRender getWayPointPainter() {
@@ -126,7 +93,11 @@ public class Maps extends JXMapViewer implements ZoomInObserver, ZoomOutObserver
         return allStationWaypoints;
     }
 
-    public PathPainter getPathPaiter() {
-        return pathPainter;
+    public PathDrawer getPathPaiter() {
+        return drawer;
+    }
+
+    public ZoomHandler getZoomHandler() {
+        return zoomHandler;
     }
 }

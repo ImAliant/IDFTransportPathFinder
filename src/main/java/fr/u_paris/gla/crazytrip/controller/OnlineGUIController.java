@@ -32,8 +32,8 @@ public class OnlineGUIController implements Controller {
     }
 
     private void addObservers() {
-        view.addZoomInObserver(view.getMap());
-        view.addZoomOutObserver(view.getMap());
+        view.addZoomInObserver(view.getMap().getZoomHandler());
+        view.addZoomOutObserver(view.getMap().getZoomHandler());
         view.addOpenLineButtonObserver(view.getLineSelectionPanel());
         view.addTransportButtonsObservers(view.getLineSelectionPanel().getSelectionPanel().getCombobox());
         view.addClearButtonObserver(view.getLineSelectionPanel().getSelectionPanel().getCombobox());

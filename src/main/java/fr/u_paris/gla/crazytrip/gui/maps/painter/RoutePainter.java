@@ -10,6 +10,8 @@ import java.util.List;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.painter.Painter;
 
+import fr.u_paris.gla.crazytrip.model.Route;
+
 public class RoutePainter implements Painter<JXMapViewer> {
     private List<Route> routes;
     private boolean antialias = true;
