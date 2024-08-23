@@ -2,6 +2,7 @@ package fr.u_paris.gla.crazytrip.gui.combobox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 import javax.swing.JComboBox;
 
@@ -25,7 +26,11 @@ public class SelectionLineComboBox extends JComboBox<String> implements DisplayL
         for (Line line : lines) {
             addItem(line.getName());
         }
+    }
 
+    private void sortLines(List<Line> lines) {
+        Collections.sort(lines, (line1, line2) -> line1.getName().compareTo(line2.getName()));
+        this.lines = lines;
     }
 
     @Override
@@ -38,7 +43,8 @@ public class SelectionLineComboBox extends JComboBox<String> implements DisplayL
     public void update(List<Line> lines) {
         clearLine();
 
-        this.lines = lines;
+        sortLines(lines);
+
         addLineItems();
     }
 
