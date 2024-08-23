@@ -21,4 +21,8 @@ public class ItineraryResult {
         }
         return sb.toString();
     }
+
+    public List<Path> getPaths() {
+        return paths;
+    }
 }

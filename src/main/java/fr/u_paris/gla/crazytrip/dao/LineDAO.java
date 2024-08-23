@@ -54,4 +54,8 @@ public class LineDAO {
             .filter(segment -> segment.getLineKey().equals(key))
             .collect(Collectors.toSet());
     }
+
+    public static Line findLineByKey(LineKey key) {
+        return network.getLines().get(key);
+    }
 }
