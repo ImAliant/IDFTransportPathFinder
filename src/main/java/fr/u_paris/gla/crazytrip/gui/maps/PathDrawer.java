@@ -16,6 +16,7 @@ import fr.u_paris.gla.crazytrip.dao.LineDAO;
 import fr.u_paris.gla.crazytrip.gui.maps.painter.RoutePainter;
 import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.PathResultObserver;
 import fr.u_paris.gla.crazytrip.model.Coordinates;
 import fr.u_paris.gla.crazytrip.model.Line;
 import fr.u_paris.gla.crazytrip.model.Node;
@@ -23,7 +24,7 @@ import fr.u_paris.gla.crazytrip.model.Route;
 import fr.u_paris.gla.crazytrip.model.SegmentTransport;
 import fr.u_paris.gla.crazytrip.model.key.LineKey;
 
-public class PathDrawer implements LinePainterObserver, ClearLineObserver {
+public class PathDrawer implements LinePainterObserver, PathResultObserver, ClearLineObserver {
     private Maps map;
 
     public PathDrawer(Maps map) {
@@ -37,6 +38,7 @@ public class PathDrawer implements LinePainterObserver, ClearLineObserver {
         setPainter(routes);
     }
 
+    @Override
     public void showResult(ItineraryResult result) {
         List<Route> routes = convertItineraryToRoute(result);
 
