@@ -1,7 +1,6 @@
 package fr.u_paris.gla.crazytrip.gui.maps;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.event.MouseInputListener;
@@ -13,12 +12,10 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
-import fr.u_paris.gla.crazytrip.algorithm.AstarPathFinder;
-import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
-import fr.u_paris.gla.crazytrip.dao.StationDAO;
+import fr.u_paris.gla.crazytrip.gui.listener.SelectPositionListener;
+import fr.u_paris.gla.crazytrip.gui.maps.popup.SelectPositionPopupMenu;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationRender;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationWaypoint;
-import fr.u_paris.gla.crazytrip.model.Coordinates;
 import fr.u_paris.gla.crazytrip.model.Station;
 
 public class Maps extends JXMapViewer {
@@ -31,10 +28,12 @@ public class Maps extends JXMapViewer {
      */
     private static final double IDF_LONGITUDE = 2.342877;
 
-    private transient StationRender wayPointPainter;
     private transient Set<StationWaypoint> allStationWaypoints = new HashSet<>();
+
+    private transient StationRender wayPointPainter;
     private transient PathDrawer drawer;
     private transient ZoomHandler zoomHandler;
+    private transient SelectPositionPopupMenu popupMenu;
 
     public Maps() {
         super();
@@ -53,6 +52,7 @@ public class Maps extends JXMapViewer {
 
         this.drawer = new PathDrawer(this);
         this.zoomHandler = new ZoomHandler(this);
+        this.popupMenu = new SelectPositionPopupMenu();
     }
 
     private void createTiles() {
@@ -67,9 +67,12 @@ public class Maps extends JXMapViewer {
     }
 
     private void configureMapMouseListeners() {
-        MouseInputListener listener = new PanMouseInputListener(this);
-        addMouseListener(listener);
-        addMouseMotionListener(listener);
+        MouseInputListener mouseInputlistener = new PanMouseInputListener(this);
+        SelectPositionListener selectPositionListener = new SelectPositionListener(this);
+        addMouseListener(mouseInputlistener);
+        addMouseMotionListener(mouseInputlistener);
+
+        addMouseListener(selectPositionListener);
     }
 
     public void initPainter() {
@@ -104,5 +107,9 @@ public class Maps extends JXMapViewer {
 
     public ZoomHandler getZoomHandler() {
         return zoomHandler;
+    }
+
+    public SelectPositionPopupMenu getPopupMenu() {
+        return popupMenu;
     }
 }

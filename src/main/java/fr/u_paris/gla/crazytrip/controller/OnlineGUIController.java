@@ -40,6 +40,8 @@ public class OnlineGUIController implements Controller {
         view.addClearButtonObserver(view.getMap().getPathPaiter());
         view.addLinePainterObserver(view.getMap().getPathPaiter());
         view.addOpenResearchButtonObserver(view.getResearchPanel());
+        view.addPopupStartPositionObserver(view.getResearchPanel().getDepartureField().getTextField());
+        view.addPopupEndPositionObserver(view.getResearchPanel().getArrivalField().getTextField());
     }
 
     private void addStationMarkers() {

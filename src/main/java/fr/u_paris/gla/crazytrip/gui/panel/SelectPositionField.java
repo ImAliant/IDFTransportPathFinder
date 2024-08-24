@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 
-import fr.u_paris.gla.crazytrip.gui.button.SearchByPositionButton;
 import fr.u_paris.gla.crazytrip.gui.combobox.SuggestionComboBox;
 import fr.u_paris.gla.crazytrip.gui.label.StyleLabel;
 import fr.u_paris.gla.crazytrip.gui.observer.SuggestionSelectionObserver;
@@ -18,7 +17,6 @@ public abstract class SelectPositionField extends JPanel implements SuggestionSe
     
     private StyleLabel label;
     private LocationTextField textField;
-    private SearchByPositionButton button;
     private SuggestionComboBox comboBox;
 
     private GridBagConstraints constraints;
@@ -51,13 +49,11 @@ public abstract class SelectPositionField extends JPanel implements SuggestionSe
         label = new StyleLabel(labelText);
         comboBox = new SuggestionComboBox();
         textField = new LocationTextField(comboBox);
-        button = new SearchByPositionButton();
     }
 
     private void addComponents() {
         add(label);
         add(textField);
-        add(button);
 
         constraints.insets.set(MARGIN, MARGIN, MARGIN, MARGIN);
         add(comboBox);
@@ -92,10 +88,6 @@ public abstract class SelectPositionField extends JPanel implements SuggestionSe
 
     public LocationTextField getTextField() {
         return textField;
-    }
-
-    public SearchByPositionButton getButton() {
-        return button;
     }
 
     public SuggestionComboBox getComboBox() {

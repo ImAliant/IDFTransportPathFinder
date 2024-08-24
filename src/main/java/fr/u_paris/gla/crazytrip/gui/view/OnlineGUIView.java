@@ -11,6 +11,7 @@ import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.PanelObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.SelectPositionObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomInObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomOutObserver;
 import fr.u_paris.gla.crazytrip.gui.panel.InteractiveButtonPanel;
@@ -95,6 +96,14 @@ public class OnlineGUIView extends JFrame implements View {
 
     public void addLinePainterObserver(LinePainterObserver observer) {
         lineSelectionPanel.addLinePainterObserver(observer);
+    }
+    
+    public void addPopupStartPositionObserver(SelectPositionObserver observer) {
+        map.getPopupMenu().addObserverForStartPosition(observer);
+    }
+
+    public void addPopupEndPositionObserver(SelectPositionObserver observer) {
+        map.getPopupMenu().addObserverForEndPosition(observer);
     }
 
     public Maps getMap() {
