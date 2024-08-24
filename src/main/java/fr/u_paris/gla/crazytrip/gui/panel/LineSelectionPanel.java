@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
-import fr.u_paris.gla.crazytrip.gui.observer.LineSelectionPanelObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.PanelObserver;
 
-public class LineSelectionPanel extends JPanel implements LineSelectionPanelObserver {
+public class LineSelectionPanel extends JPanel implements PanelObserver {
     /** Background color of the panel. */
     private static final Color BACKGROUND_COLOR = new Color(1, 121, 121);
 

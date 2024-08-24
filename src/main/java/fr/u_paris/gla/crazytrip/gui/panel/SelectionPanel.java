@@ -2,13 +2,13 @@ package fr.u_paris.gla.crazytrip.gui.panel;
 
 import javax.swing.JPanel;
 
-import fr.u_paris.gla.crazytrip.gui.button.ValidateButton;
+import fr.u_paris.gla.crazytrip.gui.button.ValidateLineDrawButton;
 import fr.u_paris.gla.crazytrip.gui.combobox.SelectionLineComboBox;
 import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
 
 public class SelectionPanel extends JPanel {
     private SelectionLineComboBox combobox;
-    private ValidateButton button;
+    private ValidateLineDrawButton button;
 
     public SelectionPanel() {
         super();
@@ -21,7 +21,7 @@ public class SelectionPanel extends JPanel {
 
     private void initComponents() {
         combobox = new SelectionLineComboBox();
-        button = new ValidateButton(combobox);
+        button = new ValidateLineDrawButton(combobox);
     }
 
     private void addComponents() {
@@ -37,7 +37,7 @@ public class SelectionPanel extends JPanel {
         return combobox;
     }
 
-    public ValidateButton getButton() {
+    public ValidateLineDrawButton getButton() {
         return button;
     }
 } 
