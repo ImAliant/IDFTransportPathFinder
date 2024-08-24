@@ -53,7 +53,7 @@ public class ResearchPanel extends JPanel implements PanelObserver {
     private void initComponents() {
         departureField = new DepartureField();
         arrivalField = new ArrivalField();
-        researchButton = new ResearchButton();
+        researchButton = new ResearchButton(departureField, arrivalField);
     }
 
     private void addComponents() {

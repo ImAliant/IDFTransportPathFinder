@@ -105,7 +105,7 @@ public class OnlineGUIView extends JFrame implements View {
     public void addPopupEndPositionObserver(SelectPositionObserver observer) {
         map.getPopupMenu().addObserverForEndPosition(observer);
     }
-
+    
     public Maps getMap() {
         return map;
     }

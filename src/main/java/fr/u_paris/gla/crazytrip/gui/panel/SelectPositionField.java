@@ -87,7 +87,7 @@ public abstract class SelectPositionField extends JPanel implements SelectPositi
         comboBox.addObserver(textField);
     }
 
-    public Node getSelectedStation() {
+    public Node getSelectedNode() {
         return selectedNode;
     }
 
