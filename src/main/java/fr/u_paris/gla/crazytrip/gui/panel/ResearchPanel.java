@@ -79,4 +79,8 @@ public class ResearchPanel extends JPanel implements PanelObserver {
     public ArrivalField getArrivalField() {
         return arrivalField;
     }
+
+    public ResearchButton getResearchButton() {
+        return researchButton;
+    }
 }

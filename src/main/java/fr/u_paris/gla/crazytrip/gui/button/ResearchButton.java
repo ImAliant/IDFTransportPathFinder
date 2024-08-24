@@ -1,13 +1,19 @@
 package fr.u_paris.gla.crazytrip.gui.button;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.u_paris.gla.crazytrip.algorithm.AstarPathFinder;
 import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
+import fr.u_paris.gla.crazytrip.gui.observer.PathResultObserver;
 import fr.u_paris.gla.crazytrip.gui.panel.ArrivalField;
 import fr.u_paris.gla.crazytrip.gui.panel.DepartureField;
 import fr.u_paris.gla.crazytrip.model.Node;
 
 public class ResearchButton extends StyleButton {
     private static final String TEXT = "Rechercher";
+
+    private transient List<PathResultObserver> observers = new ArrayList<>();
 
     private DepartureField departureField;
     private ArrivalField arrivalField;
@@ -29,6 +35,14 @@ public class ResearchButton extends StyleButton {
         AstarPathFinder pathFinder = new AstarPathFinder(departure, arrival);
         ItineraryResult result = pathFinder.findPath();
 
-        // TODO display result
+        showResult(result);
+    }
+
+    public void addObserver(PathResultObserver observer) {
+        observers.add(observer);
+    }
+
+    public void showResult(ItineraryResult result) {
+        observers.forEach(observer -> observer.showResult(result));
     }
 }
