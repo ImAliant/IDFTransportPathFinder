@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 import fr.u_paris.gla.crazytrip.gui.combobox.SuggestionComboBox;
 import fr.u_paris.gla.crazytrip.gui.listener.LocationTextFieldDocumentListener;
 import fr.u_paris.gla.crazytrip.gui.observer.SuggestionSelectionObserver;
-import fr.u_paris.gla.crazytrip.model.Station;
+import fr.u_paris.gla.crazytrip.model.Node;
 
 public class LocationTextField extends JTextField implements SuggestionSelectionObserver {
     private static final int WIDTH = 200;
@@ -22,7 +22,7 @@ public class LocationTextField extends JTextField implements SuggestionSelection
     }
 
     @Override
-    public void update(Station station) {
+    public void update(Node station) {
         setText(station.toString());
     }
 }

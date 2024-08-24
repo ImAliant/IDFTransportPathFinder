@@ -11,7 +11,7 @@ import fr.u_paris.gla.crazytrip.gui.combobox.SuggestionComboBox;
 import fr.u_paris.gla.crazytrip.gui.label.StyleLabel;
 import fr.u_paris.gla.crazytrip.gui.observer.SuggestionSelectionObserver;
 import fr.u_paris.gla.crazytrip.gui.textfield.LocationTextField;
-import fr.u_paris.gla.crazytrip.model.Station;
+import fr.u_paris.gla.crazytrip.model.Node;
 
 public abstract class SelectPositionField extends JPanel implements SuggestionSelectionObserver {
     private static final int MARGIN = 10;
@@ -23,7 +23,7 @@ public abstract class SelectPositionField extends JPanel implements SuggestionSe
 
     private GridBagConstraints constraints;
 
-    private transient Station selectedStation;
+    private transient Node selectedNode;
 
     protected SelectPositionField(String labelText) {
         super();
@@ -72,9 +72,9 @@ public abstract class SelectPositionField extends JPanel implements SuggestionSe
     }
 
     @Override
-    public void update(Station station) {
+    public void update(Node station) {
         clearSelectedStation();
-        selectedStation = station;
+        selectedNode = station;
     }
 
     public void addObservers() {
@@ -82,12 +82,12 @@ public abstract class SelectPositionField extends JPanel implements SuggestionSe
         comboBox.addObserver(textField);
     }
 
-    public Station getSelectedStation() {
-        return selectedStation;
+    public Node getSelectedStation() {
+        return selectedNode;
     }
 
     public void clearSelectedStation() {
-        selectedStation = null;
+        selectedNode = null;
     }
 
     public LocationTextField getTextField() {
