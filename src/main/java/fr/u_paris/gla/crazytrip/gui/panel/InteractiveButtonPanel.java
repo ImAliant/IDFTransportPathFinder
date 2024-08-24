@@ -14,7 +14,7 @@ public class InteractiveButtonPanel extends JPanel {
     /** Background color of the panel. */
     private static final Color BACKGROUND_COLOR = new Color(1, 121, 111);
     /** Button to open the research panel. */
-    /* private OpenResearchPanelButton openResearchButton; */
+    private OpenResearchPanelButton openResearchButton;
     /** Button to open the line display panel. */
     private OpenLineSelectionPanelButton openLineSelectionButton;
     /** Zoom in button. */
@@ -28,7 +28,7 @@ public class InteractiveButtonPanel extends JPanel {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         setBackground(BACKGROUND_COLOR);
 
-        /* openResearchButton = new OpenResearchPanelButton(); */
+        openResearchButton = new OpenResearchPanelButton();
         openLineSelectionButton = new OpenLineSelectionPanelButton();
         zoomIn = new ZoomInButton();
         zoomOut = new ZoomOutButton();
@@ -37,15 +37,15 @@ public class InteractiveButtonPanel extends JPanel {
     }
 
     private void initComponents() {
-        /* add(openResearchButton); */
+        add(openResearchButton);
         add(openLineSelectionButton);
         add(zoomIn);
         add(zoomOut);
     }
 
-    /* public OpenResearchPanelButton getOpenResearchButton() {
+    public OpenResearchPanelButton getOpenResearchButton() {
         return openResearchButton;
-    } */
+    }
 
     public OpenLineSelectionPanelButton getOpenLineButton() {
         return openLineSelectionButton;

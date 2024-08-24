@@ -1,6 +1,7 @@
 package fr.u_paris.gla.crazytrip.gui.maps;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.event.MouseInputListener;
@@ -12,8 +13,12 @@ import org.jxmapviewer.viewer.DefaultTileFactory;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.TileFactoryInfo;
 
+import fr.u_paris.gla.crazytrip.algorithm.AstarPathFinder;
+import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
+import fr.u_paris.gla.crazytrip.dao.StationDAO;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationRender;
 import fr.u_paris.gla.crazytrip.gui.maps.waypoint.StationWaypoint;
+import fr.u_paris.gla.crazytrip.model.Coordinates;
 import fr.u_paris.gla.crazytrip.model.Station;
 
 public class Maps extends JXMapViewer {

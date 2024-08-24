@@ -10,7 +10,7 @@ import fr.u_paris.gla.crazytrip.gui.maps.Maps;
 import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
-import fr.u_paris.gla.crazytrip.gui.observer.LineSelectionPanelObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.PanelObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomInObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomOutObserver;
 import fr.u_paris.gla.crazytrip.gui.panel.InteractiveButtonPanel;
@@ -25,7 +25,7 @@ public class OnlineGUIView extends JFrame implements View {
     private JPanel container;
     
     private InteractiveButtonPanel interactiveButtonPanel;
-    /* private ResearchPanel researchPanel; */
+    private ResearchPanel researchPanel;
     private LineSelectionPanel lineSelectionPanel;
     /* private ItineraryResultPanel itineraryResultPanel; */
     private Maps map;
@@ -35,7 +35,7 @@ public class OnlineGUIView extends JFrame implements View {
 
         this.container = new JPanel();
         this.interactiveButtonPanel = new InteractiveButtonPanel();
-        /* this.researchPanel = new ResearchPanel(); */
+        this.researchPanel = new ResearchPanel();
         this.lineSelectionPanel = new LineSelectionPanel();
         /* this.itineraryResultPanel = new ItineraryResultPanel(); */
         this.map = new Maps();
@@ -61,7 +61,7 @@ public class OnlineGUIView extends JFrame implements View {
 
     private void addComponentToContainer() {
         container.add(interactiveButtonPanel, BorderLayout.SOUTH);
-        /* container.add(researchPanel, BorderLayout.WEST); */
+        container.add(researchPanel, BorderLayout.WEST);
         container.add(lineSelectionPanel, BorderLayout.NORTH);
         /* container.add(itineraryResultPanel, BorderLayout.EAST); */
         container.add(map, BorderLayout.CENTER);
@@ -77,8 +77,12 @@ public class OnlineGUIView extends JFrame implements View {
         interactiveButtonPanel.getZoomOut().addObserver(observer);
     }
 
-    public void addOpenLineButtonObserver(LineSelectionPanelObserver observer) {
+    public void addOpenLineButtonObserver(PanelObserver observer) {
         interactiveButtonPanel.getOpenLineButton().addObserver(observer);
+    }
+
+    public void addOpenResearchButtonObserver(PanelObserver observer) {
+        interactiveButtonPanel.getOpenResearchButton().addObserver(observer);
     }
 
     public void addTransportButtonsObservers(DisplayLineObserver observer) {
@@ -99,5 +103,9 @@ public class OnlineGUIView extends JFrame implements View {
 
     public LineSelectionPanel getLineSelectionPanel() {
         return lineSelectionPanel;
+    }
+
+    public ResearchPanel getResearchPanel() {
+        return researchPanel;
     }
 }

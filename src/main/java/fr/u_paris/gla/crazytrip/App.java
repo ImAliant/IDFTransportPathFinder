@@ -85,12 +85,23 @@ public class App {
 		Properties props = readApplicationProperties();
 		String title = props.getProperty("app.name");
 
-		try {
-			NetworkBackendHandler.extraction();
-		} catch (IOException e) {
-			e.printStackTrace();
+		//
+		boolean extract = true;
+		for (String arg: args) {
+			if (arg.equals("--noextract")) {
+				extract = false;
+			}
 		}
-
+		
+		if (extract) {
+			try {
+				NetworkBackendHandler.extraction();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		//
+		
 		Network.getInstance();
 
 		String type = "ONLINE";

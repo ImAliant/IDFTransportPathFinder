@@ -39,6 +39,7 @@ public class OnlineGUIController implements Controller {
         view.addClearButtonObserver(view.getLineSelectionPanel().getSelectionPanel().getCombobox());
         view.addClearButtonObserver(view.getMap().getPathPaiter());
         view.addLinePainterObserver(view.getMap().getPathPaiter());
+        view.addOpenResearchButtonObserver(view.getResearchPanel());
     }
 
     private void addStationMarkers() {
