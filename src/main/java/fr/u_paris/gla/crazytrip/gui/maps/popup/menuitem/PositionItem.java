@@ -27,6 +27,6 @@ public abstract class PositionItem extends JMenuItem {
     }
 
     public void setPosition() {
-        observers.forEach(observer -> observer.setPosition(menu.getClickedPosition()));
+        observers.forEach(observer -> observer.update(menu.getClickedPosition()));
     }
 }

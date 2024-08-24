@@ -6,13 +6,16 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
 
+import org.jxmapviewer.viewer.GeoPosition;
+
 import fr.u_paris.gla.crazytrip.gui.combobox.SuggestionComboBox;
 import fr.u_paris.gla.crazytrip.gui.label.StyleLabel;
-import fr.u_paris.gla.crazytrip.gui.observer.SuggestionSelectionObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.SelectPositionObserver;
 import fr.u_paris.gla.crazytrip.gui.textfield.LocationTextField;
 import fr.u_paris.gla.crazytrip.model.Node;
+import fr.u_paris.gla.crazytrip.model.PersonalizedNode;
 
-public abstract class SelectPositionField extends JPanel implements SuggestionSelectionObserver {
+public abstract class SelectPositionField extends JPanel implements SelectPositionObserver {
     private static final int MARGIN = 10;
     
     private StyleLabel label;
@@ -71,6 +74,12 @@ public abstract class SelectPositionField extends JPanel implements SuggestionSe
     public void update(Node station) {
         clearSelectedStation();
         selectedNode = station;
+    }
+
+    @Override
+    public void update(GeoPosition position) {
+        clearSelectedStation();
+        selectedNode = new PersonalizedNode(position.getLatitude(), position.getLongitude());
     }
 
     public void addObservers() {

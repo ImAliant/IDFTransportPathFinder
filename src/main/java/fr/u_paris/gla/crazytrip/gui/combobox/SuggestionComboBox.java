@@ -8,14 +8,14 @@ import javax.swing.JComboBox;
 
 import fr.u_paris.gla.crazytrip.dao.StationDAO;
 import fr.u_paris.gla.crazytrip.gui.listener.SuggestionComboBoxListener;
-import fr.u_paris.gla.crazytrip.gui.observer.SuggestionSelectionObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.SelectPositionObserver;
 import fr.u_paris.gla.crazytrip.model.Station;
 
 public class SuggestionComboBox extends JComboBox<String> {
     private static final int WIDTH = 200;
     private static final int HEIGHT = 50;
 
-    private transient List<SuggestionSelectionObserver> observers = new ArrayList<>();
+    private transient List<SelectPositionObserver> observers = new ArrayList<>();
     private transient List<Station> stations;
 
     public SuggestionComboBox() {
@@ -59,12 +59,12 @@ public class SuggestionComboBox extends JComboBox<String> {
         setVisible(!isVisible());
     }
 
-    public void addObserver(SuggestionSelectionObserver observer) {
+    public void addObserver(SelectPositionObserver observer) {
         observers.add(observer);
     }
 
     public void notifyStation(Station station) {
-        for (SuggestionSelectionObserver observer: observers) {
+        for (SelectPositionObserver observer: observers) {
             observer.update(station);
         }
     }

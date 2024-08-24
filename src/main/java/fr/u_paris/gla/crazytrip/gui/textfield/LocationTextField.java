@@ -9,10 +9,9 @@ import org.jxmapviewer.viewer.GeoPosition;
 import fr.u_paris.gla.crazytrip.gui.combobox.SuggestionComboBox;
 import fr.u_paris.gla.crazytrip.gui.listener.LocationTextFieldDocumentListener;
 import fr.u_paris.gla.crazytrip.gui.observer.SelectPositionObserver;
-import fr.u_paris.gla.crazytrip.gui.observer.SuggestionSelectionObserver;
 import fr.u_paris.gla.crazytrip.model.Node;
 
-public class LocationTextField extends JTextField implements SuggestionSelectionObserver, SelectPositionObserver {
+public class LocationTextField extends JTextField implements SelectPositionObserver {
     private static final int WIDTH = 200;
     private static final int HEIGHT = 25;
 
@@ -30,7 +29,7 @@ public class LocationTextField extends JTextField implements SuggestionSelection
     }
 
     @Override
-    public void setPosition(GeoPosition position) {
+    public void update(GeoPosition position) {
         setText(position.getLatitude() + ", " + position.getLongitude());
     }
 }
