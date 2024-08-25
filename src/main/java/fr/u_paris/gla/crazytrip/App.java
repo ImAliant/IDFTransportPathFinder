@@ -5,11 +5,7 @@ import java.io.PrintStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import javax.swing.SwingUtilities;
-
-import fr.u_paris.gla.crazytrip.controller.ConsoleController;
 import fr.u_paris.gla.crazytrip.gui.UserInterface;
-import fr.u_paris.gla.crazytrip.gui.view.ConsoleView;
 import fr.u_paris.gla.crazytrip.model.Network;
 import fr.u_paris.gla.crazytrip.utils.NetworkBackendHandler;
 
@@ -17,6 +13,8 @@ public class App {
 	private static final String UNSPECIFIED = "Unspecified"; //$NON-NLS-1$
 	private static final String INFOCMD = "--info";
 	private static final String GUICMD = "--gui";
+	private static final String CONSOLECMD = "--console";
+	private static final String NOEXTRACTCMD = "--noextract";
 
 	public static void main(String[] args) {
 		if (args.length == 0) return;
@@ -43,10 +41,17 @@ public class App {
 		Properties props = readApplicationProperties();
 		String title = props.getProperty("app.name");
 
-		//
+		checkExtraction(args);
+		
+		Network.getInstance();
+
+		checkInterface(args, title);
+	}
+
+	private static void checkExtraction(String[] args) {
 		boolean extract = true;
 		for (String arg: args) {
-			if (arg.equals("--noextract")) {
+			if (NOEXTRACTCMD.equals(arg)) {
 				extract = false;
 			}
 		}
@@ -58,13 +63,12 @@ public class App {
 				e.printStackTrace();
 			}
 		}
-		//
-		
-		Network.getInstance();
+	}
 
+	private static void checkInterface(String[] args, String title) {
 		String type = "ONLINE";
 		for (String arg: args) {
-			if (arg.equals("--console")) {
+			if (CONSOLECMD.equals(arg)) {
 				type = "CONSOLE";
 			}
 		}
