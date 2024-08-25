@@ -1,6 +1,6 @@
 package fr.u_paris.gla.crazytrip.model;
 
-public abstract sealed class Node permits Station {
+public abstract sealed class Node permits Station, PersonalizedNode {
     private final String name;
     private final Coordinates coordinates;
 

@@ -10,67 +10,63 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import fr.u_paris.gla.crazytrip.dao.StationDAO;
 import fr.u_paris.gla.crazytrip.model.Line;
-import fr.u_paris.gla.crazytrip.model.Network;
 
-public class DijkstraPathFinder {
-    private static final Network network = Network.getInstance();
-
-    private DijkstraPathFinder() {
+public class AstarPathFinder extends PathFinder {
+    public AstarPathFinder(Node start, Node end) {
+        super(start, end);
     }
 
-    public static Itinerary dijkstra(Node start, Node end) {
-        if (start == null)
-            throw new IllegalArgumentException("Start node is null");
-        if (end == null)
-            throw new IllegalArgumentException("End node is null");
-
+    private Itinerary astar() {
         Map<Node, Boolean> visited = new HashMap<>();
-        PriorityQueue<DijkstraInfo> queue = new PriorityQueue<>(Comparator.comparing(DijkstraInfo::getLineChanges)
-                .thenComparingDouble(DijkstraInfo::getWeight));
+        PriorityQueue<AstarInfo> queue = new PriorityQueue<>(Comparator.comparing(AstarInfo::getLineChanges)
+                .thenComparingDouble(AstarInfo::getWeight));
+        initialize(visited, queue);
 
-        initialize(start, visited, queue);
-
-        return runDijkstra(start, end, visited, queue);
+        return run(visited, queue);
     }
 
-    public static List<DijkstraPath> getPath(Node start, Node end) {
-        Itinerary itinerary = dijkstra(start, end);
+    @Override
+    public ItineraryResult findPath() {
+        Itinerary itinerary = astar();
 
-        LinkedList<DijkstraPath> paths = new LinkedList<>();
+        LinkedList<Path> paths = new LinkedList<>();
+        double duration = itinerary.get(end).getWeight();
         Node current = end;
 
         while (!current.equals(start) && itinerary.contains(current)) {
             Node next = itinerary.get(current).getNode();
 
             Segment segment = network.getSegment(next, current);
+            Path path;
             if (segment == null) {
-                paths.addFirst(new DijkstraPath(next, current, itinerary.get(current).getWeight()));
+                path = new Path(next, current, itinerary.get(current).getWeight());
             } else {
                 SegmentTransport st = (SegmentTransport) segment;
-                paths.addFirst(new DijkstraPath(next, current, itinerary.get(current).getWeight(), st.getLineKey()));
+                path = new Path(next, current, itinerary.get(current).getWeight(), st.getLineKey());
             }
+            paths.addFirst(path);
+            duration += path.getWeight();
 
             current = next;
         }
 
-        return paths;
+        return new ItineraryResult(paths, duration);
     }
 
-    private static Itinerary runDijkstra(Node start, Node end, Map<Node, Boolean> visited,
-            PriorityQueue<DijkstraInfo> queue) {
+    private Itinerary run(Map<Node, Boolean> visited, PriorityQueue<AstarInfo> queue) {
         Itinerary itinerary = new Itinerary();
         itinerary.add(start, new BestWeight(start, 0, null));
 
         boolean first = true;
 
         while (!queue.isEmpty()) {
-            DijkstraInfo current = queue.poll();
+            AstarInfo current = queue.poll();
             Node currentNode = current.getNode();
 
             if (Boolean.TRUE.equals(visited.get(currentNode))) {
@@ -84,17 +80,19 @@ public class DijkstraPathFinder {
 
             Set<Segment> neighbors = new HashSet<>(network.getSegments(currentNode));
 
-            if (!first) createWalkSegmentsToCloseStation(currentNode, neighbors);
+            if (!first)
+                createWalkSegmentsToCloseStation(currentNode, neighbors);
 
             processNeighbors(queue, itinerary, current, currentNode, neighbors);
 
-            if (first) first = false;
+            if (first)
+                first = false;
         }
 
         return null;
     }
 
-    private static void processNeighbors(PriorityQueue<DijkstraInfo> queue, Itinerary itinerary, DijkstraInfo current,
+    private void processNeighbors(PriorityQueue<AstarInfo> queue, Itinerary itinerary, AstarInfo current,
             Node currentNode, Set<Segment> neighbors) {
         for (Segment segment : neighbors) {
             Node neighbor = segment.getEndPoint();
@@ -113,31 +111,31 @@ public class DijkstraPathFinder {
         }
     }
 
-    private static void createWalkSegmentsToCloseStation(Node currentNode, Set<Segment> neighbors) {
-        Set<Station> closeStations = network.findCloseStations(currentNode);
+    private void createWalkSegmentsToCloseStation(Node currentNode, Set<Segment> neighbors) {
+        Set<Station> closeStations = StationDAO.findCloseStations(currentNode);
         createWalkSegments(currentNode, closeStations, neighbors);
     }
 
-    private static void createWalkSegments(Node currentNode, Set<Station> closeStations, Set<Segment> neighbors) {
+    private void createWalkSegments(Node currentNode, Set<Station> closeStations, Set<Segment> neighbors) {
         for (Station station : closeStations) {
             SegmentWalk walkSegment = new SegmentWalk(currentNode, station);
             neighbors.add(walkSegment);
         }
     }
 
-    private static void addInfoInQueue(Itinerary itinerary, Node currentNode, Node neighborNode, Line neighborLine,
-            double weight, int lineChanges, PriorityQueue<DijkstraInfo> queue) {
+    private void addInfoInQueue(Itinerary itinerary, Node currentNode, Node neighborNode, Line neighborLine,
+            double weight, int lineChanges, PriorityQueue<AstarInfo> queue) {
         BestWeight neighborWeight = itinerary.get(neighborNode);
         if (neighborWeight == null || weight < neighborWeight.getWeight()) {
             itinerary.add(neighborNode, new BestWeight(currentNode, weight, neighborLine));
-            queue.add(new DijkstraInfo(neighborNode, weight, lineChanges, neighborLine));
+            queue.add(new AstarInfo(neighborNode, weight, lineChanges, neighborLine));
         }
     }
 
-    private static void initialize(Node start, Map<Node, Boolean> visited, PriorityQueue<DijkstraInfo> queue) {
+    private void initialize(Map<Node, Boolean> visited, PriorityQueue<AstarInfo> queue) {
         Set<Node> allNodes = network.getNodes();
         allNodes.forEach(node -> visited.put(node, false));
 
-        queue.add(new DijkstraInfo(start, 0, 0, null));
+        queue.add(new AstarInfo(start, 0, 0, null));
     }
 }

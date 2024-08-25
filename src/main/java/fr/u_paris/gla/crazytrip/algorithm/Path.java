@@ -3,7 +3,7 @@ package fr.u_paris.gla.crazytrip.algorithm;
 import fr.u_paris.gla.crazytrip.model.Node;
 import fr.u_paris.gla.crazytrip.model.key.LineKey;
 
-public class DijkstraPath {
+public class Path {
     private final Node start;
     private final Node end;
     private final double weight;
@@ -11,7 +11,7 @@ public class DijkstraPath {
 
     private final boolean isWalk;
 
-    public DijkstraPath(Node start, Node end, double weight, LineKey lineKey) {
+    public Path(Node start, Node end, double weight, LineKey lineKey) {
         this.start = start;
         this.end = end;
         this.weight = weight;
@@ -23,7 +23,7 @@ public class DijkstraPath {
         this.isWalk = false;
     }
 
-    public DijkstraPath(Node start, Node end, double weight) {
+    public Path(Node start, Node end, double weight) {
         this.start = start;
         this.end = end;
         this.weight = weight;

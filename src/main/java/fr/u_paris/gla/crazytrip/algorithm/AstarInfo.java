@@ -3,13 +3,13 @@ package fr.u_paris.gla.crazytrip.algorithm;
 import fr.u_paris.gla.crazytrip.model.Line;
 import fr.u_paris.gla.crazytrip.model.Node;
 
-public class DijkstraInfo implements Comparable<DijkstraInfo> {
+public class AstarInfo implements Comparable<AstarInfo> {
     private final Node node;
     private double weight;
     private int lineChanges;
     private Line line;
 
-    public DijkstraInfo(Node node, double weight, int lineChanges, Line line) {
+    public AstarInfo(Node node, double weight, int lineChanges, Line line) {
         this.node = node;
         this.weight = weight;
         this.lineChanges = lineChanges;
@@ -45,7 +45,7 @@ public class DijkstraInfo implements Comparable<DijkstraInfo> {
     }
 
     @Override
-    public int compareTo(DijkstraInfo dijkstraInfo) {
+    public int compareTo(AstarInfo dijkstraInfo) {
         return Double.compare(weight, dijkstraInfo.weight);
     }
 
@@ -53,7 +53,7 @@ public class DijkstraInfo implements Comparable<DijkstraInfo> {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        DijkstraInfo dijkstraInfo = (DijkstraInfo) obj;
+        AstarInfo dijkstraInfo = (AstarInfo) obj;
 
         return node.equals(dijkstraInfo.node);
     }

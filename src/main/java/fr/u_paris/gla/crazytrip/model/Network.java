@@ -1,14 +1,12 @@
 package fr.u_paris.gla.crazytrip.model;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.List;
 
 import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
 import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
@@ -16,7 +14,6 @@ import fr.u_paris.gla.crazytrip.idfm.IDFMNetworkExtractor;
 import fr.u_paris.gla.crazytrip.model.factory.LineFactory;
 import fr.u_paris.gla.crazytrip.model.key.LineKey;
 import fr.u_paris.gla.crazytrip.model.key.NodeKey;
-import fr.u_paris.gla.crazytrip.model.line.RouteType;
 import fr.u_paris.gla.crazytrip.parser.Parser;
 
 public class Network {
@@ -128,56 +125,19 @@ public class Network {
                 stationDTO.getLineKey());
     }
 
-    public Set<Station> findCloseStations(Node node) {
-        final double distance = 0.5;
-        return this.stations.values()
-            .stream()
-            .filter(station -> station.distanceTo(node) <= distance
-                && !station.equals(node))
-            .collect(Collectors.toSet());
-    }
-
-    public Station getNearestStation(Coordinates coordinates) {
-        return this.stations.values().stream().min((station1, station2) -> {
-            double distance1 = station1.getCoordinates().distanceTo(coordinates);
-            double distance2 = station2.getCoordinates().distanceTo(coordinates);
-            return Double.compare(distance1, distance2);
-        }).orElse(null);
-    }
-
-    public Line getLine(String name, RouteType routeType, String color) {
-        return lines.get(new LineKey(name, routeType, color));
-    }
-
     public Set<Segment> getSegments(Node node) {
         return graph.getOrDefault(node, Collections.emptySet());
     }
 
-    public Set<Segment> getSegmentsLineOfANode(Node node) {
+    public Set<Segment> getSegmentsTransportOfANode(Node node) {
         return graph.get(node).stream().filter(SegmentTransport.class::isInstance).collect(Collectors.toSet());
     }
 
     public Segment getSegment(Node start, Node end) {
-        return graph.get(start).stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
-    }
-
-    public List<Line> getAllLinesSpecificType(RouteType routeType) {
-        ArrayList<Line> res = new ArrayList<>();
-        lines.forEach((key, value) -> {
-            if (value.getLineType().equals(routeType))
-                res.add(value);
-        });
-        return res;
-    }
-
-    public List<Station> getStationsByName(String name) {
-        return stations.values().stream().filter(station -> station.getName().contains(name))
-                .collect(Collectors.toList());
-    }
-
-    public List<Line> getLinesFromStation(Station station) {
-        return lines.values().stream().filter(line -> line.getStations().contains(station))
-                .collect(Collectors.toList());
+        Set<Segment> segments = graph.get(start);
+        if (segments == null) return null;
+        
+        return segments.stream().filter(segment -> segment.getEndPoint().equals(end)).findFirst().orElse(null);
     }
 
     public Map<NodeKey, Station> getStations() {
@@ -190,10 +150,6 @@ public class Network {
 
     public Map<Node, Set<Segment>> getGraph() {
         return Collections.unmodifiableMap(graph);
-    }
-
-    public Set<Station> getAllStations() {
-        return getStations().values().stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
 
     public Set<Line> getAllLines() {

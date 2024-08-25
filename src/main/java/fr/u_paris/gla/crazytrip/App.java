@@ -3,87 +3,24 @@ package fr.u_paris.gla.crazytrip;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
-import fr.u_paris.gla.crazytrip.algorithm.DijkstraPath;
-import fr.u_paris.gla.crazytrip.algorithm.DijkstraPathFinder;
-import fr.u_paris.gla.crazytrip.algorithm.Itinerary;
-import fr.u_paris.gla.crazytrip.dtos.NodeDTO;
-import fr.u_paris.gla.crazytrip.dtos.SegmentTransportDTO;
-import fr.u_paris.gla.crazytrip.model.Coordinates;
-import fr.u_paris.gla.crazytrip.model.Line;
+import fr.u_paris.gla.crazytrip.gui.UserInterface;
 import fr.u_paris.gla.crazytrip.model.Network;
-import fr.u_paris.gla.crazytrip.model.Node;
-import fr.u_paris.gla.crazytrip.model.Segment;
-import fr.u_paris.gla.crazytrip.model.Station;
-import fr.u_paris.gla.crazytrip.model.key.LineKey;
-import fr.u_paris.gla.crazytrip.model.key.NodeKey;
-import fr.u_paris.gla.crazytrip.parser.Parser;
-import fr.u_paris.gla.crazytrip.utils.ItineraryPrinter;
 import fr.u_paris.gla.crazytrip.utils.NetworkBackendHandler;
 
 public class App {
 	private static final String UNSPECIFIED = "Unspecified"; //$NON-NLS-1$
 	private static final String INFOCMD = "--info";
 	private static final String GUICMD = "--gui";
+	private static final String CONSOLECMD = "--console";
+	private static final String NOEXTRACTCMD = "--noextract";
 
 	public static void main(String[] args) {
-		/* if (args.length == 0) return;
+		if (args.length == 0) return;
 		
-		processArgs(args); */
-
-		Network network = Network.getInstance();
-
-		while (true) {
-			System.out.println("Enter the name of the station: ");
-			String name = System.console().readLine();
-
-			List<Station> stations = stationFinder(network, name);
-			Station station = stationSelection(network, stations);
-
-			System.out.println("Enter the name of the destination station: ");
-			String destinationName = System.console().readLine();
-
-			List<Station> destinationStations = stationFinder(network, destinationName);
-			Station destinationStation = stationSelection(network, destinationStations);
-
-			List<DijkstraPath> paths = DijkstraPathFinder.getPath(station, destinationStation);
-			ItineraryPrinter printer = new ItineraryPrinter(paths);
-
-			printer.print();
-		}
+		processArgs(args);
 	}
-
-	// TODO: Need to be moved to a dedicated class
-	public static List<Station> stationFinder(Network network, String name) {
-		return network.getStationsByName(name);
-	}
-
-	public static Station stationSelection(Network network, List<Station> stations) {
-		for (int i = 0; i < stations.size(); i++) {
-			Station station = stations.get(i);
-			List<Line> line = network.getLinesFromStation(station);
-
-			String lineFormat;
-			if (line.size() == 1) {
-				lineFormat = line.get(0).getName();
-			} else {
-				lineFormat = line.stream().map(Line::getName).reduce((a, b) -> a + ", " + b).get();
-			}
-
-			String format = String.format("%d: %s %s", i, station, lineFormat);
-			System.out.println(format);
-		}
-
-		System.out.println("Choose a station: ");
-		String choice = System.console().readLine();
-
-		return stations.get(Integer.parseInt(choice));
-	}
-	//
 
 	private static void processArgs(String[] args) {
 		for (String string : args) {
@@ -91,7 +28,7 @@ public class App {
 				processInfoCmd();
 			}
 			if (GUICMD.equals(string)) {
-				processGuiCmd();
+				processGuiCmd(args);
 			}
 		}
 	}
@@ -100,9 +37,44 @@ public class App {
 		printAppInfos(System.out);
 	}
 
-	private static void processGuiCmd() {
+	private static void processGuiCmd(String[] args) {
 		Properties props = readApplicationProperties();
-		System.out.println("Launching GUI for " + props.getProperty("app.name", UNSPECIFIED)); //$NON-NLS-1$ //$NON-NLS-2$
+		String title = props.getProperty("app.name");
+
+		checkExtraction(args);
+		
+		Network.getInstance();
+
+		checkInterface(args, title);
+	}
+
+	private static void checkExtraction(String[] args) {
+		boolean extract = true;
+		for (String arg: args) {
+			if (NOEXTRACTCMD.equals(arg)) {
+				extract = false;
+			}
+		}
+		
+		if (extract) {
+			try {
+				NetworkBackendHandler.extraction();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void checkInterface(String[] args, String title) {
+		String type = "ONLINE";
+		for (String arg: args) {
+			if (CONSOLECMD.equals(arg)) {
+				type = "CONSOLE";
+			}
+		}
+
+		UserInterface userInterface = UserInterface.create(type, title);
+		userInterface.start();
 	}
 
 	private static void printAppInfos(PrintStream out) {

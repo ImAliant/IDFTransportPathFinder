@@ -16,7 +16,15 @@ public final class Station extends Node{
 
     @Override
     public String toString() {
-        return super.toString() + " " + String.format("Line: %s %s", linekey.getName(), linekey.getRouteType());
+        return getName() + " " + String.format("%s %s", linekey.getName(), linekey.getRouteType());
+    }
+
+    public String toolkitToString() {
+        StringBuilder sb = new StringBuilder("<html>");
+        sb.append(getName()).append("<br>");
+        sb.append("Line: ").append(linekey.getName()).append(" ").append(linekey.getRouteType());
+        sb.append("</html>");
+        return sb.toString();
     }
 
     @Override
