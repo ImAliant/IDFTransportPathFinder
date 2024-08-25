@@ -24,48 +24,6 @@ public class App {
 		processArgs(args);
 	}
 
-	// TODO: Need to be moved to a dedicated class
-	/* public static Coordinates coordinatesChooser() {
-		double latitude;
-		double longitude;
-
-		latitude = positionChooser("Enter the latitude: ");
-		if (latitude == -1) {
-			return null;
-		}
-		longitude = positionChooser("Enter the longitude: ");
-		if (longitude == -1) {
-			return null;
-		}
-
-		return new Coordinates(latitude, longitude);
-	}
-
-	public static double positionChooser(String message) {
-		String line;
-		double position;
-
-		System.out.println(message);
-		line = System.console().readLine();
-		if (!validPositionChoice(line)) {
-			System.out.println("Invalid choice");
-			return -1;
-		}
-		position = Double.parseDouble(line);
-
-		return position;
-	}
-
-	public static boolean validPositionChoice(String choice) {
-		try {
-			Double.parseDouble(choice);
-		} catch (NumberFormatException e) {
-			return false;
-		}
-		return true;
-	} */
-	//
-
 	private static void processArgs(String[] args) {
 		for (String string : args) {
 			if (INFOCMD.equals(string)) {
