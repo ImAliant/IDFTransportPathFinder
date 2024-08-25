@@ -24,7 +24,7 @@ public class AstarPathFinder extends PathFinder {
 
     private Itinerary astar() {
         Map<Node, Boolean> visited = new HashMap<>();
-        PriorityQueue<AstarInfo> queue = new PriorityQueue<>(Comparator.comparing(AstarInfo::getLineChanges)
+        PriorityQueue<AstarInfo> queue = new PriorityQueue<>(Comparator.comparing(AstarInfo::getTransfers)
                 .thenComparingDouble(AstarInfo::getWeight));
         initialize(visited, queue);
 
@@ -36,7 +36,7 @@ public class AstarPathFinder extends PathFinder {
         Itinerary itinerary = astar();
 
         LinkedList<Path> paths = new LinkedList<>();
-        double duration = itinerary.get(end).getWeight();
+        /* double duration = itinerary.get(end).getWeight(); */
         Node current = end;
 
         while (!current.equals(start) && itinerary.contains(current)) {
@@ -51,12 +51,11 @@ public class AstarPathFinder extends PathFinder {
                 path = new Path(next, current, itinerary.get(current).getWeight(), st.getLineKey());
             }
             paths.addFirst(path);
-            duration += path.getWeight();
 
             current = next;
         }
 
-        return new ItineraryResult(paths, duration);
+        return new ItineraryResult(paths/* , duration */);
     }
 
     private Itinerary run(Map<Node, Boolean> visited, PriorityQueue<AstarInfo> queue) {
@@ -97,17 +96,17 @@ public class AstarPathFinder extends PathFinder {
         for (Segment segment : neighbors) {
             Node neighbor = segment.getEndPoint();
             double weight = current.getWeight() + segment.getDuration();
-            int changes;
+            int transfers;
             Line neighborLine = null;
 
             if (segment instanceof SegmentWalk) {
-                changes = current.getLineChanges() + 1;
+                transfers = current.getTransfers() + 1;
             } else {
                 neighborLine = network.getLineFromSegment(segment);
-                changes = current.getLineChanges() + (neighborLine.equals(current.getLine()) ? 0 : 1);
+                transfers = current.getTransfers() + (neighborLine.equals(current.getLine()) ? 0 : 1);
             }
 
-            addInfoInQueue(itinerary, currentNode, neighbor, neighborLine, weight, changes, queue);
+            addInfoInQueue(itinerary, currentNode, neighbor, neighborLine, weight, transfers, queue);
         }
     }
 
@@ -125,10 +124,12 @@ public class AstarPathFinder extends PathFinder {
 
     private void addInfoInQueue(Itinerary itinerary, Node currentNode, Node neighborNode, Line neighborLine,
             double weight, int lineChanges, PriorityQueue<AstarInfo> queue) {
+        double heuristic = heuristic(neighborNode);
+        double estimatedCost = weight + heuristic;
         BestWeight neighborWeight = itinerary.get(neighborNode);
-        if (neighborWeight == null || weight < neighborWeight.getWeight()) {
+        if (neighborWeight == null || estimatedCost < neighborWeight.getWeight() + heuristic) {
             itinerary.add(neighborNode, new BestWeight(currentNode, weight, neighborLine));
-            queue.add(new AstarInfo(neighborNode, weight, lineChanges, neighborLine));
+            queue.add(new AstarInfo(neighborNode, estimatedCost, lineChanges, neighborLine));
         }
     }
 
@@ -137,5 +138,9 @@ public class AstarPathFinder extends PathFinder {
         allNodes.forEach(node -> visited.put(node, false));
 
         queue.add(new AstarInfo(start, 0, 0, null));
+    }
+
+    private double heuristic(Node node) {
+        return node.distanceTo(end);
     }
 }
