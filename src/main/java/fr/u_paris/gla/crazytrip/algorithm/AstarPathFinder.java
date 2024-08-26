@@ -1,6 +1,7 @@
 package fr.u_paris.gla.crazytrip.algorithm;
 
 import fr.u_paris.gla.crazytrip.model.Node;
+import fr.u_paris.gla.crazytrip.model.PersonalizedNode;
 import fr.u_paris.gla.crazytrip.model.Segment;
 import fr.u_paris.gla.crazytrip.model.SegmentTransport;
 import fr.u_paris.gla.crazytrip.model.SegmentWalk;
@@ -8,6 +9,7 @@ import fr.u_paris.gla.crazytrip.model.Station;
 import fr.u_paris.gla.crazytrip.model.line.RouteType;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
@@ -23,6 +25,7 @@ public class AstarPathFinder extends PathFinder {
             RouteType.METRO, 1.2,
             RouteType.TRAMWAY, 1.4,
             RouteType.BUS, 1.6);
+    private Map<Node, SegmentWalk> walkSegments = new HashMap<>();
 
     public AstarPathFinder(Node start, Node end) {
         super(start, end);
@@ -46,7 +49,12 @@ public class AstarPathFinder extends PathFinder {
         LinkedList<Path> paths = new LinkedList<>();
         Node current = end;
 
-        while (!current.equals(start) && itinerary.contains(current)) {
+        if (walkSegments.containsKey(current)) {
+            Segment segment = walkSegments.get(end);
+            paths.addFirst(new Path(segment.getStartPoint(), end, segment.getDuration()));
+        }
+
+        while (!current.equals(start) && itinerary.contains(current)) { 
             Node next = itinerary.get(current).getNode();
 
             Segment segment = network.getSegment(next, current);
@@ -60,6 +68,11 @@ public class AstarPathFinder extends PathFinder {
             paths.addFirst(path);
 
             current = next;
+        }
+
+        if (walkSegments.containsKey(current)) {
+            Segment segment = walkSegments.get(start);
+            paths.addFirst(new Path(start, segment.getEndPoint(), segment.getDuration()));
         }
 
         return new ItineraryResult(paths);
@@ -150,7 +163,22 @@ public class AstarPathFinder extends PathFinder {
     }
 
     private void initialize(PriorityQueue<AstarInfo> queue) {
+        if (isPersonalizedNode(start)) {
+            Node old = start;
+            start = StationDAO.getNearestStation(old.getCoordinates());
+            walkSegments.put(start, new SegmentWalk(old, start));
+        }
+        if (isPersonalizedNode(end)) {
+            Node old = end;
+            end = StationDAO.getNearestStation(old.getCoordinates());
+            walkSegments.put(end, new SegmentWalk(old, end));
+        }
+
         queue.add(new AstarInfo(start, 0, 0, null));
+    }
+
+    private boolean isPersonalizedNode(Node node) {
+        return node instanceof PersonalizedNode;
     }
 
     private double heuristic(Node node) {
