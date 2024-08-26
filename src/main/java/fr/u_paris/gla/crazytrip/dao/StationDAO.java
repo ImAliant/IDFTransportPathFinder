@@ -21,8 +21,7 @@ public class StationDAO {
             .collect(Collectors.toList());
     }
 
-    public static Set<Station> findCloseStations(Node node) {
-        final double distance = 0.5; // 500 meters
+    public static Set<Station> findCloseStations(Node node, double distance) {
         return network.getStations().values().stream()
             .filter(station -> station.distanceTo(node) <= distance
                 && !station.equals(node))
