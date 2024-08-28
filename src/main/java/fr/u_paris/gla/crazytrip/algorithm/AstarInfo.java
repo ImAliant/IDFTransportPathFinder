@@ -6,13 +6,13 @@ import fr.u_paris.gla.crazytrip.model.Node;
 public class AstarInfo implements Comparable<AstarInfo> {
     private final Node node;
     private double weight;
-    private int lineChanges;
+    private int transfers;
     private Line line;
 
-    public AstarInfo(Node node, double weight, int lineChanges, Line line) {
+    public AstarInfo(Node node, double weight, int transfers, Line line) {
         this.node = node;
         this.weight = weight;
-        this.lineChanges = lineChanges;
+        this.transfers = transfers;
         this.line = line;
     }
 
@@ -28,12 +28,12 @@ public class AstarInfo implements Comparable<AstarInfo> {
         this.weight = weight;
     }
 
-    public int getLineChanges() {
-        return lineChanges;
+    public int getTransfers() {
+        return transfers;
     }
 
-    public void setLineChanges(int lineChanges) {
-        this.lineChanges = lineChanges;
+    public void setTransfers(int transfers) {
+        this.transfers = transfers;
     }
 
     public Line getLine() {
