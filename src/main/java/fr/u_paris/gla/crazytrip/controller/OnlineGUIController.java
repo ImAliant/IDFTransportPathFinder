@@ -29,7 +29,7 @@ public class OnlineGUIController implements Controller {
 
             addStationMarkers();
 
-            SwingUtilities.invokeLater(LoadingScreen.getInstance()::stop);
+            LoadingScreen.getInstance().stop();
 
             view.setVisible(true);
         });

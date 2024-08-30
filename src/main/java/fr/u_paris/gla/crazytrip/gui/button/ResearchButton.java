@@ -3,8 +3,11 @@ package fr.u_paris.gla.crazytrip.gui.button;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import fr.u_paris.gla.crazytrip.algorithm.AstarPathFinder;
 import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
+import fr.u_paris.gla.crazytrip.gui.loadingscreen.LoadingScreen;
 import fr.u_paris.gla.crazytrip.gui.observer.PathResultObserver;
 import fr.u_paris.gla.crazytrip.gui.panel.ArrivalField;
 import fr.u_paris.gla.crazytrip.gui.panel.DepartureField;
@@ -31,11 +34,15 @@ public class ResearchButton extends StyleButton {
         Node arrival = arrivalField.getSelectedNode();
         
         if (departure == null || arrival == null) return;
+
+        LoadingScreen.getInstance().start();
         
         AstarPathFinder pathFinder = new AstarPathFinder(departure, arrival);
         ItineraryResult result = pathFinder.findPath();
 
         showResult(result);
+
+        LoadingScreen.getInstance().stop();
     }
 
     public void addObserver(PathResultObserver observer) {
