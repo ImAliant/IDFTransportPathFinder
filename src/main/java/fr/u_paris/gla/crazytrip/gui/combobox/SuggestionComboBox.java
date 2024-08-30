@@ -30,6 +30,8 @@ public class SuggestionComboBox extends JComboBox<String> {
     private void update(List<Station> stations) {
         removeAllItems();
 
+        sortStations(stations);
+
         for (Station station : stations) {
             addItem(station.toString());
         }
@@ -67,5 +69,18 @@ public class SuggestionComboBox extends JComboBox<String> {
         for (SelectPositionObserver observer: observers) {
             observer.update(station);
         }
+    }
+
+    private void sortStations(List<Station> stationsToSort) {
+        // tri par le nom, puis par le type de transport, puis par le numéro
+        stationsToSort.sort((station1, station2) -> {
+            int nameComparison = station1.getName().compareTo(station2.getName());
+            if (nameComparison != 0) return nameComparison;
+
+            int typeComparison = station1.getLineKey().getRouteType().compareTo(station2.getLineKey().getRouteType());
+            if (typeComparison != 0) return typeComparison;
+
+            return station1.getLineKey().getName().compareTo(station2.getLineKey().getName());
+        });
     }
 }
