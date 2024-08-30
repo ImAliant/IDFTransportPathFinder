@@ -5,7 +5,10 @@ import java.io.PrintStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.swing.SwingUtilities;
+
 import fr.u_paris.gla.crazytrip.gui.UserInterface;
+import fr.u_paris.gla.crazytrip.gui.loadingscreen.LoadingScreen;
 import fr.u_paris.gla.crazytrip.model.Network;
 import fr.u_paris.gla.crazytrip.utils.NetworkBackendHandler;
 
@@ -19,6 +22,8 @@ public class App {
 	public static void main(String[] args) {
 		if (args.length == 0) return;
 		
+		SwingUtilities.invokeLater(LoadingScreen.getInstance()::start);
+
 		processArgs(args);
 	}
 

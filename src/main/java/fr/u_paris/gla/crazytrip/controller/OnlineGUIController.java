@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 
 import fr.u_paris.gla.crazytrip.dao.StationDAO;
+import fr.u_paris.gla.crazytrip.gui.loadingscreen.LoadingScreen;
 import fr.u_paris.gla.crazytrip.gui.view.OnlineGUIView;
 import fr.u_paris.gla.crazytrip.model.Station;
 
@@ -25,9 +26,12 @@ public class OnlineGUIController implements Controller {
     private void startView() {
         SwingUtilities.invokeLater(() -> {
             view.start();
-            view.setVisible(true);
 
             addStationMarkers();
+
+            SwingUtilities.invokeLater(LoadingScreen.getInstance()::stop);
+
+            view.setVisible(true);
         });
     }
 

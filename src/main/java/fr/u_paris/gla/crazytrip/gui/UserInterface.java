@@ -2,10 +2,8 @@ package fr.u_paris.gla.crazytrip.gui;
 
 import fr.u_paris.gla.crazytrip.controller.ConsoleController;
 import fr.u_paris.gla.crazytrip.controller.Controller;
-import fr.u_paris.gla.crazytrip.controller.OfflineGUIController;
 import fr.u_paris.gla.crazytrip.controller.OnlineGUIController;
 import fr.u_paris.gla.crazytrip.gui.view.ConsoleView;
-import fr.u_paris.gla.crazytrip.gui.view.OfflineGUIView;
 import fr.u_paris.gla.crazytrip.gui.view.OnlineGUIView;
 import fr.u_paris.gla.crazytrip.gui.view.View;
 
@@ -26,8 +24,6 @@ public class UserInterface {
         switch (type) {
             case "CONSOLE":
                 return new ConsoleView();
-            case "OFFLINE":
-                return new OfflineGUIView(title);
             case "ONLINE":
                 return new OnlineGUIView(title);
             default:
@@ -39,8 +35,6 @@ public class UserInterface {
         switch (type) {
             case "CONSOLE":
                 return new ConsoleController((ConsoleView) view);
-            case "OFFLINE":
-                return new OfflineGUIController((OfflineGUIView) view);
             case "ONLINE":
                 return new OnlineGUIController((OnlineGUIView) view);
             default:
