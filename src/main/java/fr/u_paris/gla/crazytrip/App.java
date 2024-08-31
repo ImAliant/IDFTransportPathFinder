@@ -4,10 +4,15 @@ import fr.u_paris.gla.crazytrip.command.CommandProcessor;
 import fr.u_paris.gla.crazytrip.command.GuiCommand;
 import fr.u_paris.gla.crazytrip.command.InfoCommand;
 import fr.u_paris.gla.crazytrip.utils.CommandUtils;
+import fr.u_paris.gla.crazytrip.utils.InternetChecker;
 
 public class App {
 	public static void main(String[] args) {
 		if (args.length == 0) return;
+		if (!InternetChecker.isInternetReachable()) {
+			System.out.println("No internet connection available.");
+			return;
+		}
 		
 		CommandProcessor processor = new CommandProcessor();
 		processor.register(CommandUtils.INFOCMD, new InfoCommand());
