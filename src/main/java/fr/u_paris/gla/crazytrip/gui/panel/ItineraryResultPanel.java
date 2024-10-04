@@ -10,12 +10,13 @@ import javax.swing.JPanel;
 import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
 import fr.u_paris.gla.crazytrip.gui.button.CloseButton;
 import fr.u_paris.gla.crazytrip.gui.label.StyleLabel;
+import fr.u_paris.gla.crazytrip.gui.observer.PanelObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.PathResultObserver;
 import fr.u_paris.gla.crazytrip.gui.scrollpane.ResultItinerary;
 
-public class ItineraryResultPanel extends JPanel implements PathResultObserver {
+public class ItineraryResultPanel extends JPanel implements PathResultObserver, PanelObserver {
     private static final Color BACKGROUND_COLOR = new Color(104, 157, 113);
-    private static final int WIDTH = 250;
+    private static final int WIDTH = 600;
     private static final String TITLE = "Itinéraire";
 
     private StyleLabel label;
@@ -36,7 +37,9 @@ public class ItineraryResultPanel extends JPanel implements PathResultObserver {
     private void initComponents() {
         label = new StyleLabel(TITLE);
         result = new ResultItinerary();
-        closeButton = new CloseButton(this);
+        closeButton = new CloseButton();
+
+        closeButton.addObserver(this);
     }
 
     private void addComponents() {
@@ -46,9 +49,14 @@ public class ItineraryResultPanel extends JPanel implements PathResultObserver {
     }
 
     @Override
+    public void updateVisibility() {
+        setVisible(!isVisible());
+    }
+
+    @Override
     public void showResult(ItineraryResult result) {
         this.result.setResult(result);
-        setVisible(true);
+        updateVisibility();
     }
 
     public JLabel getTitle() {

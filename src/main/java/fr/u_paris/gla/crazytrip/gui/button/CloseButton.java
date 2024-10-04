@@ -1,22 +1,25 @@
 package fr.u_paris.gla.crazytrip.gui.button;
 
-import javax.swing.SwingUtilities;
+import java.util.ArrayList;
+import java.util.List;
 
-import fr.u_paris.gla.crazytrip.gui.panel.ItineraryResultPanel;
+import fr.u_paris.gla.crazytrip.gui.observer.PanelObserver;
 
 public class CloseButton extends StyleButton {
     private static final String TEXT = "Fermer";
 
-    private ItineraryResultPanel panel;
+    private transient List<PanelObserver> observers = new ArrayList<>();
 
-    public CloseButton(ItineraryResultPanel panel) {
+    public CloseButton() {
         super(TEXT);
+    }
 
-        this.panel = panel;
+    public void addObserver(PanelObserver observer) {
+        observers.add(observer);
     }
 
     @Override
     public void action() {
-        SwingUtilities.invokeLater(() -> panel.setVisible(false));
+        observers.forEach(PanelObserver::updateVisibility);
     }
 }
