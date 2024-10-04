@@ -34,7 +34,7 @@ public class ResearchButton extends StyleButton {
         Node arrival = arrivalField.getSelectedNode();
         
         if (departure == null || arrival == null) {
-            errorOnResearch();
+            errorOnResearch("Un des champs est vide");
             return;
         }
 
@@ -42,6 +42,11 @@ public class ResearchButton extends StyleButton {
         
         AstarPathFinder pathFinder = new AstarPathFinder(departure, arrival);
         ItineraryResult result = pathFinder.findPath();
+
+        if (result == null) {
+            errorOnResearch("Aucun itinéraire trouvé");
+            return;
+        }
 
         showResult(result);
 
@@ -60,7 +65,7 @@ public class ResearchButton extends StyleButton {
         observers.forEach(observer -> observer.showResult(result));
     }
 
-    public void errorOnResearch() {
-        errorObservers.forEach(observer -> observer.errorOnResearch());
+    public void errorOnResearch(String message) {
+        errorObservers.forEach(observer -> observer.errorOnResearch(message));
     }
 }

@@ -8,29 +8,33 @@ import javax.swing.Timer;
 import fr.u_paris.gla.crazytrip.gui.observer.ErrorOnResearchObserver;
 
 public class ErrorLabel extends StyleLabel implements ErrorOnResearchObserver {
-    private static final String TEXT = "Erreur lors de la recherche";
+    private static final String DEFAULT_TEXT = "";
     private static final Color RED_COLOR = new Color(255, 0, 0);
+    private static final int TIME_TO_HIDE = 5000;
 
     public ErrorLabel() {
-        super(TEXT);
+        super(DEFAULT_TEXT);
 
         setForeground(RED_COLOR);
         setVisible(false);
     }
 
     @Override
-    public void errorOnResearch() {
-        SwingUtilities.invokeLater(this::showAndHide);
+    public void errorOnResearch(String message) {
+        SwingUtilities.invokeLater(() -> showAndHide(message));
     }
     
-    private void showAndHide() {
+    private void showAndHide(String message) {
+        setText(message);
         setVisible(true);
         repaint();
 
-        Timer timer = new Timer(5000, e -> setVisible(false));
+        Timer timer = new Timer(TIME_TO_HIDE, e -> {
+            setVisible(false);
+            setText(DEFAULT_TEXT);
+        });
+        
         timer.setRepeats(false);
         timer.start();
-
-        repaint();
     }
 }
