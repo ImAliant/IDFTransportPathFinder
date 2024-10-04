@@ -6,6 +6,7 @@ import java.util.List;
 import fr.u_paris.gla.crazytrip.algorithm.AstarPathFinder;
 import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
 import fr.u_paris.gla.crazytrip.gui.loadingscreen.LoadingScreen;
+import fr.u_paris.gla.crazytrip.gui.observer.ErrorOnResearchObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.PathResultObserver;
 import fr.u_paris.gla.crazytrip.gui.panel.ArrivalField;
 import fr.u_paris.gla.crazytrip.gui.panel.DepartureField;
@@ -15,6 +16,7 @@ public class ResearchButton extends StyleButton {
     private static final String TEXT = "Rechercher";
 
     private transient List<PathResultObserver> observers = new ArrayList<>();
+    private transient List<ErrorOnResearchObserver> errorObservers = new ArrayList<>();
 
     private DepartureField departureField;
     private ArrivalField arrivalField;
@@ -31,7 +33,10 @@ public class ResearchButton extends StyleButton {
         Node departure = departureField.getSelectedNode();
         Node arrival = arrivalField.getSelectedNode();
         
-        if (departure == null || arrival == null) return;
+        if (departure == null || arrival == null) {
+            errorOnResearch();
+            return;
+        }
 
         LoadingScreen.getInstance().start();
         
@@ -47,7 +52,15 @@ public class ResearchButton extends StyleButton {
         observers.add(observer);
     }
 
+    public void addErrorObserver(ErrorOnResearchObserver observer) {
+        errorObservers.add(observer);
+    }
+
     public void showResult(ItineraryResult result) {
         observers.forEach(observer -> observer.showResult(result));
+    }
+
+    public void errorOnResearch() {
+        errorObservers.forEach(observer -> observer.errorOnResearch());
     }
 }

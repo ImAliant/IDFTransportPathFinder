@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.JPanel;
 
 import fr.u_paris.gla.crazytrip.gui.button.ResearchButton;
+import fr.u_paris.gla.crazytrip.gui.label.ErrorLabel;
 import fr.u_paris.gla.crazytrip.gui.observer.PanelObserver;
 
 public class ResearchPanel extends JPanel implements PanelObserver {
@@ -18,6 +19,8 @@ public class ResearchPanel extends JPanel implements PanelObserver {
 
     private transient DepartureField departureField;
     private transient ArrivalField arrivalField;
+
+    private transient ErrorLabel errorLabel;
 
     private transient ResearchButton researchButton;
 
@@ -54,6 +57,8 @@ public class ResearchPanel extends JPanel implements PanelObserver {
         departureField = new DepartureField();
         arrivalField = new ArrivalField();
         researchButton = new ResearchButton(departureField, arrivalField);
+
+        errorLabel = new ErrorLabel();
     }
 
     private void addComponents() {
@@ -62,6 +67,8 @@ public class ResearchPanel extends JPanel implements PanelObserver {
 
         constraints.insets.set(MARGIN, MARGIN, MARGIN, MARGIN);
         add(researchButton);
+        
+        add(errorLabel);
     }
 
     @Override
@@ -82,5 +89,9 @@ public class ResearchPanel extends JPanel implements PanelObserver {
 
     public ResearchButton getResearchButton() {
         return researchButton;
+    }
+
+    public ErrorLabel getErrorLabel() {
+        return errorLabel;
     }
 }

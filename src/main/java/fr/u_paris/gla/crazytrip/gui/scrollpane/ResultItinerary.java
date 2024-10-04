@@ -4,17 +4,17 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
 import fr.u_paris.gla.crazytrip.algorithm.Path;
+import fr.u_paris.gla.crazytrip.gui.label.StyleLabel;
 import fr.u_paris.gla.crazytrip.model.ResultRoute;
 import fr.u_paris.gla.crazytrip.utils.ColorUtils;
 
 public class ResultItinerary extends JScrollPane {
-    private JLabel result;
+    private StyleLabel result;
 
     public ResultItinerary() {
         super();
@@ -24,7 +24,7 @@ public class ResultItinerary extends JScrollPane {
     }
 
     private void initComponents() {
-        result = new JLabel();
+        result = new StyleLabel("");
 
         setVerticalScrollBarPolicy(VERTICAL_SCROLLBAR_AS_NEEDED);
         setVisible(false);

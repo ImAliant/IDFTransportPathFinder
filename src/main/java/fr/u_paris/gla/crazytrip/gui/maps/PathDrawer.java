@@ -74,6 +74,8 @@ public class PathDrawer implements LinePainterObserver, PathResultObserver, Clea
     }
 
     private List<MapsRoute> convertItineraryToRoute(ItineraryResult result) {
+        if (result == null) return new ArrayList<>();
+
         List<MapsRoute> routes = new ArrayList<>();
         List<Path> paths = result.getPaths();
 

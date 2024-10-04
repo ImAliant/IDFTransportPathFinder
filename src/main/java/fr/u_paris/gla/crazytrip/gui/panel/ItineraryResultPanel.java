@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
 import fr.u_paris.gla.crazytrip.gui.button.CloseButton;
+import fr.u_paris.gla.crazytrip.gui.label.StyleLabel;
 import fr.u_paris.gla.crazytrip.gui.observer.PathResultObserver;
 import fr.u_paris.gla.crazytrip.gui.scrollpane.ResultItinerary;
 
@@ -17,7 +18,7 @@ public class ItineraryResultPanel extends JPanel implements PathResultObserver {
     private static final int WIDTH = 250;
     private static final String TITLE = "Itinéraire";
 
-    private JLabel label;
+    private StyleLabel label;
     private ResultItinerary result;
     private CloseButton closeButton;
 
@@ -33,7 +34,7 @@ public class ItineraryResultPanel extends JPanel implements PathResultObserver {
     }
 
     private void initComponents() {
-        label = new JLabel(TITLE);
+        label = new StyleLabel(TITLE);
         result = new ResultItinerary();
         closeButton = new CloseButton(this);
     }

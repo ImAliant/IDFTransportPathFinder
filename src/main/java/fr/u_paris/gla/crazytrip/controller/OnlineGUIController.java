@@ -50,6 +50,7 @@ public class OnlineGUIController implements Controller {
         view.addPopupEndPositionObserver(view.getResearchPanel().getArrivalField());
         view.addPathDrawerObserver(view.getMap().getPathPaiter());
         view.addPathDrawerObserver(view.getItineraryResultPanel());
+        view.addErrorObserver(view.getResearchPanel().getErrorLabel());
     }
 
     private void addStationMarkers() {

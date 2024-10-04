@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import fr.u_paris.gla.crazytrip.gui.maps.Maps;
 import fr.u_paris.gla.crazytrip.gui.observer.ClearLineObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.DisplayLineObserver;
+import fr.u_paris.gla.crazytrip.gui.observer.ErrorOnResearchObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.LinePainterObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.PanelObserver;
 import fr.u_paris.gla.crazytrip.gui.observer.PathResultObserver;
@@ -109,6 +110,10 @@ public class OnlineGUIView extends JFrame implements View {
 
     public void addPathDrawerObserver(PathResultObserver observer) {
         researchPanel.getResearchButton().addObserver(observer);
+    }
+
+    public void addErrorObserver(ErrorOnResearchObserver observer) {
+        researchPanel.getResearchButton().addErrorObserver(observer);
     }
 
     public Maps getMap() {
