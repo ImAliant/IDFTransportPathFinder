@@ -29,7 +29,7 @@ public class OnlineGUIView extends JFrame implements View {
     private InteractiveButtonPanel interactiveButtonPanel;
     private ResearchPanel researchPanel;
     private LineSelectionPanel lineSelectionPanel;
-    /* private ItineraryResultPanel itineraryResultPanel; */
+    private ItineraryResultPanel itineraryResultPanel;
     private Maps map;
 
     public OnlineGUIView(String title) {
@@ -39,7 +39,7 @@ public class OnlineGUIView extends JFrame implements View {
         this.interactiveButtonPanel = new InteractiveButtonPanel();
         this.researchPanel = new ResearchPanel();
         this.lineSelectionPanel = new LineSelectionPanel();
-        /* this.itineraryResultPanel = new ItineraryResultPanel(); */
+        this.itineraryResultPanel = new ItineraryResultPanel();
         this.map = new Maps();
     }
 
@@ -65,7 +65,7 @@ public class OnlineGUIView extends JFrame implements View {
         container.add(interactiveButtonPanel, BorderLayout.SOUTH);
         container.add(researchPanel, BorderLayout.WEST);
         container.add(lineSelectionPanel, BorderLayout.NORTH);
-        /* container.add(itineraryResultPanel, BorderLayout.EAST); */
+        container.add(itineraryResultPanel, BorderLayout.EAST);
         container.add(map, BorderLayout.CENTER);
 
         add(container);
@@ -121,5 +121,9 @@ public class OnlineGUIView extends JFrame implements View {
 
     public ResearchPanel getResearchPanel() {
         return researchPanel;
+    }
+
+    public ItineraryResultPanel getItineraryResultPanel() {
+        return itineraryResultPanel;
     }
 }

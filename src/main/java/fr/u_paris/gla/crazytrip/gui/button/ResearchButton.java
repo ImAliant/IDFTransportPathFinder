@@ -3,8 +3,6 @@ package fr.u_paris.gla.crazytrip.gui.button;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
 import fr.u_paris.gla.crazytrip.algorithm.AstarPathFinder;
 import fr.u_paris.gla.crazytrip.algorithm.ItineraryResult;
 import fr.u_paris.gla.crazytrip.gui.loadingscreen.LoadingScreen;

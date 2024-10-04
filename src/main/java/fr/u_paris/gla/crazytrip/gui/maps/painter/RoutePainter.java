@@ -10,13 +10,13 @@ import java.util.List;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.painter.Painter;
 
-import fr.u_paris.gla.crazytrip.model.Route;
+import fr.u_paris.gla.crazytrip.model.MapsRoute;
 
 public class RoutePainter implements Painter<JXMapViewer> {
-    private List<Route> routes;
+    private List<MapsRoute> routes;
     private boolean antialias = true;
 
-    public RoutePainter(List<Route> routes) {
+    public RoutePainter(List<MapsRoute> routes) {
         this.routes = routes;
     }
 
@@ -37,7 +37,7 @@ public class RoutePainter implements Painter<JXMapViewer> {
     }
 
     private void drawRoutes(Graphics2D g, JXMapViewer map) {
-        for (Route route : routes) {
+        for (MapsRoute route : routes) {
             g.setColor(route.getColor());
 
             Point2D pt1 = map.getTileFactory().geoToPixel(route.getStart(), map.getZoom());
