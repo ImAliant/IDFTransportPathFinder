@@ -116,6 +116,8 @@ public class AstarPathFinder extends PathFinder {
      * @return An Itinerary object containing the best path between the start and end nodes.
      * 
      * @see Itinerary
+     * @see Node
+     * @see AstarInfo
      */
     private Itinerary run(Set<Node> visited, PriorityQueue<AstarInfo> queue) {
         Itinerary itinerary = new Itinerary();
@@ -156,6 +158,11 @@ public class AstarPathFinder extends PathFinder {
      * @param current The current info of the node.
      * @param currentNode The current node.
      * @param neighbors The set of neighbors of the current node.
+     * 
+     * @see Itinerary
+     * @see AstarInfo
+     * @see Node
+     * @see Segment
      */
     private void processNeighbors(PriorityQueue<AstarInfo> queue, Itinerary itinerary, AstarInfo current,
             Node currentNode, Set<Segment> neighbors) {
@@ -186,11 +193,33 @@ public class AstarPathFinder extends PathFinder {
 
     }
 
+    /**
+     * Find the closest stations to the current node and create walk segments to them.
+     * 
+     * @param currentNode The current node.
+     * @param neighbors The set of neighbors of the current node.
+     * 
+     * @see Segment
+     * @see Station
+     * @see Node
+     */
     private void createWalkSegmentsToCloseStation(Node currentNode, Set<Segment> neighbors) {
         Set<Station> closeStations = StationDAO.findCloseStations(currentNode, 0.2);
         createWalkSegments(currentNode, closeStations, neighbors);
     }
 
+    /**
+     * Create walk segments for each station in the set of close stations.
+     * 
+     * @param currentNode The current node.
+     * @param closeStations The set of close stations.
+     * @param neighbors Set who will be filled with the walk segments.
+     * 
+     * @see Station
+     * @see Segment
+     * @see SegmentWalk
+     * @see Node
+     */
     private void createWalkSegments(Node currentNode, Set<Station> closeStations, Set<Segment> neighbors) {
         for (Station station : closeStations) {
             SegmentWalk walkSegment = new SegmentWalk(currentNode, station);
@@ -198,17 +227,38 @@ public class AstarPathFinder extends PathFinder {
         }
     }
 
+    /**
+     * Add new astar info in the queue.
+     * 
+     * @param itinerary The itinerary object containing the best path between the start and end nodes.
+     * @param currentNode The current node.
+     * @param neighborNode The neighbor node.
+     * @param neighborLine The neighbor line.
+     * @param weight The weight of the neighbor node.
+     * @param lineChanges The number of line changes.
+     * @param queue The priority queue used to store the nodes to visit.
+     * 
+     * @see Itinerary
+     * @see Node
+     * @see Line
+     */
     private void addInfoInQueue(Itinerary itinerary, Node currentNode, Node neighborNode, Line neighborLine,
             double weight, int lineChanges, PriorityQueue<AstarInfo> queue) {
         double heuristic = heuristic(neighborNode);
         double estimatedCost = weight + heuristic;
         BestWeight neighborWeight = itinerary.get(neighborNode);
-        if (neighborWeight == null || estimatedCost < neighborWeight.getWeight() + heuristic) {
+
+        if (isCostBetter(neighborWeight, estimatedCost, heuristic)) {
             itinerary.add(neighborNode, new BestWeight(currentNode, weight, neighborLine));
             queue.add(new AstarInfo(neighborNode, estimatedCost, lineChanges, neighborLine));
         }
     }
 
+    /**
+     * Initialize the priority queue.
+     * 
+     * @param queue The priority queue used to store the nodes to visit.
+     */
     private void initialize(PriorityQueue<AstarInfo> queue) {
         if (isPersonalizedNode(start)) {
             Node old = start;
@@ -224,10 +274,41 @@ public class AstarPathFinder extends PathFinder {
         queue.add(new AstarInfo(start, 0, 0, null));
     }
 
+    /**
+     * Check if the node is a personalized node.
+     * 
+     * @param node The node to check.
+     * @return True if the node is a personalized node, false otherwise.
+     * 
+     * @see PersonalizedNode
+     */
     private boolean isPersonalizedNode(Node node) {
         return node instanceof PersonalizedNode;
     }
 
+    /**
+     * Check if the cost of the neighbor node is better than the current cost.
+     * 
+     * @param neighborWeight The weight of the neighbor node.
+     * @param estimatedCost The estimated cost of the neighbor node.
+     * @param heuristic The heuristic of the neighbor node.
+     * 
+     * @return True if the cost of the neighbor node is better than the current cost, false otherwise.
+     * 
+     * @see BestWeight
+     */
+    private boolean isCostBetter(BestWeight neighborWeight, double estimatedCost, double heuristic) {
+        return neighborWeight == null || estimatedCost < neighborWeight.getWeight() + heuristic;
+    }
+
+    /**
+     * Calculate the heuristic of a node.
+     * 
+     * @param node The node.
+     * @return The heuristic of the node.
+     * 
+     * @see Node
+     */
     private double heuristic(Node node) {
         return node.distanceTo(end);
     }
