@@ -9,13 +9,34 @@ import fr.u_paris.gla.crazytrip.gui.loadingscreen.LoadingScreen;
 import fr.u_paris.gla.crazytrip.gui.view.OnlineGUIView;
 import fr.u_paris.gla.crazytrip.model.Station;
 
+/**
+ * This class represents an online GUI controller.
+ * 
+ * It is used to start the application with an online graphical user interface.
+ * The user will be able to search for trips, visualize lines and stations and travel on the map.
+ * 
+ * @see Controller
+ * @see OnlineGUIView
+ */
 public class OnlineGUIController implements Controller {
+    /** The view of the application. */
     private OnlineGUIView view;
 
+    /**
+     * Creates a new online GUI controller.
+     * 
+     * @param view The view of the application.
+     */
     public OnlineGUIController(OnlineGUIView view) {
         this.view = view;
     }
 
+    /**
+     * Starts the application.
+     * 
+     * It displays the map and the different panels of the application.
+     * The user can search for trips, visualize lines and stations and travel on the map.
+     */
     @Override
     public void start() {
         startView();
@@ -23,6 +44,9 @@ public class OnlineGUIController implements Controller {
         addObservers();
     }
 
+    /**
+     * Starts the view of the application.
+     */
     private void startView() {
         SwingUtilities.invokeLater(() -> {
             view.start();
@@ -35,6 +59,9 @@ public class OnlineGUIController implements Controller {
         });
     }
 
+    /**
+     * Adds the observers to the view.
+     */
     private void addObservers() {
         view.addZoomInObserver(view.getMap().getZoomHandler());
         view.addZoomOutObserver(view.getMap().getZoomHandler());
@@ -53,6 +80,9 @@ public class OnlineGUIController implements Controller {
         view.addErrorObserver(view.getResearchPanel().getErrorLabel());
     }
 
+    /**
+     * Adds the station markers to the map.
+     */
     private void addStationMarkers() {
         Set<Station> stations = StationDAO.getAllStations();
 
