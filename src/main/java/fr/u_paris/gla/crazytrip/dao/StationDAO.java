@@ -55,7 +55,15 @@ public class StationDAO {
             .collect(Collectors.toSet());
     }
 
-    // TODO: Return a list of the nearest bus, tram and metro stations
+    /**
+     * Get the nearest station to the given coordinates.
+     * 
+     * @param coordinates The coordinates from which to search for the nearest station.
+     * @return The nearest station to the given coordinates.
+     * 
+     * @see Station
+     * @see Coordinates
+     */
     public static Station getNearestStation(Coordinates coordinates) {
         return network.getStations().values().stream().min((station1, station2) -> {
             double distance1 = station1.getCoordinates().distanceTo(coordinates);
