@@ -12,10 +12,26 @@ import org.jxmapviewer.painter.Painter;
 
 import fr.u_paris.gla.crazytrip.model.MapsRoute;
 
+/**
+ * Painter for drawing routes on the map.
+ * 
+ * @see MapsRoute
+ * @see Painter
+ * @see JXMapViewer
+ */
 public class RoutePainter implements Painter<JXMapViewer> {
+    /** List of routes to draw */
     private List<MapsRoute> routes;
+    /** Whether to antialias the drawing */
     private boolean antialias = true;
 
+    /**
+     * Constructor.
+     * 
+     * @param routes the list of routes to draw
+     * 
+     * @see MapsRoute
+     */
     public RoutePainter(List<MapsRoute> routes) {
         this.routes = routes;
     }
@@ -36,6 +52,12 @@ public class RoutePainter implements Painter<JXMapViewer> {
         drawRoutes(g, map);
     }
 
+    /**
+     * Draw the routes on the map.
+     * 
+     * @param g the graphics
+     * @param map the map
+     */
     private void drawRoutes(Graphics2D g, JXMapViewer map) {
         for (MapsRoute route : routes) {
             g.setColor(route.getColor());
