@@ -1,5 +1,8 @@
 package fr.u_paris.gla.crazytrip.model.line;
 
+/**
+ * The type of a route
+ */
 public enum RouteType {
     RAIL, BUS, TRAMWAY, METRO, FUNICULAR;
     
@@ -27,6 +30,12 @@ public enum RouteType {
         return res;
     }
 
+    /**
+     * Get the RouteType from a string
+     * 
+     * @param s the string
+     * @return the RouteType
+     */
     public static RouteType fromString(String s) {
         switch (s) {
             case "Rail": return RAIL;
