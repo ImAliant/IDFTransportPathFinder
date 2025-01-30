@@ -7,6 +7,12 @@ import fr.u_paris.gla.crazytrip.gui.view.ConsoleView;
 import fr.u_paris.gla.crazytrip.gui.view.OnlineGUIView;
 import fr.u_paris.gla.crazytrip.gui.view.View;
 
+/**
+ * A user interface for the application.
+ * 
+ * This class is a factory for creating user interfaces based on the type of the
+ * interface and the title of the window.
+ */
 public class UserInterface {
     private Controller controller;
 
