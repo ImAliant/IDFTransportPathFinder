@@ -15,5 +15,8 @@ dependency-reduced-pom.xml
 # Visual Studio Code
 .vscode/
 
+# CSV files
+data.csv
+
 # Temporary files
-temp_code/
+old-src/
