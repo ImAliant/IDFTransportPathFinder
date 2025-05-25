@@ -6,6 +6,17 @@ import fr.u_paris.gla.crazytrip.command.InfoCommand;
 import fr.u_paris.gla.crazytrip.utils.CommandUtils;
 import fr.u_paris.gla.crazytrip.utils.InternetChecker;
 
+/**
+ * The main class of the application.
+ * 
+ * This class is the entry point of the application. It reads the command line
+ * arguments and processes them.
+ * 
+ * The application can be run in two modes: info mode and GUI mode.
+ * 
+ * In info mode, the application displays information about the software.
+ * In GUI mode, the application displays a graphical user interface.
+ */
 public class App {
 	public static void main(String[] args) {
 		if (args.length == 0) return;

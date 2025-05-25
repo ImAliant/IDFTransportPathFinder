@@ -24,13 +24,31 @@ import fr.u_paris.gla.crazytrip.model.Node;
 import fr.u_paris.gla.crazytrip.model.SegmentTransport;
 import fr.u_paris.gla.crazytrip.utils.ColorUtils;
 
+/**
+ * <p>Class representing a drawer to paint paths on the map.</p>
+ * 
+ * @see LinePainterObserver
+ * @see PathResultObserver
+ * @see ClearLineObserver
+ */
 public class PathDrawer implements LinePainterObserver, PathResultObserver, ClearLineObserver {
+    /** The map on which to draw the paths. */
     private Maps map;
 
+    /**
+     * Constructor for the path drawer.
+     * 
+     * @param map The map on which to draw the paths.
+     */
     public PathDrawer(Maps map) {
         this.map = map;
     }
 
+    /**
+     * Paints a line on the map.
+     * 
+     * @param line The line to paint.
+     */
     @Override
     public void paintLine(Line line) {
         List<MapsRoute> routes = convertLineToRoute(line);
@@ -38,6 +56,11 @@ public class PathDrawer implements LinePainterObserver, PathResultObserver, Clea
         setPainter(routes);
     }
 
+    /**
+     * Paints an itinerary on the map.
+     * 
+     * @param result The result of the itinerary to paint.
+     */
     @Override
     public void showResult(ItineraryResult result) {
         List<MapsRoute> routes = convertItineraryToRoute(result);
@@ -45,6 +68,11 @@ public class PathDrawer implements LinePainterObserver, PathResultObserver, Clea
         setPainter(routes);
     }
 
+    /**
+     * Sets the painter of the map.
+     * 
+     * @param routes The routes to paint.
+     */
     private void setPainter(final List<MapsRoute> routes) {
         RoutePainter painter = new RoutePainter(routes);
 
@@ -55,6 +83,13 @@ public class PathDrawer implements LinePainterObserver, PathResultObserver, Clea
         map.repaint();
     }
 
+    /**
+     * Converts a line to a list of routes.
+     * 
+     * @param line The line to convert.
+     * 
+     * @return The list of routes.
+     */
     private List<MapsRoute> convertLineToRoute(Line line) {
         List<MapsRoute> routes = new ArrayList<>();
         Set<SegmentTransport> segments = LineDAO.findAllSegmentsOfLine(line);
@@ -73,6 +108,13 @@ public class PathDrawer implements LinePainterObserver, PathResultObserver, Clea
         return routes;
     }
 
+    /**
+     * Converts an itinerary to a list of routes.
+     * 
+     * @param result The result of the itinerary to convert.
+     * 
+     * @return The list of routes.
+     */
     private List<MapsRoute> convertItineraryToRoute(ItineraryResult result) {
         if (result == null) return new ArrayList<>();
 
@@ -93,6 +135,9 @@ public class PathDrawer implements LinePainterObserver, PathResultObserver, Clea
         return routes;
     }
 
+    /**
+     * Clears the line on the map.
+     */
     @Override
     public void clearLine() {
         map.setOverlayPainter(map.getWayPointPainter());

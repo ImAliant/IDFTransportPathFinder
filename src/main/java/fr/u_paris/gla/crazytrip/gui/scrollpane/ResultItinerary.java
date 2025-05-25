@@ -13,9 +13,22 @@ import fr.u_paris.gla.crazytrip.gui.label.StyleLabel;
 import fr.u_paris.gla.crazytrip.model.ResultRoute;
 import fr.u_paris.gla.crazytrip.utils.ColorUtils;
 
+/**
+ * This class is a JScrollPane that displays the result of an itinerary search.
+ * 
+ * <p>It displays the different routes to take to go from a point A to a point B.
+ * If no itinerary is found, it displays a message saying so.</p>
+ * 
+ * @see JScrollPane
+ * @see StyleLabel
+ */
 public class ResultItinerary extends JScrollPane {
+    /** The label that will display the result */
     private StyleLabel result;
 
+    /**
+     * Constructor.
+     */
     public ResultItinerary() {
         super();
 
@@ -23,6 +36,9 @@ public class ResultItinerary extends JScrollPane {
         addComponents();
     }
 
+    /**
+     * Initializes the components.
+     */
     private void initComponents() {
         result = new StyleLabel("");
 
@@ -33,10 +49,18 @@ public class ResultItinerary extends JScrollPane {
         result.setVerticalAlignment(SwingConstants.CENTER);
     }
 
+    /**
+     * Adds the components to the JScrollPane.
+     */
     private void addComponents() {
         setViewportView(result);
     }
 
+    /**
+     * Sets the result to display.
+     * 
+     * @param result The result to display.
+     */
     public void setResult(ItineraryResult result) {
         if (result == null || result.getPaths().isEmpty()) {
             noItinerary();
@@ -45,10 +69,18 @@ public class ResultItinerary extends JScrollPane {
         }
     }
 
+    /**
+     * Displays a message saying that no itinerary was found.
+     */
     private void noItinerary() {
         result.setText("Aucun itinéraire trouvé");
     }
 
+    /**
+     * Builds the string to display.
+     * 
+     * @param result The result to display.
+     */
     private void buildString(ItineraryResult result) {
         List<ResultRoute> routes = convertItineraryToRoute(result);
         StringBuilder sb = new StringBuilder("<html>");
@@ -60,6 +92,12 @@ public class ResultItinerary extends JScrollPane {
         setVisible(true);
     }  
 
+    /**
+     * Processes the routes to display.
+     * 
+     * @param routes The routes to display.
+     * @param builder The StringBuilder to build the string.
+     */
     private void processRoutes(List<ResultRoute> routes, StringBuilder builder) {
         for (ResultRoute route: routes) {
             builder.append(String.format("<span style='color: %s;'>%s</span> : %s -> %s<br>", 
@@ -67,6 +105,12 @@ public class ResultItinerary extends JScrollPane {
         }
     }
 
+    /**
+     * Converts an itinerary to a list of ResultRoute.
+     * 
+     * @param result The itinerary to convert.
+     * @return The list of ResultRoute.
+     */
     private List<ResultRoute> convertItineraryToRoute(ItineraryResult result) {
         List<ResultRoute> routes = new ArrayList<>();
         List<Path> paths = result.getPaths();

@@ -6,9 +6,17 @@ import java.util.Properties;
 
 import fr.u_paris.gla.crazytrip.App;
 
+/**
+ * Utility class to read application properties
+ */
 public class ApplicationUtils {
+	/** Prevent instantiation */
     private ApplicationUtils() {}
 
+	/**
+	 * Read application properties from application.properties file
+	 * @return Properties object containing application properties
+	 */
     public static Properties readApplicationProperties() {
 		Properties props = new Properties();
 

@@ -17,6 +17,30 @@ import fr.u_paris.gla.crazytrip.model.key.LineKey;
 import fr.u_paris.gla.crazytrip.model.key.NodeKey;
 import fr.u_paris.gla.crazytrip.model.line.RouteType;
 
+/**
+ * A parser for the network data.
+ * 
+ * This class is used to parse the network data from a CSV file and create the
+ * corresponding objects.
+ * 
+ * The network data is composed of the following fields:
+ * <ul>
+ * <li>Line name</li>
+ * <li>Route type</li>
+ * <li>Color</li>
+ * <li>Stop name</li>
+ * <li>Longitude and latitude</li>
+ * <li>Next stop name</li>
+ * <li>Next longitude and latitude</li>
+ * <li>Duration</li>
+ * <li>Distance</li>
+ * </ul>
+ * 
+ * @see NodeDTO
+ * @see SegmentTransportDTO
+ * @see LineKey
+ * @see NodeKey
+ */
 public class Parser {
     // CSV file format
     private static final int LNAME_INDEX = 0;
@@ -31,14 +55,24 @@ public class Parser {
 
     private static final int FIELDS_SIZE = 10;
 
+    /** Stores the stations. */
     private static final Map<NodeKey, NodeDTO> stations = new HashMap<>();
+    /** Stores the segments. */
     private static final Set<SegmentTransportDTO> segments = new HashSet<>();
+    /** Stores the lines. */
     private static final Map<LineKey, NodeKey> lines = new HashMap<>();
     
+    /** The singleton instance of the parser. */
     private static Parser instance = null;
 
+    /** Private constructor to prevent instantiation. */
     private Parser() {}
 
+    /**
+     * Get the singleton instance of the parser.
+     * 
+     * @return the singleton instance of the parser
+     */
     public static Parser getInstance() {
         if (instance == null) {
             instance = new Parser();
@@ -46,10 +80,22 @@ public class Parser {
         return instance;
     }
 
+    /**
+     * Parse the network data from the given file.
+     * 
+     * @param dataFile the file containing the network data
+     * @throws IOException if an I/O error occurs
+     */
     public void parse(String dataFile) throws IOException {
         processNetwork(dataFile);
     }
 
+    /**
+     * Process the network data from the given file.
+     * 
+     * @param dataFile the file containing the network data
+     * @throws IOException if an I/O error occurs
+     */
     private void processNetwork(String dataFile) throws IOException {
         File file = new File(dataFile);
         if (!file.exists()) {
@@ -67,6 +113,11 @@ public class Parser {
         }
     }
 
+    /**
+     * Process the fields of a line from the CSV file.
+     * 
+     * @param fields the fields of the line
+     */
     public void processFields(String[] fields) {
         if (fields.length != FIELDS_SIZE) {
             throw new IllegalArgumentException("Invalid number of fields: " + fields.length);
@@ -91,6 +142,15 @@ public class Parser {
         lines.putIfAbsent(lineKey, start.generateKey());
     }
 
+    /**
+     * Process a node from the fields of a line.
+     * 
+     * @param fields the fields of the line
+     * @param key the key of the line
+     * @param indexStop the index of the stop name
+     * @param indexLonglat the index of the longitude and latitude
+     * @return the node
+     */
     private NodeDTO processNode(String[] fields, final LineKey key, final int indexStop, final int indexLonglat) {
         String stopName = fields[indexStop].trim();
         String longLat = fields[indexLonglat].trim();
@@ -104,23 +164,51 @@ public class Parser {
         return stations.get(nodeKey);
     }
 
+    /**
+     * Process a segment from the fields of a line.
+     * 
+     * @param start the start node
+     * @param end the end node
+     * @param duration the duration of the segment
+     * @param distance the distance of the segment
+     * @param linekey the key of the line
+     */
     private void processSegment(final NodeDTO start, final NodeDTO end, final double duration, final double distance, final LineKey linekey) {
         SegmentTransportDTO segment = new SegmentTransportDTO(start, end, duration, distance, linekey);
         segments.add(segment);
     }
 
+    /**
+     * Getter for the stations.
+     * @return the stations
+     */
     public static Map<NodeKey, NodeDTO> getStations() {
         return stations;
     }
 
+    /**
+     * Getter for the segments.
+     * @return the segments
+     */
     public static Set<SegmentTransportDTO> getSegments() {
         return segments;
     }
 
+    /**
+     * Getter for the lines.
+     * @return the lines
+     */
     public static Map<LineKey, NodeKey> getLines() {
         return lines;
     }
 
+    /**
+     * Parse a line from the CSV file.
+     * 
+     * @param line the line to parse
+     * @param delimiter the delimiter used to separate the fields
+     * @return the fields of the line
+     */
     private String[] parseCSVLine(String line, String delimiter) {
         // set the delimiter and the regex to remove quotes
         String regex = "\"([^\"]*)\"";

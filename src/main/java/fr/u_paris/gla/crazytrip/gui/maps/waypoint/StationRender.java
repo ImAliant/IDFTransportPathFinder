@@ -9,7 +9,17 @@ import javax.swing.JLabel;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.WaypointPainter;
 
+/**
+ * Class representing a station renderer on the map.
+ * 
+ * <p>It is used to render a station on the map.</p>
+ * 
+ * @see WaypointPainter
+ */
 public class StationRender extends WaypointPainter<StationWaypoint> {
+    /**
+     * Constructor for the station renderer.
+     */
     public StationRender() {
         super();
     }

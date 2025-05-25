@@ -8,6 +8,15 @@ import javax.swing.Icon;
 import fr.u_paris.gla.crazytrip.gui.observer.ZoomOutObserver;
 import fr.u_paris.gla.crazytrip.utils.IconUtils;
 
+/**
+ * <p>Class representing a button to zoom out the map.
+ * It is used in the InteractiveButtonPanel class.</p>
+ * 
+ * <p>When the button is clicked, it notifies observers that the map should be zoomed out.</p>
+ * 
+ * @see MiniButton
+ * @see ZoomOutObserver
+ */
 public class ZoomOutButton extends MiniButton {
     /** Path to the icon */
     private static final String PATH = "src/main/resources/icons/moins_icon.png";
@@ -16,6 +25,11 @@ public class ZoomOutButton extends MiniButton {
     /** Observers of the button */
     private transient List<ZoomOutObserver> observers = new ArrayList<>();
 
+    /**
+     * Constructor.
+     * 
+     * Create a button with the icon and the tooltip.
+     */
     public ZoomOutButton() {
         super(TOOLTIP);
 
@@ -23,10 +37,18 @@ public class ZoomOutButton extends MiniButton {
         if (icon != null) setIcon(icon);
     }
 
+    /**
+     * Add an observer to the list of observers.
+     * 
+     * @param observer the observer to add
+     */
     public void addObserver(ZoomOutObserver observer) {
         observers.add(observer);
     }
 
+    /**
+     * Notify all observers that the button has been clicked.
+     */
     @Override
     public void action() {
         observers.forEach(ZoomOutObserver::zoomOut);
