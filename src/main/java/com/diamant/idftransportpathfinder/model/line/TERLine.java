@@ -6,9 +6,10 @@ import com.diamant.idftransportpathfinder.model.Line;
 import com.diamant.idftransportpathfinder.model.Station;
 
 /**
- * A railway type line
+ * A TER (Transport Express Régional) line
+ * Represents a regional train line in the Île-de-France region.
  */
-public class RailwayLine extends Line {
+public class TERLine extends Line {
     /**
      * Constructor
      * @param name the name of the line
@@ -16,12 +17,12 @@ public class RailwayLine extends Line {
      * @param terminusStation the terminus station of the line
      * @param color the color of the line
      */
-    public RailwayLine(String name, Set<Station> stations, Station terminusStation, String color) {
+    public TERLine(String name, Set<Station> stations, Station terminusStation, String color) {
         super(name, stations, terminusStation, color);
     }
 
     @Override
     public RouteType getLineType() {
-        return RouteType.RAIL;
+        return RouteType.TER;
     }
 }

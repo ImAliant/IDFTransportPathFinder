@@ -127,7 +127,13 @@ public class Parser {
         StationDTO end;
 
         String lineName = fields[LNAME_INDEX].trim();
-        String routetype = fields[ROUTETYPE_INDEX].trim();
+        String routetype;
+        if ("TER".equals(lineName)) {
+            routetype = "TER";
+        } else {
+            routetype = fields[ROUTETYPE_INDEX].trim();
+        }
+        
         double duration = TimeFormat.convertToSeconds(fields[DURATION_INDEX]);
         double distance = Double.parseDouble(fields[DISTANCE_INDEX]);
         String color = fields[COLOR_INDEX].trim();

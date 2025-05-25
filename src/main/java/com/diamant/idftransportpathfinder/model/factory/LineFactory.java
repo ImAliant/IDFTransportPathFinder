@@ -7,7 +7,8 @@ import com.diamant.idftransportpathfinder.model.Station;
 import com.diamant.idftransportpathfinder.model.line.BusLine;
 import com.diamant.idftransportpathfinder.model.line.FunicularLine;
 import com.diamant.idftransportpathfinder.model.line.MetroLine;
-import com.diamant.idftransportpathfinder.model.line.RailwayLine;
+import com.diamant.idftransportpathfinder.model.line.RERLine;
+import com.diamant.idftransportpathfinder.model.line.TERLine;
 import com.diamant.idftransportpathfinder.model.line.RouteType;
 import com.diamant.idftransportpathfinder.model.line.TramwayLine;
 
@@ -37,8 +38,11 @@ public class LineFactory {
             case BUS:
                 line = new BusLine(name, stations, terminus, color);
                 break;
-            case RAIL:
-                line = new RailwayLine(name, stations, terminus, color);
+            case RER:
+                line = new RERLine(name, stations, terminus, color);
+                break;
+            case TER:
+                line = new TERLine(name, stations, terminus, color);
                 break;
             case FUNICULAR:
                 line = new FunicularLine(name, stations, terminus, color);

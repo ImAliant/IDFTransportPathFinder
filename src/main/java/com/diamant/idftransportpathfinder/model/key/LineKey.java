@@ -17,7 +17,7 @@ public class LineKey {
     /** The name of the line */
     private final String name;
     /** The type of the line */
-    private final RouteType routetype;
+    private final RouteType routeType;
     /** The color of the line */
     private final String color;
 
@@ -28,9 +28,9 @@ public class LineKey {
      * @param routetype the type of the line
      * @param color the color of the line
      */
-    public LineKey(String name, RouteType routetype, String color) {
+    public LineKey(String name, RouteType routeType, String color) {
         this.name = name;
-        this.routetype = routetype;
+        this.routeType = routeType;
         this.color = color;
     }
 
@@ -47,7 +47,7 @@ public class LineKey {
      * @return the type of the line
      */
     public RouteType getRouteType() {
-        return routetype;
+        return routeType;
     }
 
     /**
@@ -65,17 +65,17 @@ public class LineKey {
         LineKey lineKey = (LineKey) obj;
 
         return name.equalsIgnoreCase(lineKey.name)
-            && routetype.equals(lineKey.routetype)
+            && routeType.equals(lineKey.routeType)
             && color.equalsIgnoreCase(lineKey.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, routetype, color);
+        return Objects.hash(name, routeType, color);
     }
 
     @Override
     public String toString() {
-        return String.format("%s (%s)", name, routetype);
+        return String.format("%s (%s)", name, routeType);
     }
 }

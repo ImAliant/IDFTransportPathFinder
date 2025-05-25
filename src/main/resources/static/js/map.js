@@ -37,13 +37,16 @@ function loadStations() {
 			data.forEach(station => {
 				if (zoom > station.zoomThreshold) {
 					const icon = L.icon({
-            			iconUrl: getIconForType(station.type),
+            			iconUrl: getIconForType(station.lineKey.routeType),
             			iconSize: [20, 20]
           			});
 
 					L.marker([station.latitude, station.longitude], { icon: icon })
 						.addTo(map)
-						.bindPopup(`<b>${station.name}</b>`);
+						.bindPopup(`
+							<strong>${station.name}</strong><br>
+							${station.lineKey?.name ?? 'N/A'} (${station.lineKey?.routeType ?? 'N/A'})`
+						)
 				}
 			});
 		});
@@ -51,13 +54,16 @@ function loadStations() {
 
 function getIconForType(type) {
 	if (!type) {
-		return '/images/default-icon.png';
+		return '/stop-icon/default-icon.png';
 	}
 
 	let iconUrl;
 	switch (type) {
-		case 'Rail':
+		case 'RER':
 			iconUrl = '/stop-icon/rer-icon.png';
+			break;
+		case 'TER':
+			iconUrl = '/stop-icon/ter-icon.png';
 			break;
         case 'Bus':
 			iconUrl = '/stop-icon/bus-icon.png';

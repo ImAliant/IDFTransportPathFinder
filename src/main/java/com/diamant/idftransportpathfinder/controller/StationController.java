@@ -1,6 +1,8 @@
 package com.diamant.idftransportpathfinder.controller;
 
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,27 +18,14 @@ import com.diamant.idftransportpathfinder.model.Station;
 @RestController
 @RequestMapping("/api/stations")
 public class StationController {
+    private static final Set<Station> stations;
+
+    static {
+        stations = new HashSet<>(StationDAO.getAllStations());
+    }
 
     private StationController() {}
 
-    /* @GetMapping
-    public Set<StationDTO> getStations() {
-        Set<Station> stations = StationDAO.getAllStations();
-        System.out.println(String.format("Found %d stations", stations.size()));
-
-        Set<StationDTO> stationDTOs = new HashSet<>();
-        
-        for (int i = 0; i < 1000; i++) {
-            Station station = stations.stream().skip(i).findFirst().orElse(null);
-            if (station == null) {
-                break;
-            }
-            StationDTO stationDTO = new StationDTO(station);
-            stationDTOs.add(stationDTO);
-        }
-
-        return stationDTOs;
-    } */
     @GetMapping("/viewport")
     public Set<StationDTO> getStationsInView(
         @RequestParam double south,
@@ -45,7 +34,7 @@ public class StationController {
         @RequestParam double east,
         @RequestParam int zoom
     ) {
-        return StationDAO.getAllStations().stream()
+        return stations.stream()
             .filter(station -> {
                 double lat = station.getCoordinates().getLatitude();
                 double lon = station.getCoordinates().getLongitude();
@@ -54,5 +43,16 @@ public class StationController {
             })
             .map(StationDTO::new)
             .collect(Collectors.toSet());
+    }
+
+    @GetMapping("/search")
+    public List<StationDTO> searchStations(@RequestParam String name) {
+        return stations.stream()
+            .filter(station -> station.getName().toLowerCase().contains(name.toLowerCase()))
+            .sorted(Comparator.comparing(Station::getName)
+                    .thenComparing(s -> s.getLineKey().getRouteType())
+                    .thenComparing(s -> s.getLineKey().getName()))
+            .map(StationDTO::new)
+            .collect(Collectors.toList());
     }
 }

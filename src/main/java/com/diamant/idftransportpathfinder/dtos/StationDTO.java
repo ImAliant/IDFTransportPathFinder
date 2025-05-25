@@ -2,8 +2,6 @@ package com.diamant.idftransportpathfinder.dtos;
 
 import java.util.Objects;
 
-import org.springframework.util.RouteMatcher.Route;
-
 import com.diamant.idftransportpathfinder.model.Station;
 import com.diamant.idftransportpathfinder.model.key.LineKey;
 import com.diamant.idftransportpathfinder.model.key.NodeKey;
@@ -19,7 +17,8 @@ import com.diamant.idftransportpathfinder.model.line.RouteType;
  */
 public class StationDTO {
     private static final int DEFAULT_ZOOM_THRESHOLD = 10;
-    private static final int RAIL_ZOOM_THRESHOLD = 0;
+    private static final int RER_ZOOM_THRESHOLD = 6;
+    private static final int TER_ZOOM_THRESHOLD = 3;
     private static final int METRO_ZOOM_THRESHOLD = 13;
     private static final int TRAMWAY_ZOOM_THRESHOLD = 13;
     private static final int BUS_ZOOM_THRESHOLD = 15;
@@ -35,8 +34,6 @@ public class StationDTO {
     private final LineKey lineKey;
     /** The zoom threshold for the node */
     private final int zoomThreshold;
-    /** The type of the route */
-    private final RouteType type;
 
     /**
      * Constructor of the node data transfer object.
@@ -53,8 +50,7 @@ public class StationDTO {
         this.latitude = latitude;
         this.longitude = longitude;
         this.lineKey = lineKey;
-        this.type = lineKey.getRouteType();
-        this.zoomThreshold = getThresholdFromLineKey(type);
+        this.zoomThreshold = getThresholdFromLineKey(lineKey.getRouteType());
     }
 
     /**
@@ -76,8 +72,10 @@ public class StationDTO {
         switch (type) {
             case METRO:
                 return METRO_ZOOM_THRESHOLD;
-            case RAIL:
-                return RAIL_ZOOM_THRESHOLD;
+            case RER:
+                return RER_ZOOM_THRESHOLD;
+            case TER:
+                return TER_ZOOM_THRESHOLD;
             case TRAMWAY:
                 return TRAMWAY_ZOOM_THRESHOLD;
             case BUS:
@@ -107,10 +105,6 @@ public class StationDTO {
 
     public int getZoomThreshold() {
         return zoomThreshold;
-    }
-
-    public String getType() {
-        return lineKey.getRouteType().toString();
     }
 
     /**
