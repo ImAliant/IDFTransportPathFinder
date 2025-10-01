@@ -11,16 +11,36 @@
     </head>
     <body>
         <div id="search-form">
-            <input type="text" id="station-input" placeholder="Recherche d'une station..."
-                    oninput="suggestStations()" autocomplete="off" />
-            <div id="suggestions" class="autocomplete-list"></div>
-            <button onclick="searchStation()">Rechercher</button>
+            <input type="text" id="start-input" placeholder="Départ" />
+            <div id="start-suggestions" class="suggestions"></div>
+            <button id="start-btn">Rechercher</button>
+
+            <div id="destination-section" style="display: none;">
+                <input type="text" id="end-input" placeholder="Destination" />
+                <div id="end-suggestions" class="suggestions"></div>
+                <button id="route-btn">Go</button>
+            </div>
+            <button id="reset-btn" style="display: none;">Réinitialiser</button>
+        </div>
+        <div id="line-sections">
+            <div id="line-buttons">
+                <input type="image" class="line-button" data-type="Bus" src="/stop-icon/bus-icon.png" alt="Bus" title="Bus"/>
+                <input type="image" class="line-button" data-type="Subway" src="/stop-icon/metro-icon.png" alt="Metro" title="Metro"/>
+                <input type="image" class="line-button" data-type="Rail" src="/stop-icon/rer-icon.png" alt="Train" title="Train"/>
+                <input type="image" class="line-button" data-type="Tram" src="/stop-icon/tram-icon.png" alt="Tram" title="Tram"/>
+                <input type="image" class="line-button" data-type="TER" src="/stop-icon/ter-icon.png" alt="TER" title="TER"/>
+                <input type="image" class="line-button" data-type="Funicular" src="/stop-icon/funicular-icon.png" alt="Funicular" title="Funicular"/>
+            </div>
+            <div id="line-info">
+                <p>Select a line type to view stations...</p>
+            </div>
         </div>
         <div id="map"></div>
 
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
         <script src="/js/map.js"></script>
-        <script src="/js/autocomplete.js"></script>
+        <script src="/js/search.js"></script>
+        <!-- <script src="/js/searchLines.js"></script> -->
     </body>
 </html>

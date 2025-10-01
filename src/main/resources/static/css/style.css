@@ -16,7 +16,8 @@ html, body {
 #search-form {
   position: absolute;
   top: 10px;
-  right: 10px; /* ← move it to the right */
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1000;
   background: white;
   padding: 10px;
@@ -24,17 +25,22 @@ html, body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-#suggestions {
-  position: absolute;
-  top: 65px;
-  right: 10px;
-  width: 250px;
-  max-height: 200px;
-  overflow-y: auto;
-  background: white;
+.suggestions {
+  max-height: 200px;      /* Limite visible */
+  overflow-y: auto;       /* Scroll vertical */
+  overflow-x: hidden;     /* Pas de scroll horizontal */
   border: 1px solid #ccc;
-  border-top: none;
-  z-index: 1001;
+  background: #fff;
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+/* Empêche la propagation de la molette à la page */
+.suggestions:hover {
+  overscroll-behavior: contain;
 }
 
 .suggestion-item {
@@ -46,3 +52,52 @@ html, body {
   background-color: #eee;
 }
 
+#line-sections {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 300px;
+  max-height: 400px;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+#line-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.line-button {
+  width: 12.5%;
+  height: 12.5%;
+  object-fit: contain;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: filter 0.2s ease;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.line-button:hover {
+  filter: brightness(0.9);
+}
+
+.line-button.pressed {
+  filter: brightness(1.1);
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+}
+
+#line-info {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 10px;
+}

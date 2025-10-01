@@ -13,7 +13,8 @@ import com.diamant.idftransportpathfinder.model.Network;
 public class IdftransportpathfinderApplication {
 
 	public static void main(String[] args) throws IOException {
-		//IDFMNetworkExtractor.extract();
+		IDFMNetworkExtractor.extract();
+		IDFMNetworkExtractor.extractShapes();
 
 		Network.getInstance();
 

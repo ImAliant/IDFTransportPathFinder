@@ -53,6 +53,6 @@ public class StationController {
                     .thenComparing(s -> s.getLineKey().getRouteType())
                     .thenComparing(s -> s.getLineKey().getName()))
             .map(StationDTO::new)
-            .collect(Collectors.toList());
+            .toList();
     }
 }

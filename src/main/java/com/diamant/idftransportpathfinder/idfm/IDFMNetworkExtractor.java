@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.diamant.idftransportpathfinder.model.Coordinates;
 import com.diamant.idftransportpathfinder.utils.CSVTools;
 import com.diamant.idftransportpathfinder.utils.GPS;
 
@@ -29,6 +30,7 @@ import com.diamant.idftransportpathfinder.utils.GPS;
  * @author Emmanuel Bigeon */
 public class IDFMNetworkExtractor {
     public static final String PATH_TO_DATA = "src/main/resources/idfm-data/data.csv";
+    public static final String PATH_TO_SHAPES = "src/main/resources/idfm-data/shapes.csv";
 
     /** The logger for information on the process */
     private static final Logger LOGGER = Logger
@@ -114,6 +116,50 @@ public class IDFMNetworkExtractor {
             LOGGER.log(Level.SEVERE, e,
                     () -> MessageFormat.format("Could not write in file {0}", "output.csv"));
         }
+    }
+
+    public static void extractShapes() {
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Starting extraction of IDF mobilite shapes");
+        }
+
+        Map<String, List<Coordinates>> shapes = new HashMap<>();
+        try {
+            CSVTools.readCSVFromURL(TRACE_FILE_URL, 
+                    (String[] line) -> addShape(line, shapes));
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Error while reading the line paths", e);
+        }
+
+        if (shapes.isEmpty()) {
+            LOGGER.warning("No shapes found in the IDF mobilite data");
+            return;
+        }
+    }
+
+    private static void addShape(String[] line, Map<String, List<Coordinates>> shapes) {
+        String name = line[IDFM_TRACE_SHAPE_INDEX];
+        String shape = line[IDFM_TRACE_SHAPE_INDEX];
+        if (shape == null || shape.isBlank()) {
+            return;
+        }
+        List<Coordinates> coordinates = new ArrayList<>();
+        try {
+            JSONObject json = new JSONObject(shape);
+            JSONArray paths = json.getJSONArray("coordinates");
+            for (int i = 0; i < paths.length(); i++) {
+                JSONArray path = paths.getJSONArray(i);
+                for (int j = 0; j < path.length(); j++) {
+                    JSONArray coordinatesJSON = path.getJSONArray(j);
+                    Coordinates coord = new Coordinates(coordinatesJSON.getDouble(0),
+                            coordinatesJSON.getDouble(1));
+                    coordinates.add(coord);
+                }
+            }
+        } catch (JSONException e) {
+            LOGGER.log(Level.WARNING, "Invalid json element {0}", shape);
+        }
+        shapes.put(name, coordinates);
     }
 
     private static void cleanTraces(Map<String, TraceEntry> traces) {
