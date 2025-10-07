@@ -111,4 +111,8 @@ public class LineDAO {
     public static Line findLineByKey(LineKey key) {
         return network.getLines().get(key);
     }
+
+    public static Set<Line> getAllLines() {
+        return Set.copyOf(network.getLines().values());
+    }
 }

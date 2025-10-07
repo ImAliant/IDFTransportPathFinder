@@ -31,9 +31,7 @@
                 <input type="image" class="line-button" data-type="TER" src="/stop-icon/ter-icon.png" alt="TER" title="TER"/>
                 <input type="image" class="line-button" data-type="Funicular" src="/stop-icon/funicular-icon.png" alt="Funicular" title="Funicular"/>
             </div>
-            <div id="line-info">
-                <p>Select a line type to view stations...</p>
-            </div>
+            <div id="line-scroller" style="display: none;"></div>
         </div>
         <div id="map"></div>
 
@@ -41,6 +39,6 @@
         <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
         <script src="/js/map.js"></script>
         <script src="/js/search.js"></script>
-        <!-- <script src="/js/searchLines.js"></script> -->
+        <script src="/js/showlines.js"></script>
     </body>
 </html>
