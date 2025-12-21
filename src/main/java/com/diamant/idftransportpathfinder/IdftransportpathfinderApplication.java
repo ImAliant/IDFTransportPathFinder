@@ -13,8 +13,18 @@ import com.diamant.idftransportpathfinder.model.Network;
 public class IdftransportpathfinderApplication {
 
 	public static void main(String[] args) throws IOException {
+		// Check if extraction-only mode is requested
+		boolean extractOnly = java.util.Arrays.asList(args).contains(AppArgument.EXTRACT_ONLY.getValue());
+
+		// Run extraction
 		IDFMNetworkExtractor.extract();
 		IDFMNetworkExtractor.extractShapes();
+
+		// Exit if extraction-only mode
+		if (extractOnly) {
+			System.out.println("Data extraction completed. Exiting.");
+			System.exit(0);
+		}
 
 		Network.getInstance();
 
