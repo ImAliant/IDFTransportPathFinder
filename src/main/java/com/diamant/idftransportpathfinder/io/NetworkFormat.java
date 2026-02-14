@@ -15,25 +15,33 @@ import java.util.Locale;
  * @author Emmanuel Bigeon */
 public final class NetworkFormat {
 
-    public static final int NUMBER_COLUMNS = 10;
+    public static final int NUMBER_COLUMNS = 14;
     public static final int GPS_PRECISION  = 18;
 
     /** The index of the line name in the network format */
     public static final int LINE_INDEX     = 0;
     /** The index of the variant number of the segment in the network format */
     public static final int VARIANT_INDEX  = 1;
-    /** The index of the segment trip duration in the network format */
-    public static final int DURATION_INDEX = 8;
-    /** The index of the segment distance in the network format */
-    public static final int DISTANCE_INDEX = 9;
-    /** The index of the segment end stop name in the network format */
-    public static final int STOP_INDEX     = 6;
-    /** The index of the segment starting stop name in the network format */
-    public static final int START_INDEX    = 4;
     /** The index of the type of transport in the network format */
     public static final int TRANSPORT_TYPE_INDEX = 2;
     /** The index of the color of the line in the network format */
     public static final int LINE_COLOR_INDEX = 3;
+    /** The index of the segment starting stop name in the network format */
+    public static final int START_INDEX    = 4;
+    /** The index of the segment end stop name in the network format */
+    public static final int STOP_INDEX     = 6;
+    /** The index of the segment trip duration in the network format */
+    public static final int DURATION_INDEX = 8;
+    /** The index of the segment distance in the network format */
+    public static final int DISTANCE_INDEX = 9;
+    /** The index of the starting stop operator name in the network format */
+    public static final int START_OPERATOR_INDEX = 10;
+    /** The index of the ending stop operator name in the network format */
+    public static final int STOP_OPERATOR_INDEX = 11;
+    /** The index of the starting stop city in the network format */
+    public static final int START_CITY_INDEX = 12;
+    /** The index of the ending stop city in the network format */
+    public static final int STOP_CITY_INDEX = 13;
 
     private static final DateTimeFormatter DURATION_FORMATTER         = DateTimeFormatter
             .ofPattern("HH:mm:ss");

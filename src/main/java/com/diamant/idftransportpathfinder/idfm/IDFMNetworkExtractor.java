@@ -43,6 +43,7 @@ public class IDFMNetworkExtractor {
     // IDF mobilite csv formats
     private static final int IDFM_TRACE_ID_INDEX    = 0;
     private static final int IDFM_TRACE_SNAME_INDEX = 1;
+    private static final int IDFM_TRACE_LNAME_INDEX = 2;
     private static final int IDFM_TRACE_ROUTETYPE_INDEX = 3;
     private static final int IDFM_TRACE_COLOR_INDEX = 4;
     private static final int IDFM_TRACE_SHAPE_INDEX = 6;
@@ -51,6 +52,8 @@ public class IDFMNetworkExtractor {
     private static final int IDFM_STOPS_NAME_INDEX = 3;
     private static final int IDFM_STOPS_LON_INDEX  = 4;
     private static final int IDFM_STOPS_LAT_INDEX  = 5;
+    private static final int IDFM_STOPS_OPERATORNAME_INDEX = 6;
+    private static final int IDFM_STOPS_CITY_INDEX = 7;
 
     // Magically chosen values
     /** A number of stops on each line */
@@ -168,7 +171,7 @@ public class IDFMNetworkExtractor {
             TraceEntry trace = traceEntry.getValue();
             if (!cleanLine(trace.getPaths())) {
                 LOGGER.severe(() -> MessageFormat.format(
-                        "Missing stop for line {0}. Line will be removed", trace.lname));
+                        "Missing stop for line {0}. Line will be removed", trace.longname));
                 toRemove.add(traceEntry.getKey());
             }
         }
@@ -201,7 +204,9 @@ public class IDFMNetworkExtractor {
             List<StopEntry> stops) {
         StopEntry entry = new StopEntry(line[IDFM_STOPS_NAME_INDEX],
                 Double.parseDouble(line[IDFM_STOPS_LON_INDEX]),
-                Double.parseDouble(line[IDFM_STOPS_LAT_INDEX]));
+                Double.parseDouble(line[IDFM_STOPS_LAT_INDEX]),
+                line[IDFM_STOPS_OPERATORNAME_INDEX],
+                line[IDFM_STOPS_CITY_INDEX]);
         String rid = line[IDFM_STOPS_RID_INDEX];
         traces.computeIfPresent(rid,
                 (String k, TraceEntry trace) -> addCandidate(trace, entry));
@@ -209,12 +214,12 @@ public class IDFMNetworkExtractor {
     }
 
     private static void addLine(String[] line, Map<String, TraceEntry> traces) {
-        TraceEntry entry = new TraceEntry(line[IDFM_TRACE_SNAME_INDEX], line[IDFM_TRACE_ROUTETYPE_INDEX], line[IDFM_TRACE_COLOR_INDEX]);
+        TraceEntry entry = new TraceEntry(line[IDFM_TRACE_SNAME_INDEX], line[IDFM_TRACE_LNAME_INDEX], line[IDFM_TRACE_ROUTETYPE_INDEX], line[IDFM_TRACE_COLOR_INDEX]);
         List<List<StopEntry>> buildPaths = buildPaths(line[IDFM_TRACE_SHAPE_INDEX]);
         entry.addAll(buildPaths);
         if (buildPaths.isEmpty()) {
             LOGGER.severe(() -> MessageFormat.format(
-                    "Line {0} has no provided itinerary and was ignored", entry.lname));
+                    "Line {0} has no provided itinerary and was ignored", entry.longname));
         } else {
             traces.put(line[IDFM_TRACE_ID_INDEX], entry);
         }

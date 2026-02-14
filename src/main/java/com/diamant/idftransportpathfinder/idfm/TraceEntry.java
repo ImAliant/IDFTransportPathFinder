@@ -11,17 +11,20 @@ import java.util.List;
  * 
  * @author Emmanuel Bigeon */
 public final class TraceEntry {
-    public final String lname;
+    public final String shortname;
+    public final String longname;
     public final String routetype;
     public final String color;
     private List<List<StopEntry>> paths = new ArrayList<>();
 
     /** Create a transport line.
      * 
-     * @param lname the name of the line */
-    public TraceEntry(String lname, String routetype, String color) {
+     * @param shortname the short name of the line
+     * @param longname the long name of the line */
+    public TraceEntry(String shortname, String longname, String routetype, String color) {
         super();
-        this.lname = lname;
+        this.shortname = shortname;
+        this.longname = longname;
         this.routetype = routetype;
         this.color = color;
     }

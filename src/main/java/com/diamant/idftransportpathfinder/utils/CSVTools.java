@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URL;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -35,7 +35,7 @@ public final class CSVTools {
     public static void readCSVFromURL(String url, Consumer<String[]> contentLineConsumer)
             throws IOException {
         ICSVParser parser = new CSVParserBuilder().withSeparator(';').build();
-        try (InputStream is = new URL(url).openStream();
+        try (InputStream is = URI.create(url).toURL().openStream();
                 Reader reader = new BufferedReader(
                         new InputStreamReader(is, StandardCharsets.UTF_8))) {
             CSVReaderBuilder csvBuilder = new CSVReaderBuilder(reader)

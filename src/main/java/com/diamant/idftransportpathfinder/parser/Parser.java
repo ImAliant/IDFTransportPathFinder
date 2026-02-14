@@ -128,7 +128,7 @@ public class Parser {
 
         String lineName = fields[LNAME_INDEX].trim();
         String routetype;
-        if ("TER".equals(lineName)) {
+        if (lineName.startsWith("TER")) {
             routetype = "TER";
         } else {
             routetype = fields[ROUTETYPE_INDEX].trim();

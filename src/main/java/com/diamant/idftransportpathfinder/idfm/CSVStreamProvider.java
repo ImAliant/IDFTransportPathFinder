@@ -103,7 +103,7 @@ public final class CSVStreamProvider {
                 }
                 TraceEntry trace = this.currentTrace.next();
                 this.currentPath = trace.getPaths().iterator();
-                this.line[NetworkFormat.LINE_INDEX] = trace.lname;
+                this.line[NetworkFormat.LINE_INDEX] = trace.longname;
                 this.line[NetworkFormat.TRANSPORT_TYPE_INDEX] = trace.routetype;
                 this.line[NetworkFormat.LINE_COLOR_INDEX] = trace.color;
 
@@ -146,7 +146,8 @@ public final class CSVStreamProvider {
         nextLine[index + 1] = MessageFormat.format("{0}, {1}", //$NON-NLS-1$
                 GPS_FORMATTER.format(stop.latitude),
                 GPS_FORMATTER.format(stop.longitude));
-
+        nextLine[index + 2] = stop.operatorName;
+        nextLine[index + 3] = stop.city;
     }
 
     /** @param distanceToTime

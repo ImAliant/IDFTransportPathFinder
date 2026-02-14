@@ -13,17 +13,21 @@ public class StopEntry implements Comparable<StopEntry> {
     public final String lname;
     public final double longitude;
     public final double latitude;
+    public final String operatorName;
+    public final String city;
 
     /** Create the stop
      * 
      * @param lname
      * @param longitude
      * @param latitude */
-    public StopEntry(String lname, double longitude, double latitude) {
+    public StopEntry(String lname, double longitude, double latitude, String operatorName, String city) {
         super();
         this.lname = lname;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.operatorName = operatorName;
+        this.city = city;
     }
 
     @Override
